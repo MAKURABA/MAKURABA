@@ -19,39 +19,9 @@
      "summary": "The game of creation: its world, rules, and client.",
      "items": [
       {
-       "id": "celestial-archipelago",
-       "title": "The Celestial Archipelago",
-       "slug": "celestial-archipelago",
-       "summary": "A parchment showcase page using most block types",
-       "status": "live"
-      },
-      {
-       "id": "root-design",
-       "title": "Root design",
-       "slug": "root-design",
-       "summary": "Interlinks, link cards, code, and raw HTML",
-       "status": "draft"
-      }
-     ]
-    },
-    {
-     "id": "experiments",
-     "title": "Experiments",
-     "summary": "3D and HTML examples shown inside pages",
-     "items": [
-      {
-       "id": "spinning-cube",
-       "title": "Spinning cube",
-       "slug": "spinning-cube",
-       "summary": "A 3D example embedded in a page",
-       "status": "live"
-      },
-      {
-       "id": "golden-spiral",
-       "title": "Golden spiral",
-       "slug": "golden-spiral",
-       "summary": "A canvas example embedded in a page",
-       "status": "live"
+       "id": "this",
+       "title": "this",
+       "slug": "this"
       }
      ]
     }
@@ -115,24 +85,15 @@
    ]
   },
   {
-   "id": "about",
-   "label": "About",
+   "id": "makuraba",
+   "label": "MAKURABA",
    "type": "index",
-   "icon": "about",
+   "icon": "triangle",
    "items": [
     {
-     "id": "about-this-site",
-     "title": "About this site",
-     "slug": "about-this-site",
-     "summary": "What this hub is for",
-     "status": "live"
-    },
-    {
-     "id": "making-your-own-pages",
-     "title": "Making your own pages",
-     "slug": "making-your-own-pages",
-     "summary": "A five-minute start, and how to clear these demos",
-     "status": "live"
+     "id": "makuraba",
+     "title": "MAKURABA",
+     "slug": "makuraba"
     }
    ]
   }
