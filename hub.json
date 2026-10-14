@@ -8,94 +8,50 @@
    "icon": "home"
   },
   {
-   "id": "projects",
-   "label": "Projects",
-   "type": "index",
-   "icon": "projects",
-   "items": [
-    {
-     "id": "makuraba",
-     "title": "Makuraba",
-     "summary": "The game of creation: its world, rules, and client.",
-     "items": [
-      {
-       "id": "this",
-       "title": "this",
-       "slug": "this"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "id": "systems",
-   "label": "Systems",
-   "type": "index",
-   "icon": "systems",
-   "items": [
-    {
-     "id": "operating-the-hub",
-     "title": "Operating the hub",
-     "summary": "How the pieces fit and how to publish",
-     "items": [
-      {
-       "id": "how-it-works",
-       "title": "How the hub works",
-       "slug": "how-it-works",
-       "summary": "The two pages, the tool, and the agreement",
-       "status": "live"
-      },
-      {
-       "id": "publishing",
-       "title": "Publishing to GitHub",
-       "slug": "publishing",
-       "summary": "First-time setup and every-day publishing",
-       "status": "live"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "id": "library",
-   "label": "Library",
-   "type": "index",
-   "icon": "library",
-   "items": [
-    {
-     "id": "block-reference",
-     "title": "Block reference",
-     "slug": "block-reference",
-     "summary": "Every block, used once",
-     "status": "live"
-    },
-    {
-     "id": "linking-cheat-sheet",
-     "title": "Linking cheat sheet",
-     "slug": "linking-cheat-sheet",
-     "summary": "Every kind of link, working",
-     "status": "live"
-    },
-    {
-     "id": "github-pages-docs",
-     "title": "GitHub Pages docs",
-     "summary": "An external link entry",
-     "url": "https://docs.github.com/pages"
-    }
-   ]
-  },
-  {
-   "id": "makuraba",
-   "label": "MAKURABA",
+   "id": "main-page",
+   "label": "MAIN PAGE",
    "type": "index",
    "icon": "triangle",
    "items": [
     {
      "id": "makuraba",
      "title": "MAKURABA",
-     "slug": "makuraba"
+     "items": [
+      {
+       "id": "makuraba",
+       "title": "Eternal beginning",
+       "slug": "makuraba"
+      }
+     ]
     }
    ]
+  },
+  {
+   "id": "games",
+   "label": "GAMES & DEMOS",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "about",
+     "title": "GAMES & DEMOS",
+     "slug": "about"
+    }
+   ]
+  },
+  {
+   "id": "stories",
+   "label": "STORIES",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
+   "id": "intelligence-modeling",
+   "label": "INTELLIGENCE MODELING",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
   }
  ]
 }

@@ -1,0 +1,21 @@
+{
+ "blocks": [
+  {
+   "type": "text",
+   "text": "Heres a collection of demos and games click a card to get started!",
+   "dropcap": false
+  },
+  {
+   "type": "image",
+   "file": "media/about/4678.jpg",
+   "alt": "",
+   "caption": ""
+  },
+  {
+   "type": "link",
+   "target": "https://makuraba.github.io/MAKURABA/examples/pentritris/pentritris.html",
+   "label": "Pentritris - click here to play",
+   "note": ""
+  }
+ ]
+}
