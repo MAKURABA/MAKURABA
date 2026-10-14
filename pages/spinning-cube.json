@@ -1,0 +1,29 @@
+{
+ "blocks": [
+  {
+   "type": "sub",
+   "text": "3D example"
+  },
+  {
+   "type": "text",
+   "text": "The frame below is a separate page that lives in `examples/cube/`. Any folder that has an `index.html` can be shown this way, so 3D scenes, canvas toys and plain HTML demos all fit. The page keeps your directory and header around it.",
+   "dropcap": true
+  },
+  {
+   "type": "embed",
+   "url": "examples/cube/index.html",
+   "title": "A spinning 3D cube drawn with CSS"
+  },
+  {
+   "type": "text",
+   "text": "Add your own: put a folder in `examples/`, then add an **Embed** block that points at `examples/your-folder/index.html`.",
+   "dropcap": false
+  },
+  {
+   "type": "link",
+   "target": "golden-spiral",
+   "label": "Next example",
+   "note": "A canvas animation"
+  }
+ ]
+}

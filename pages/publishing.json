@@ -1,0 +1,43 @@
+{
+ "blocks": [
+  {
+   "type": "sub",
+   "text": "Publishing"
+  },
+  {
+   "type": "heading",
+   "text": "First time (Termux or any computer)",
+   "level": 2
+  },
+  {
+   "type": "text",
+   "text": "1. Install the tools: `pkg install python git gh` on Termux.\n2. Sign in once: `gh auth login`.\n3. Clone your repository and unzip the hub over it.\n4. In GitHub, set Pages to deploy from the `main` branch, root.\n\n```\ngit clone https://github.com/YOUR-NAME/YOUR-NAME.github.io\ncd YOUR-NAME.github.io\nunzip -o makuraba-hub.zip\n```",
+   "dropcap": true
+  },
+  {
+   "type": "heading",
+   "text": "Every time",
+   "level": 2
+  },
+  {
+   "type": "text",
+   "text": "Edit in the editor, then publish. It rebuilds, commits and pushes in one step. The site updates about a minute later.\n\n```\npython3 hub.py publish \"what changed\"\n```",
+   "dropcap": false
+  },
+  {
+   "type": "divider"
+  },
+  {
+   "type": "link",
+   "target": "https://docs.github.com/pages",
+   "label": "GitHub Pages docs",
+   "note": "The official guide"
+  },
+  {
+   "type": "link",
+   "target": "how-it-works",
+   "label": "How the hub works",
+   "note": "The two pages and the tool"
+  }
+ ]
+}

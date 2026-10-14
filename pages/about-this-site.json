@@ -1,0 +1,24 @@
+{
+ "blocks": [
+  {
+   "type": "sub",
+   "text": "About"
+  },
+  {
+   "type": "text",
+   "text": "This is a hub for projects, systems, a library and notes. Every page is made from one template, and every list is generated from one file, so adding a page never means editing the menu by hand.",
+   "dropcap": true
+  },
+  {
+   "type": "quote",
+   "text": "The logo establishes the identity, the marble drawer establishes the structure, and the cosmic geometry establishes the atmosphere.",
+   "cite": "Design principle"
+  },
+  {
+   "type": "link",
+   "target": "how-it-works",
+   "label": "How it works",
+   "note": "The two pages and the tool"
+  }
+ ]
+}

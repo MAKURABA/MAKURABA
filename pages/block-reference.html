@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Block reference</title>
+<meta name="description" content="Every block, used once">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Cinzel:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="../core/theme.css">
+</head>
+<body>
+<header>
+  <button id="burger" aria-label="Open menu" aria-expanded="false"><i></i><i></i><i></i></button>
+  <a class="wmlink" href="../index.html#home"><div class="wm" role="img" aria-label="Makuraba"><i class="sheen"></i><b class="gl" style="left:50%;top:72%;--d:1s"></b><b class="gl" style="left:31%;top:34%;--d:3.2s"></b><b class="gl" style="left:85%;top:38%;--d:5.1s"></b></div></a>
+</header>
+<aside id="drawer" aria-label="Menu">
+  <div class="logo" role="img" aria-label="Makuraba emblem"><i class="sheen"></i><b class="gl" style="left:47%;top:54%;--d:.5s"></b><b class="gl" style="left:27%;top:18%;--d:2.4s"></b><b class="gl" style="left:80%;top:80%;--d:4.2s"></b></div>
+  <nav id="nav"><!-- hub:nav:start -->
+<a href="../index.html#home" data-id="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg><span>Home</span></a>
+<a href="../index.html#projects" data-id="projects"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM9 12h7M9 16h7M9 8h3"/></svg><span>Projects</span></a>
+<a href="../index.html#systems" data-id="systems"><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7zM12 12l9-5M12 12v10M12 12L3 7"/></svg><span>Systems</span></a>
+<a href="../index.html#library" data-id="library" aria-current="true"><svg viewBox="0 0 24 24"><path d="M3 5c3-1 6-1 9 1 3-2 6-2 9-1v14c-3-1-6-1-9 1-3-2-6-2-9-1zM12 6v14"/></svg><span>Library</span></a>
+<a href="../index.html#about" data-id="about"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM12 11v6M12 7.5v.5"/></svg><span>About</span></a>
+<!-- hub:nav:end --></nav>
+</aside>
+<div class="edge" aria-hidden="true"><span class="run"></span></div>
+<button id="tab" aria-label="Toggle menu"></button>
+<div id="scrim"></div>
+<div id="stage" class="dim"><div id="art" role="presentation"></div><div id="view" tabindex="-1">
+<article class="post">
+<a class="crumb" href="../index.html#library">‹ Library</a>
+<h1>Block reference</h1>
+<!-- page:content:start -->
+<div class="sub">Every block, in use</div>
+<p class="dropcap">Each section below uses one block type once. Open this page in the editor to see the fields behind each one.</p>
+<h2>Heading and subtitle</h2>
+<p>The small tracked line under a title is a <strong>Subtitle</strong> block. Section titles such as this one are <strong>Heading</strong> blocks; a smaller version exists too.</p>
+<h3>Small heading</h3>
+<h2>Text</h2>
+<p>A <strong>Text</strong> block takes Markdown: <strong>bold</strong>, <em>italic</em>, <a target="_blank" rel="noopener" href="https://developer.mozilla.org/">links</a>, <code>inline code</code>, and page links like <a href="linking-cheat-sheet.html">Linking cheat sheet</a>.</p>
+<ul>
+<li>First point</li>
+<li>Second point</li>
+</ul>
+<ol>
+<li>Step one</li>
+<li>Step two</li>
+</ol>
+<h2>Picture</h2>
+<figure class="fig"><img src="../core/assets/marble.jpg" alt="White marble with gold veins" loading="lazy"><figcaption>A Picture block: a framed image with an optional caption.</figcaption></figure>
+<h2>Text + picture</h2>
+<div class="two"><figure class="fig"><img src="../core/assets/parchment.jpg" alt="Aged parchment" loading="lazy"><figcaption>Picture first.</figcaption></figure><div><p>The same block with <strong>Picture first</strong> ticked puts the picture on the left on wide screens. On a phone the picture and text stack.</p></div></div>
+<h2>Quote</h2>
+<blockquote>The logo establishes the identity, the marble drawer establishes the structure, and the cosmic geometry establishes the atmosphere.<cite>Design principle</cite></blockquote>
+<h2>Medallion list</h2>
+<ul class="keys"><li style="--h:40"><span class="med"></span><div><h3>Gold</h3><p>A colour is just a number from 0 to 360.</p></div></li><li style="--h:275"><span class="med"></span><div><h3>Violet</h3><p>Each entry gets its own medallion.</p></div></li><li style="--h:150"><span class="med"></span><div><h3>Green</h3><p>Add as many as you need.</p></div></li></ul>
+<h2>Link card</h2>
+<a class="card" href="spinning-cube.html"><strong>Spinning cube</strong><span>Leave the title empty to use the page's own title.</span></a>
+<h2>Embed</h2>
+<iframe src="../examples/cube/index.html" title="Embedded 3D cube" loading="lazy"></iframe>
+<h2>Divider and Raw HTML</h2>
+<hr>
+<p><em>This paragraph is a Raw HTML block.</em></p>
+<!-- page:content:end -->
+</article>
+</div></div>
+<script src="../core/shell.js"></script>
+</body>
+</html>

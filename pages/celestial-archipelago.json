@@ -1,0 +1,64 @@
+{
+ "blocks": [
+  {
+   "type": "sub",
+   "text": "Realms · Islands · Aspects"
+  },
+  {
+   "type": "split",
+   "text": "The Celestial Archipelago is a cluster of floating islands suspended within the Astral Expanse, each island a fragment of a greater consciousness. These realms are not bound by time, space, or the laws of the material world. They serve as waystations, temples, markets, and battlegrounds — home to beings of light, shadow, and everything in between.\n\nTo reach the Archipelago is to step beyond the veil, where thought becomes form and dreams shape reality.",
+   "dropcap": true,
+   "file": "core/assets/cosmos.jpg",
+   "alt": "Orbital geometry glowing inside a nebula",
+   "caption": "A Text + picture block. Swap the picture for your own.",
+   "flip": false
+  },
+  {
+   "type": "heading",
+   "text": "Key Locations",
+   "level": 2
+  },
+  {
+   "type": "keys",
+   "items": [
+    {
+     "title": "The Veiled Spires",
+     "text": "Home to the Archivists and keepers of lost knowledge. A realm of endless libraries and shifting towers.",
+     "hue": 275
+    },
+    {
+     "title": "The Dreamer's Reach",
+     "text": "A tranquil realm where thought manifests as landscape. Visions, prophecies, and memories coalesce here.",
+     "hue": 222
+    },
+    {
+     "title": "The Eternal Market",
+     "text": "A hub of trade, culture, and interdimensional exchange. All paths, all peoples, all things.",
+     "hue": 150
+    },
+    {
+     "title": "The Forgotten Tomb",
+     "text": "A fractured island of ancient ruins and sleeping powers. Not all that is forgotten should be found.",
+     "hue": 355
+    }
+   ]
+  },
+  {
+   "type": "quote",
+   "text": "The islands are not places, they are states of being.",
+   "cite": "The Archivists' Lore"
+  },
+  {
+   "type": "link",
+   "target": "root-design",
+   "label": "Read the root design",
+   "note": "A page with links, code, and raw HTML"
+  },
+  {
+   "type": "link",
+   "target": "block-reference",
+   "label": "See every block",
+   "note": "The block reference in the Library"
+  }
+ ]
+}

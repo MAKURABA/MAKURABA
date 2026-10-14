@@ -1,0 +1,65 @@
+{
+ "blocks": [
+  {
+   "type": "sub",
+   "text": "Systems"
+  },
+  {
+   "type": "text",
+   "text": "The whole site is **two pages and one tool**. The hub page lists everything; the template makes every other page; the tool keeps them in step.",
+   "dropcap": true
+  },
+  {
+   "type": "heading",
+   "text": "The four parts",
+   "level": 2
+  },
+  {
+   "type": "keys",
+   "items": [
+    {
+     "title": "hub.json",
+     "text": "The single source of truth for the directory and every index list.",
+     "hue": 40
+    },
+    {
+     "title": "hub.py",
+     "text": "Builds the hub and every page, and serves the visual editor.",
+     "hue": 222
+    },
+    {
+     "title": "index.html",
+     "text": "The hub page: directory, index lists, living background.",
+     "hue": 275
+    },
+    {
+     "title": "template.html",
+     "text": "The one template every other page is made from.",
+     "hue": 150
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "text": "The agreement",
+   "level": 2
+  },
+  {
+   "type": "text",
+   "text": "1. `hub.json` says what exists and in what order.\n2. The tool writes only between marked regions, so everything else in your files is yours.\n3. A page is the template plus its content, so changing the template restyles every page.",
+   "dropcap": false
+  },
+  {
+   "type": "link",
+   "target": "publishing",
+   "label": "Publishing to GitHub",
+   "note": "Put it online"
+  },
+  {
+   "type": "link",
+   "target": "making-your-own-pages",
+   "label": "Making your own pages",
+   "note": "A five-minute start"
+  }
+ ]
+}

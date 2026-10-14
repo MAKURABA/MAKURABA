@@ -1,0 +1,30 @@
+{
+ "blocks": [
+  {
+   "type": "sub",
+   "text": "Canvas example"
+  },
+  {
+   "type": "text",
+   "text": "Another folder in `examples/`, this one drawing with a canvas. It uses the golden angle, the same ratio behind sunflower seed heads.",
+   "dropcap": true
+  },
+  {
+   "type": "embed",
+   "url": "examples/spiral/index.html",
+   "title": "Seeds laid out by the golden angle"
+  },
+  {
+   "type": "link",
+   "target": "spinning-cube",
+   "label": "Previous example",
+   "note": "A 3D cube"
+  },
+  {
+   "type": "link",
+   "target": "projects/experiments",
+   "label": "All experiments",
+   "note": "Open this group in the hub"
+  }
+ ]
+}

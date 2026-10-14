@@ -1,0 +1,29 @@
+{
+ "blocks": [
+  {
+   "type": "sub",
+   "text": "Quick start"
+  },
+  {
+   "type": "text",
+   "text": "1. Run `python3 hub.py serve` and open `http://localhost:8000/edit`.\n2. In **Structure**, tap **＋** beside a menu item and choose Group or Page.\n3. Open the page and add blocks: text, pictures, quotes and more.\n4. Link pages together with `[[page-name]]`.\n5. When you like it, run `python3 hub.py publish \"my first page\"`.",
+   "dropcap": true
+  },
+  {
+   "type": "heading",
+   "text": "Clearing these demos",
+   "level": 2
+  },
+  {
+   "type": "text",
+   "text": "Everything on these pages is sample content. To start fresh, with only the five menu items, run:\n\n```\npython3 hub.py reset --yes\n```\n\nNothing is deleted. Pages, pictures and examples move into a `backup-` folder.",
+   "dropcap": false
+  },
+  {
+   "type": "link",
+   "target": "block-reference",
+   "label": "Block reference",
+   "note": "Every block, used once"
+  }
+ ]
+}

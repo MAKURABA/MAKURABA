@@ -1,0 +1,53 @@
+{
+ "blocks": [
+  {
+   "type": "sub",
+   "text": "Foundation"
+  },
+  {
+   "type": "text",
+   "text": "This page shows **interlinks**. Go back to [[celestial-archipelago|the Celestial Archipelago]], open the whole [[projects/makuraba|Makuraba group]] in the hub, or browse the [[library]] section.",
+   "dropcap": true
+  },
+  {
+   "type": "heading",
+   "text": "A code sample",
+   "level": 2
+  },
+  {
+   "type": "text",
+   "text": "Text blocks accept Markdown, including fenced code:\n\n```\npython3 hub.py publish \"added root design\"\n```\n\nWriting `[[page-name]]` inside code stays exactly as typed.",
+   "dropcap": false
+  },
+  {
+   "type": "divider"
+  },
+  {
+   "type": "heading",
+   "text": "Where next",
+   "level": 3
+  },
+  {
+   "type": "link",
+   "target": "block-reference",
+   "label": "Block reference",
+   "note": "Every block, used once"
+  },
+  {
+   "type": "link",
+   "target": "linking-cheat-sheet",
+   "label": "Linking cheat sheet",
+   "note": "Every kind of link, working"
+  },
+  {
+   "type": "link",
+   "target": "https://docs.github.com/pages",
+   "label": "GitHub Pages docs",
+   "note": "An external link card opens in a new tab"
+  },
+  {
+   "type": "html",
+   "html": "<details><summary><strong>A Raw HTML block</strong></summary><p>Anything you can write in HTML goes here: tables, buttons, a script, a custom widget. It is placed on the page exactly as written.</p></details>"
+  }
+ ]
+}

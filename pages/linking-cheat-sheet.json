@@ -1,0 +1,39 @@
+{
+ "blocks": [
+  {
+   "type": "sub",
+   "text": "Linking"
+  },
+  {
+   "type": "text",
+   "text": "Links use double brackets. Each form below is shown as typed, then as the live link it produces.",
+   "dropcap": true
+  },
+  {
+   "type": "text",
+   "text": "- `[[spinning-cube]]` gives [[spinning-cube]]\n- `[[spinning-cube|the 3D cube page]]` gives [[spinning-cube|the 3D cube page]]\n- `[[projects/makuraba]]` opens a whole group: [[projects/makuraba]]\n- `[[library]]` opens a menu section: [[library]]\n- `[GitHub Pages docs](https://docs.github.com/pages)` is a normal web link: [GitHub Pages docs](https://docs.github.com/pages)",
+   "dropcap": false
+  },
+  {
+   "type": "heading",
+   "text": "A Link card block",
+   "level": 2
+  },
+  {
+   "type": "link",
+   "target": "projects/makuraba",
+   "label": "",
+   "note": "A card can point at a page, a group path, or a web address"
+  },
+  {
+   "type": "heading",
+   "text": "If a link is wrong",
+   "level": 2
+  },
+  {
+   "type": "text",
+   "text": "The editor tells you when you save, and the words stay as plain text, so nothing silently points nowhere. Renaming a page's title is always safe: its file name and id stay the same, so links keep working.",
+   "dropcap": false
+  }
+ ]
+}

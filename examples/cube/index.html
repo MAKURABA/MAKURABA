@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Spinning cube</title>
+<style>
+html,body{height:100%;margin:0;background:radial-gradient(circle at 50% 40%,#1a1040,#04050c 70%);display:grid;place-items:center;overflow:hidden}
+.scene{--s:min(34vmin,180px);width:var(--s);height:var(--s);perspective:700px}
+.cube{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:spin 14s linear infinite}
+.f{position:absolute;inset:0;border:2px solid #d9ae4c;background:linear-gradient(135deg,hsla(var(--h),80%,55%,.55),hsla(var(--h),80%,20%,.7));box-shadow:inset 0 0 20px rgba(0,0,0,.5)}
+.f:nth-child(1){--h:355;transform:translateZ(calc(var(--s)/2))}
+.f:nth-child(2){--h:222;transform:rotateY(90deg) translateZ(calc(var(--s)/2))}
+.f:nth-child(3){--h:275;transform:rotateY(180deg) translateZ(calc(var(--s)/2))}
+.f:nth-child(4){--h:150;transform:rotateY(-90deg) translateZ(calc(var(--s)/2))}
+.f:nth-child(5){--h:40;transform:rotateX(90deg) translateZ(calc(var(--s)/2))}
+.f:nth-child(6){--h:200;transform:rotateX(-90deg) translateZ(calc(var(--s)/2))}
+@keyframes spin{to{transform:rotateX(360deg) rotateY(360deg)}}
+@media (prefers-reduced-motion:reduce){.cube{animation:none;transform:rotateX(-25deg) rotateY(35deg)}}
+</style></head>
+<body><div class="scene"><div class="cube"><div class="f"></div><div class="f"></div><div class="f"></div><div class="f"></div><div class="f"></div><div class="f"></div></div></div></body></html>

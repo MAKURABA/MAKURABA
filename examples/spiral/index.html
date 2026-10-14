@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Golden spiral</title>
+<style>html,body{margin:0;height:100%;background:radial-gradient(circle at 50% 45%,#12102e,#04050c 75%)}canvas{display:block;width:100%;height:100%}</style></head>
+<body><canvas id="c"></canvas>
+<script>
+const c=document.getElementById("c"),x=c.getContext("2d"),still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function size(){const d=devicePixelRatio||1;c.width=innerWidth*d;c.height=innerHeight*d;x.setTransform(d,0,0,d,0,0)}
+addEventListener("resize",size);size();
+const PHI=(1+Math.sqrt(5))/2,N=420;
+function draw(t){const w=innerWidth,h=innerHeight,r=Math.min(w,h)/2*.9;x.clearRect(0,0,w,h);x.save();x.translate(w/2,h/2);x.rotate(t*.00008);
+  for(let i=0;i<N;i++){const a=i*2*Math.PI/(PHI*PHI),d=r*Math.sqrt(i/N);
+    x.fillStyle="hsla("+(40+(i%7)*8)+",80%,"+(58+18*Math.sin(t*.002+i*.1))+"%,.9)";
+    x.beginPath();x.arc(Math.cos(a)*d,Math.sin(a)*d,1.2+3*(i/N),0,7);x.fill()}
+  x.restore();if(!still)requestAnimationFrame(draw)}
+requestAnimationFrame(draw);
+</script></body></html>

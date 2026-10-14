@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Makuraba</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="core/theme.css">
+</head>
+<body>
+<header>
+  <button id="burger" aria-label="Open menu" aria-expanded="false"><i></i><i></i><i></i></button>
+  <div class="wm" role="img" aria-label="Makuraba"><i class="sheen"></i><b class="gl" style="left:50%;top:72%;--d:1s"></b><b class="gl" style="left:31%;top:34%;--d:3.2s"></b><b class="gl" style="left:85%;top:38%;--d:5.1s"></b></div>
+</header>
+<aside id="drawer" aria-label="Menu">
+  <div class="logo" role="img" aria-label="Makuraba emblem"><i class="sheen"></i><b class="gl" style="left:47%;top:54%;--d:.5s"></b><b class="gl" style="left:27%;top:18%;--d:2.4s"></b><b class="gl" style="left:80%;top:80%;--d:4.2s"></b></div>
+  <nav id="nav"><!-- hub:nav:start -->
+<a href="index.html#home" data-id="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg><span>Home</span></a>
+<a href="index.html#projects" data-id="projects"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM9 12h7M9 16h7M9 8h3"/></svg><span>Projects</span></a>
+<a href="index.html#systems" data-id="systems"><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7zM12 12l9-5M12 12v10M12 12L3 7"/></svg><span>Systems</span></a>
+<a href="index.html#library" data-id="library"><svg viewBox="0 0 24 24"><path d="M3 5c3-1 6-1 9 1 3-2 6-2 9-1v14c-3-1-6-1-9 1-3-2-6-2-9-1zM12 6v14"/></svg><span>Library</span></a>
+<a href="index.html#about" data-id="about"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM12 11v6M12 7.5v.5"/></svg><span>About</span></a>
+<!-- hub:nav:end --></nav>
+</aside>
+<div class="edge" aria-hidden="true"><span class="run"></span></div>
+<button id="tab" aria-label="Toggle menu"></button>
+<div id="scrim"></div>
+<div id="stage"><div id="art" role="img" aria-label="Triangle and spiral inside orbital rings, in a nebula"><canvas></canvas></div><div id="spk" aria-hidden="true"></div><div id="view" tabindex="-1"></div></div>
+
+<!-- hub:data:start -->
+<script>window.HUB={"title":"Makuraba","menu":[{"id":"home","label":"Home","type":"home","items":[]},{"id":"projects","label":"Projects","type":"index","items":[{"id":"makuraba","title":"Makuraba","summary":"The game of creation: its world, rules, and client.","items":[{"id":"celestial-archipelago","title":"The Celestial Archipelago","summary":"A parchment showcase page using most block types","status":"live","href":"pages/celestial-archipelago.html"},{"id":"root-design","title":"Root design","summary":"Interlinks, link cards, code, and raw HTML","status":"draft","href":"pages/root-design.html"}]},{"id":"experiments","title":"Experiments","summary":"3D and HTML examples shown inside pages","items":[{"id":"spinning-cube","title":"Spinning cube","summary":"A 3D example embedded in a page","status":"live","href":"pages/spinning-cube.html"},{"id":"golden-spiral","title":"Golden spiral","summary":"A canvas example embedded in a page","status":"live","href":"pages/golden-spiral.html"}]}]},{"id":"systems","label":"Systems","type":"index","items":[{"id":"operating-the-hub","title":"Operating the hub","summary":"How the pieces fit and how to publish","items":[{"id":"how-it-works","title":"How the hub works","summary":"The two pages, the tool, and the agreement","status":"live","href":"pages/how-it-works.html"},{"id":"publishing","title":"Publishing to GitHub","summary":"First-time setup and every-day publishing","status":"live","href":"pages/publishing.html"}]}]},{"id":"library","label":"Library","type":"index","items":[{"id":"block-reference","title":"Block reference","summary":"Every block, used once","status":"live","href":"pages/block-reference.html"},{"id":"linking-cheat-sheet","title":"Linking cheat sheet","summary":"Every kind of link, working","status":"live","href":"pages/linking-cheat-sheet.html"},{"id":"github-pages-docs","title":"GitHub Pages docs","summary":"An external link entry","href":"https://docs.github.com/pages","external":true}]},{"id":"about","label":"About","type":"index","items":[{"id":"about-this-site","title":"About this site","summary":"What this hub is for","status":"live","href":"pages/about-this-site.html"},{"id":"making-your-own-pages","title":"Making your own pages","summary":"A five-minute start, and how to clear these demos","status":"live","href":"pages/making-your-own-pages.html"}]}]};</script>
+<!-- hub:data:end -->
+<script src="core/shell.js"></script>
+<script src="core/hub.js"></script>
+<script src="core/art.js"></script>
+</body>
+</html>

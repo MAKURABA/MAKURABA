@@ -1,0 +1,131 @@
+{
+ "blocks": [
+  {
+   "type": "sub",
+   "text": "Every block, in use"
+  },
+  {
+   "type": "text",
+   "text": "Each section below uses one block type once. Open this page in the editor to see the fields behind each one.",
+   "dropcap": true
+  },
+  {
+   "type": "heading",
+   "text": "Heading and subtitle",
+   "level": 2
+  },
+  {
+   "type": "text",
+   "text": "The small tracked line under a title is a **Subtitle** block. Section titles such as this one are **Heading** blocks; a smaller version exists too.",
+   "dropcap": false
+  },
+  {
+   "type": "heading",
+   "text": "Small heading",
+   "level": 3
+  },
+  {
+   "type": "heading",
+   "text": "Text",
+   "level": 2
+  },
+  {
+   "type": "text",
+   "text": "A **Text** block takes Markdown: **bold**, *italic*, [links](https://developer.mozilla.org/), `inline code`, and page links like [[linking-cheat-sheet]].\n\n- First point\n- Second point\n\n1. Step one\n2. Step two",
+   "dropcap": false
+  },
+  {
+   "type": "heading",
+   "text": "Picture",
+   "level": 2
+  },
+  {
+   "type": "image",
+   "file": "core/assets/marble.jpg",
+   "alt": "White marble with gold veins",
+   "caption": "A Picture block: a framed image with an optional caption."
+  },
+  {
+   "type": "heading",
+   "text": "Text + picture",
+   "level": 2
+  },
+  {
+   "type": "split",
+   "text": "The same block with **Picture first** ticked puts the picture on the left on wide screens. On a phone the picture and text stack.",
+   "dropcap": false,
+   "file": "core/assets/parchment.jpg",
+   "alt": "Aged parchment",
+   "caption": "Picture first.",
+   "flip": true
+  },
+  {
+   "type": "heading",
+   "text": "Quote",
+   "level": 2
+  },
+  {
+   "type": "quote",
+   "text": "The logo establishes the identity, the marble drawer establishes the structure, and the cosmic geometry establishes the atmosphere.",
+   "cite": "Design principle"
+  },
+  {
+   "type": "heading",
+   "text": "Medallion list",
+   "level": 2
+  },
+  {
+   "type": "keys",
+   "items": [
+    {
+     "title": "Gold",
+     "text": "A colour is just a number from 0 to 360.",
+     "hue": 40
+    },
+    {
+     "title": "Violet",
+     "text": "Each entry gets its own medallion.",
+     "hue": 275
+    },
+    {
+     "title": "Green",
+     "text": "Add as many as you need.",
+     "hue": 150
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "text": "Link card",
+   "level": 2
+  },
+  {
+   "type": "link",
+   "target": "spinning-cube",
+   "label": "",
+   "note": "Leave the title empty to use the page's own title."
+  },
+  {
+   "type": "heading",
+   "text": "Embed",
+   "level": 2
+  },
+  {
+   "type": "embed",
+   "url": "examples/cube/index.html",
+   "title": "Embedded 3D cube"
+  },
+  {
+   "type": "heading",
+   "text": "Divider and Raw HTML",
+   "level": 2
+  },
+  {
+   "type": "divider"
+  },
+  {
+   "type": "html",
+   "html": "<p><em>This paragraph is a Raw HTML block.</em></p>"
+  }
+ ]
+}
