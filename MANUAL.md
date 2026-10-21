@@ -2,6 +2,10 @@
 
 *Everything you need to run, edit, publish and update the site. October 2026.*
 
+## 0. The short version
+
+Run `python3 hub.py` with nothing after it. It syncs with GitHub, starts everything, and opens the editor. Edit, then press the gold **PUBLISH** button. The first time, press **🔑 Connect** and paste a GitHub token; it is remembered in `.hub-token`, which is git-ignored and never published (if the `GITHUB_TOKEN` environment variable is set, that is used instead). To add a demo or game, press **＋ DEMO** and drop an HTML file, a folder or a .zip (or paste a link); the editor stores it in `examples/` and makes a page for it (file types that are not web files, such as .py, are skipped). The `?` button in the editor shows the three steps again. Sections 1 to 14 below are reference for when you want more control.
+
 ## 1. What you have
 
 Two pages, one tool, and a visual editor.

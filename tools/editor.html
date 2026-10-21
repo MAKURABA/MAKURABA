@@ -43,13 +43,58 @@ label.chk{display:flex;align-items:center;text-transform:none;font-size:15px;col
 .kcard{margin:8px 0;padding:8px;border:1px dashed var(--line)}.kcard .r{display:flex;gap:6px;align-items:center}.kcard input[type=number]{width:84px}
 dialog{background:var(--card);color:var(--ink);border:1px solid var(--gold);padding:14px;min-width:260px;max-width:90vw}
 dialog::backdrop{background:rgba(0,0,0,.7)}dialog h3{margin:0 0 10px;color:var(--hi)}dialog button{display:block;width:100%;margin:6px 0;text-align:left}
+header{flex-wrap:wrap}
+#pub{font-size:13px;color:var(--mute)}#pub.dirty{color:#f0b84a}#pub.clean{color:#6fd3a0}
+#go{min-height:46px;padding:0 24px;background:linear-gradient(#f4d98a,#d9ae4c);color:#1a1405;border:0;font-weight:700;letter-spacing:.18em;font-size:16px}
+#go:hover{filter:brightness(1.08)}#go:disabled{opacity:.6;cursor:wait}
+#helpb{min-height:46px;min-width:46px;padding:0;border-radius:50%;font-weight:700}
+#keyb{min-height:46px;padding:0 12px;font-size:14px}#live[hidden]{display:none}
+#key,#demo{max-width:min(480px,92vw)}
+#demob{min-height:46px;padding:0 12px;font-size:14px;letter-spacing:.08em}
+#drop{border:2px dashed var(--gold);padding:22px 12px;text-align:center;margin:6px 0;background:rgba(217,174,76,.06)}
+#drop.over{background:rgba(217,174,76,.22);border-style:solid}
+#drop .big{font-size:20px;color:var(--hi);margin-bottom:4px}#drop .row{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+#drop button{display:inline-block;width:auto;margin:0;text-align:center}
+.okh{color:#6fd3a0}.badh{color:#ff8a8a}
+dialog p{margin:6px 0 12px;line-height:1.5}
+.steps{margin:6px 0 10px;padding-left:22px;font-size:18px;line-height:1.5}.steps li{margin:10px 0}.steps b{color:var(--hi)}
+#help{max-width:min(480px,92vw)}
 </style>
 </head>
 <body data-t="tree">
-<header><b>MAKURABA</b><a href="/" target="_blank">open site</a><span id="status">loading</span></header>
+<header><b>MAKURABA</b><a href="/" target="_blank">open site</a><span id="status">loading</span><span id="pub"></span><a id="live" href="#" target="_blank" hidden>live site</a><button id="demob" aria-label="Add a demo" title="Add a demo or game">＋ DEMO</button><button id="keyb" aria-label="Connect GitHub" title="Connect GitHub">🔑</button><button id="helpb" aria-label="How this works" title="How this works">?</button><button id="go">PUBLISH</button></header>
 <div id="tabs"><button data-t="tree" class="on">Structure</button><button data-t="edit">Page</button><button data-t="prev">Preview</button></div>
 <main><section class="pane" id="tree"></section><section class="pane" id="edit"></section><section class="pane" id="prev"><iframe id="frame" title="Preview"></iframe></section></main>
-<dialog id="dlg"></dialog><datalist id="targets"></datalist>
+<dialog id="dlg"></dialog><dialog id="res"></dialog>
+<dialog id="demo"><h3>Add a demo or game</h3>
+<div id="drop" tabindex="0"><div class="big">Drop your demo here</div><div class="hint">an HTML file, a whole folder, or a .zip</div>
+<div class="row"><button id="pickf">Choose files</button><button id="pickd">Choose folder</button></div></div>
+<input id="fin" type="file" multiple hidden><input id="din" type="file" webkitdirectory hidden>
+<p id="picked" class="hint"></p>
+<label>Or point to a demo that lives somewhere else</label><input id="durl" placeholder="https://…" autocomplete="off">
+<label>Name shown on the site</label><input id="dtitle" placeholder="My demo" autocomplete="off">
+<label>Put it in</label><select id="dsec"></select>
+<button id="dadd" style="margin-top:12px;text-align:center">Add to site</button>
+<button data-close>Cancel</button></dialog>
+<dialog id="key"><h3>Connect GitHub (one time)</h3>
+<p id="keystate" class="hint"></p>
+<ol class="steps" style="font-size:16px"><li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:var(--hi)">this GitHub page</a>.</li>
+<li>Name it anything. Under <b>Repository access</b> pick <b>Only select repositories</b> and choose MAKURABA.</li>
+<li>Under <b>Permissions → Repository permissions</b> set <b>Contents</b> to <b>Read and write</b>. Create it and copy the token.</li>
+<li>Paste it here and press Save.</li></ol>
+<input id="keyin" type="password" autocomplete="off" placeholder="Paste token here" spellcheck="false">
+<button id="keysave" style="margin-top:10px;text-align:center">Save token</button>
+<button id="keyforget" hidden>Forget saved token</button>
+<p class="hint">It stays on this device only, in a file that is never published.</p>
+<button data-close>Close</button></dialog>
+<dialog id="help"><h3>How this works</h3>
+<ol class="steps"><li><b>Pick</b> what to change in the list on the left. Tap <b>＋</b> to add something new.</li>
+<li><b>Type.</b> Your changes save by themselves, and the preview shows how it looks.</li>
+<li><b>Press PUBLISH</b>, the big gold button at the top. Your site is live in about a minute.</li></ol>
+<p class="hint"><b>First time only:</b> press <b>🔑 Connect</b> and paste your GitHub token. After that it remembers.</p>
+<p class="hint">Every publish is kept as a restore point, so a mistake can always be undone. The <b>?</b> button brings this back anytime.</p>
+<button data-close>Got it</button></dialog>
+<datalist id="targets"></datalist>
 <script>
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -57,7 +102,64 @@ const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"
 const kindOf=n=>n.items?"group":n.url!==undefined?"link":"page";
 let cfg,sel=null,page=null,tC,tP;
 async function api(path,opt={}){const r=await fetch("/_api/"+path,{...opt,headers:{"X-Hub":"1",...(opt.headers||{})}});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||r.statusText);return j}
-function say(t,bad){const s=$("#status");s.textContent=t;s.className=bad?"bad":t.startsWith("Saved")?"ok":""}
+function say(t,bad){const s=$("#status");s.textContent=t;s.className=bad?"bad":t.startsWith("Saved")?"ok":"";if(t.startsWith("Saved")){clearTimeout(tS);tS=setTimeout(refreshStatus,600)}}
+
+/* ---------- publish, status, help ---------- */
+let pubBusy=false,tS;
+let hasToken=false;
+function pubBadge(s){const b=$("#pub");if(!s)return;hasToken=!!s.token;$("#keyb").textContent=hasToken?"🔑 ✓":"🔑 Connect";
+ const l=$("#live");if(s.live){l.href=s.live;l.hidden=false}
+ if(!s.git){b.textContent="Publishing not set up";b.className="";return}
+ b.textContent=s.dirty?"● Not published yet":"✓ Published";b.className=s.dirty?"dirty":"clean"}
+function keyDlg(){$("#keystate").textContent=hasToken?"A token is saved on this device. You can replace it below.":"No token saved yet. Without one, PUBLISH cannot send your changes to GitHub.";$("#keyforget").hidden=!hasToken;$("#keyin").value="";$("#key").showModal()}
+async function keySave(forget){const t=forget?"":$("#keyin").value.trim();if(!forget&&!t)return;const b=$("#keysave");b.disabled=true;b.textContent="Checking…";
+ try{const j=await api("token",{method:"POST",body:JSON.stringify({token:t})});pubBadge(j);$("#key").close();notice(j.ok?"Done!":"Token not saved",j.message,j.ok)}
+ catch(e){$("#key").close();notice("Token not saved",e.message,false)}
+ b.disabled=false;b.textContent="Save token"}
+async function refreshStatus(){try{pubBadge(await api("status"))}catch(_){}}
+function notice(title,msg,ok){const d=$("#res");d.innerHTML=`<h3 class="${ok?"okh":"badh"}">${esc(title)}</h3><p>${esc(msg)}</p><button data-close>OK</button>`;d.showModal()}
+async function publish(){if(pubBusy)return;pubBusy=true;const btn=$("#go");btn.disabled=true;btn.textContent="PUBLISHING…";
+ try{if(page)await savePage();await saveCfg();
+  const j=await api("publish",{method:"POST",body:"{}"});pubBadge(j);notice(j.ok?"Done!":"Not published yet",j.message,j.ok)}
+ catch(e){notice("Not published yet",e.message,false)}
+ pubBusy=false;btn.disabled=false;btn.textContent="PUBLISH"}
+function help(){$("#help").showModal()}
+document.addEventListener("click",e=>{const c=e.target.closest("[data-close]");if(c){const d=c.closest("dialog");d.close();if(d.id==="help"){try{localStorage.setItem("mkHelp","1")}catch(_){}}}});
+/* ---------- add a demo: drop files, a folder or a zip, or paste a link ---------- */
+let picked=[];
+async function readEntry(e,path=""){
+ if(e.isFile)return[await new Promise(r=>e.file(f=>r({f,p:path+f.name})))];
+ if(e.isDirectory){const rd=e.createReader();let all=[],b;do{b=await new Promise(r=>rd.readEntries(r));all.push(...b)}while(b.length);
+  return(await Promise.all(all.map(x=>readEntry(x,path+e.name+"/")))).flat()}
+ return[]}
+function demoDlg(){picked=[];$("#picked").textContent="";$("#durl").value="";$("#dtitle").value="";
+ $("#dsec").innerHTML=cfg.menu.filter(m=>m.type==="index").map(m=>`<option value="${esc(m.id)}"${m.id==="games"?" selected":""}>${esc(m.label)}</option>`).join("");$("#demo").showModal()}
+function setPicked(list){
+ if(list.length&&list.every(x=>x.p.includes("/"))){const t=list[0].p.split("/")[0];if(list.every(x=>x.p.split("/")[0]===t))list=list.map(x=>({f:x.f,p:x.p.slice(t.length+1)}))}
+ picked=list;const n=list.length;$("#picked").textContent=n?`${n} file${n>1?"s":""} ready: ${list.slice(0,3).map(x=>x.p).join(", ")}${n>3?" …":""}`:"";
+ if(n&&!$("#dtitle").value){const h=list.find(x=>/\.html?$/i.test(x.p))||list[0];const base=h.p.replace(/\.[^.]+$/,"").split("/").pop();
+  $("#dtitle").value=(base==="index"?"":base).replace(/[-_]+/g," ").replace(/^./,c=>c.toUpperCase())||"My demo"}}
+async function demoAdd(){const url=$("#durl").value.trim(),title=$("#dtitle").value.trim(),sec=$("#dsec").value;
+ if(!url&&!picked.length){$("#picked").textContent="Drop something first, or paste a link.";return}
+ if(!title){$("#picked").textContent="Give it a name first.";return}
+ const b=$("#dadd");b.disabled=true;let folder="";
+ try{
+  if(!url){folder=slug(title);let i=0;for(const x of picked){i++;b.textContent=`Uploading ${i}/${picked.length}…`;await api(`demo?folder=${encodeURIComponent(folder)}&name=${encodeURIComponent(x.p)}`,{method:"POST",body:x.f})}}
+  b.textContent="Adding…";
+  const j=await api("demo-page",{method:"POST",body:JSON.stringify({title,section:sec,folder,url})});
+  cfg=j.config;renderTree();$("#demo").close();await select([j.section,j.id]);refreshStatus();
+  notice("Added!","It is on the site draft. Look at the preview, then press PUBLISH when you are ready.",true)
+ }catch(e){$("#demo").close();notice("Could not add it",e.message,false)}
+ b.disabled=false;b.textContent="Add to site"}
+$("#demob").onclick=demoDlg;$("#pickf").onclick=()=>$("#fin").click();$("#pickd").onclick=()=>$("#din").click();
+$("#fin").onchange=e=>setPicked([...e.target.files].map(f=>({f,p:f.name})));
+$("#din").onchange=e=>setPicked([...e.target.files].map(f=>({f,p:f.webkitRelativePath||f.name})));
+{const dz=$("#drop");["dragenter","dragover"].forEach(v=>dz.addEventListener(v,e=>{e.preventDefault();dz.classList.add("over")}));
+ ["dragleave","drop"].forEach(v=>dz.addEventListener(v,e=>{e.preventDefault();dz.classList.remove("over")}));
+ dz.addEventListener("drop",async e=>{const ents=[...(e.dataTransfer.items||[])].map(i=>i.webkitGetAsEntry&&i.webkitGetAsEntry()).filter(Boolean);
+  setPicked(ents.length?(await Promise.all(ents.map(x=>readEntry(x)))).flat():[...e.dataTransfer.files].map(f=>({f,p:f.name})))})}
+$("#dadd").onclick=demoAdd;
+$("#go").onclick=publish;$("#helpb").onclick=help;$("#keyb").onclick=keyDlg;$("#keysave").onclick=()=>keySave(false);$("#keyforget").onclick=()=>keySave(true);setInterval(refreshStatus,10000);
 function tab(t){document.body.dataset.t=t;document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===t))}
 document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>tab(b.dataset.t));
 function choose(title,opts){return new Promise(res=>{const d=$("#dlg");d.innerHTML=`<h3>${esc(title)}</h3>`+opts.map((o,i)=>`<button data-i="${i}">${esc(o[1])}</button>`).join("")+`<button data-i="x">Cancel</button>`;
@@ -150,7 +252,8 @@ $("#edit").addEventListener("click",e=>{const a=e.target.closest("[data-add]");i
 $("#edit").addEventListener("change",async e=>{const t=e.target;if(t.dataset.up==null||!t.files[0]||!page)return;const f=t.files[0],i=+t.dataset.up;say("Uploading…");
  try{const j=await api(`upload?slug=${encodeURIComponent(page.slug)}&name=${encodeURIComponent(f.name)}`,{method:"POST",body:f});page.blocks[i].file=j.path;renderBlocks();savePage()}catch(err){say(err.message,1)}});
 addEventListener("visibilitychange",()=>{if(document.hidden){if(tP)savePage();if(tC)saveCfg()}});
-(async()=>{try{cfg=(await api("config")).config;say("Ready");renderTree();renderEdit();preview()}catch(e){say(e.message,1)}})();
+(async()=>{try{cfg=(await api("config")).config;say("Ready");renderTree();renderEdit();preview();refreshStatus()}catch(e){say(e.message,1)}
+ try{if(!localStorage.getItem("mkHelp"))help()}catch(_){help()}})();
 </script>
 </body>
 </html>

@@ -1,5 +1,25 @@
 # Makuraba hub
 
+## Just want to update the site? Do this.
+
+```
+python3 hub.py
+```
+
+That is the whole thing. It gets the latest version, opens the editor in your browser, and shows a 3-step guide on screen:
+
+1. Pick what to change on the left, then type. (It saves by itself.)
+2. Press the big gold **PUBLISH** button.
+3. Done. The site is live in about a minute.
+
+**First time only:** press **🔑 Connect** in the editor and paste a GitHub token (the dialog walks you through making one). It is remembered on this device, kept in a file that is never published, and you can forget it with one button.
+
+**Adding a demo or game:** press **＋ DEMO**, drop an HTML file, a whole folder or a .zip (or paste a link to one hosted elsewhere), give it a name, and press Add. It is stored in `examples/`, gets its own page in Games & Demos, and shows in the preview. Then press PUBLISH.
+
+You never need to remember another command. Everything below is optional reference.
+
+---
+
 Two pages, one tool, one visual editor.
 
 - `index.html` is the hub page. `template.html` is the one template every other page is made from.

@@ -8,9 +8,10 @@ The tool only ever writes inside these marked regions; everything else in your f
   <!-- hub:data:start --> ...  <!-- hub:data:end -->           index lists (index.html only)
   <!-- page:content:start --> ... <!-- page:content:end -->    page content: composed from pages/<name>.json (the editor writes it),
                                                                 or, if there is no .json, your hand-written HTML, kept exactly as is
-Run  python3 hub.py -h  for commands.
+Easiest way to use it:  python3 hub.py   (no words after it). It opens the editor; press PUBLISH when done.
+Run  python3 hub.py -h  for every command.
 """
-import argparse, datetime, functools, html, http.server, json, pathlib, re, shutil, subprocess, sys, threading, time, urllib.parse
+import argparse, base64, datetime, functools, html, http.server, io, json, os, pathlib, re, shutil, subprocess, sys, threading, time, urllib.parse, urllib.request, webbrowser, zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parent
 CFG, INDEX, TEMPLATE, PAGES = ROOT / "hub.json", ROOT / "index.html", ROOT / "template.html", ROOT / "pages"
@@ -159,6 +160,7 @@ def make_links(cfg, pm):
         if re.match(r"javascript:", t, re.I): return None, None
         if re.match(r"(https?:)?//|mailto:", t): return t, t
         k = t.strip("/")
+        if re.match(r"(examples|media)/", t) and (ROOT / re.split(r"[?#]", t)[0]).is_file(): return "../" + t, t  # a demo or file inside this site
         if k in pm: return k + ".html", pm[k][2]["title"]
         if len(byid.get(k, [])) == 1: s = byid[k][0]; return s + ".html", pm[s][2]["title"]
         if k in paths: return "../index.html#" + k, paths[k]
@@ -214,7 +216,7 @@ def compose(blocks, link, where, root="../"):
             if src: out.append(f'<iframe src="{attr(src)}" title="{attr(b.get("title") or "Embedded page")}" loading="lazy"></iframe>')
         elif t == "divider": out.append("<hr>")
         elif t == "html": out.append(str(b.get("html", "")))
-    return re.sub(r'<a (class="card" )?href="(https?://)', r'<a \1target="_blank" rel="noopener" href="\2', "\n".join(x for x in out if x)), warns
+    return re.sub(r'<a (class="card" )?href="(https?://|\.\./examples/)', r'<a \1target="_blank" rel="noopener" href="\2', "\n".join(x for x in out if x)), warns
 
 # ---------- build
 def nav_html(cfg, root, current=None):
@@ -262,8 +264,8 @@ def build(cfg=None):
         page = region(region(page, "hub:nav", nav_html(cfg, "../", sec["id"])), "page:content", content)
         existed = f.exists()
         if write(f, page): upd, made = (upd + 1, made) if existed else (upd, made + 1)
-    for f in sorted(PAGES.glob("*.html")):
-        if f.stem not in pm: warns.append(f"pages/{f.name} is not in hub.json (orphan)")
+    unused = [f.name for f in sorted(PAGES.glob("*.html")) if f.stem not in pm]
+    if unused: print(f"note: {len(unused)} file(s) in pages/ are not in the menu, so they are not linked anywhere (harmless): {', '.join(unused[:4])}{'...' if len(unused) > 4 else ''}")
     print(f"built: hub {'updated' if changed else 'unchanged'}, {len(pm)} pages ({made} new, {upd} updated)")
     for w in warns: print("warning:", w, file=sys.stderr)
     return warns
@@ -388,15 +390,119 @@ def cmd_reset(a):
         if src.exists(): bk.mkdir(exist_ok=True); shutil.move(str(src), str(bk / name)); moved.append(name)
     build(); print(f"started fresh. Moved {', '.join(moved) or 'nothing'} into {bk.name}/ (delete it when you no longer need it)")
 
-def cmd_publish(a):
-    build()
+# ---------- GitHub token (paste it once in the editor; it is remembered on this device only)
+TOKEN_FILE = ROOT / ".hub-token"
+
+def ensure_ignored():
+    """The token file must never be committed. Make sure .gitignore always lists it."""
+    gi = ROOT / ".gitignore"; cur = gi.read_text("utf-8") if gi.exists() else ""
+    if ".hub-token" not in cur.split():
+        gi.write_text(cur + ("" if cur.endswith("\n") or not cur else "\n") + ".hub-token\n", "utf-8")
+
+def get_token():
+    t = os.environ.get("GITHUB_TOKEN", "").strip()
+    if t: return t
+    try: return TOKEN_FILE.read_text("utf-8").strip()
+    except OSError: return ""
+
+def set_token(t):
+    ensure_ignored()
+    if not t: TOKEN_FILE.unlink(missing_ok=True); return
+    TOKEN_FILE.write_text(t + "\n", "utf-8")
+    try: os.chmod(TOKEN_FILE, 0o600)
+    except OSError: pass
+
+def origin_url():
+    try: return git("remote", "get-url", "origin", timeout=10).stdout.strip()
+    except (FileNotFoundError, subprocess.TimeoutExpired): return ""
+
+def repo_parts(url=None):
+    m = re.search(r"github\.com[:/]+([^/]+)/([^/]+?)(?:\.git)?/?$", url if url is not None else origin_url())
+    return (m.group(1), m.group(2)) if m else (None, None)
+
+def live_url():
+    o, r = repo_parts()
+    if not o: return ""
+    return f"https://{o.lower()}.github.io/" + ("" if r.lower() == o.lower() + ".github.io" else r + "/")
+
+def check_token(t):
+    """Ask GitHub whether this token can write to this repo. Returns (True/False/None, plain sentence). None = could not tell."""
+    o, r = repo_parts()
+    if not o: return None, "Saved. (This folder has no GitHub address to check it against.)"
+    req = urllib.request.Request(f"https://api.github.com/repos/{o}/{r}", headers={"Authorization": "Bearer " + t, "Accept": "application/vnd.github+json", "User-Agent": "makuraba-hub"})
     try:
-        run = lambda *c: subprocess.run(c, cwd=ROOT).returncode
-        run("git", "add", "-A")
-        if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode == 0: return print("nothing to publish")
-        if run("git", "commit", "-m", a.message) or run("git", "push"): die("git failed (see above)")
-        print("pushed; GitHub Pages updates in about a minute")
-    except FileNotFoundError: die("git is not installed")
+        with urllib.request.urlopen(req, timeout=12) as resp: d = json.load(resp)
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 403): return False, "GitHub did not accept that token. Check you copied all of it, and that it has not expired."
+        if e.code == 404: return False, f"That token cannot see the repository {o}/{r}. When making the token, select that repository."
+        return None, "Saved, but GitHub gave an unexpected answer so it could not be checked."
+    except Exception: return None, "Saved, but could not reach GitHub to check it. Press PUBLISH to find out."
+    if d.get("permissions", {}).get("push") is False: return False, "That token can only read this repository. Create one with Contents: Read and write."
+    return True, "Connected. You can press PUBLISH now."
+
+# ---------- git helpers (used by the PUBLISH button and the publish command)
+def git(*c, timeout=90):
+    env = dict(os.environ, GIT_TERMINAL_PROMPT="0")  # fail with a message instead of hanging on a password prompt
+    t = get_token()
+    if t:  # hand the token to git through the environment, so it is never written into .git/config or the remote address
+        auth = base64.b64encode(("x-access-token:" + t).encode()).decode()
+        env.update(GIT_CONFIG_COUNT="1", GIT_CONFIG_KEY_0="http.https://github.com/.extraheader", GIT_CONFIG_VALUE_0="Authorization: Basic " + auth)
+    return subprocess.run(["git", *c], cwd=ROOT, capture_output=True, text=True, timeout=timeout, env=env)
+
+def git_words(r):
+    """Turn a failed git result into one plain sentence."""
+    t = ((r.stderr or "") + (r.stdout or "")).strip(); low = t.lower()
+    if any(k in low for k in ("authentication failed", "could not read username", "permission denied", "403", "invalid username or token", "terminal prompts disabled", "write access to repository not granted")):
+        return "GitHub did not accept your login. Press the 🔑 button in the editor and paste your token (or in a terminal run:  gh auth login ), then press PUBLISH again."
+    if any(k in low for k in ("could not resolve host", "unable to access", "network is unreachable", "timed out")):
+        return "Could not reach GitHub. Check your internet connection, then press PUBLISH again. Your changes are safe."
+    if "no configured push destination" in low or "does not appear to be a git repository" in low:
+        return "This folder is not connected to a GitHub repository yet (no remote)."
+    return "Git said: " + (" ".join(t.splitlines()[-3:]) or "something went wrong")
+
+def publish_now(message=""):
+    """Build, commit, push. Returns (ok, one plain sentence). Never raises."""
+    try: build()
+    except SystemExit as e: return False, f"The site could not be built: {e}"
+    try:
+        if git("rev-parse", "--is-inside-work-tree").returncode: return False, "This folder is not a git repository, so there is nothing to publish to."
+        ensure_ignored(); git("add", "-A")
+        if ".hub-token" in git("diff", "--cached", "--name-only").stdout.split():  # belt and braces: the token must never be published
+            git("rm", "--cached", "-q", ".hub-token"); return False, "Safety stop: the token file was about to be published. It has been removed from the list; press PUBLISH again."
+        ident =[] if git("config", "user.name").stdout.strip() and git("config", "user.email").stdout.strip() else ["-c", "user.name=Makuraba Editor", "-c", "user.email=editor@makuraba.local"]
+        if git("diff", "--cached", "--quiet").returncode != 0:
+            r = git(*ident, "commit", "-m", (message or "").strip() or "Update site " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+            if r.returncode: return False, git_words(r)
+        elif not git_unpushed(): return True, "Nothing new to publish. The site is already up to date."
+        p = git("push")
+        if p.returncode:  # GitHub may hold newer changes (edited elsewhere): fold them in, then try once more
+            pl = git(*ident, "pull", "--rebase", "--autostash")
+            if pl.returncode:
+                clash = "conflict" in ((pl.stdout or "") + (pl.stderr or "")).lower()
+                if clash: git("rebase", "--abort")
+                return False, ("GitHub has newer changes that overlap with yours, so nothing was sent. Your work is safe in this folder; ask Claude to help merge them." if clash else git_words(pl) + " Your work is safe in this folder.")
+            p = git("push")
+        if p.returncode: return False, git_words(p)
+        return True, "Published! Your site updates in about a minute."
+    except FileNotFoundError: return False, "git is not installed. In Termux run:  pkg install git"
+    except subprocess.TimeoutExpired: return False, "That took too long and was stopped. Check your internet connection and press PUBLISH again."
+
+def git_unpushed():
+    r = git("rev-list", "--count", "@{u}..HEAD")
+    return int(r.stdout.strip() or 0) if r.returncode == 0 else 0
+
+def publish_status():
+    try:
+        r = git("status", "--porcelain")
+        if r.returncode: return {"git": False, "changes": 0, "token": bool(get_token())}
+        n = len([l for l in r.stdout.splitlines() if l.strip() and ".hub-token" not in l])
+        return {"git": True, "changes": n, "unpushed": git_unpushed(), "dirty": n > 0 or git_unpushed() > 0, "token": bool(get_token()), "live": live_url()}
+    except (FileNotFoundError, subprocess.TimeoutExpired): return {"git": False, "changes": 0, "token": bool(get_token())}
+
+def cmd_publish(a):
+    ok, msg = publish_now(a.message)
+    print(msg)
+    if not ok: sys.exit(1)
 
 class ApiError(Exception):
     def __init__(self, msg, code=400): super().__init__(msg); self.code = code
@@ -405,12 +511,79 @@ LOCK, STATE = threading.RLock(), {"sig": ()}
 def sig(): return tuple((str(f), f.stat().st_mtime) for f in [CFG, TEMPLATE] + list(PAGES.glob("*.json")) if f.exists())
 def write_atomic(p, text): tmp = p.with_name(p.name + ".tmp"); tmp.write_text(text, "utf-8"); tmp.replace(p)
 
+# ---------- demos: drop a file, folder or zip; it lands in examples/<name>/ and gets a page
+DEMO_EXT = {".html", ".htm", ".css", ".js", ".mjs", ".json", ".txt", ".md", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".avif", ".ico", ".mp3", ".wav", ".ogg", ".mp4", ".webm", ".woff", ".woff2", ".ttf", ".otf", ".wasm", ".glb", ".gltf", ".bin", ".obj", ".mtl", ".map"}
+
+def safe_rel(name):
+    """A relative path made only of harmless pieces: no '..', no leading dots, no odd characters."""
+    segs = []
+    for s in str(name).replace("\\", "/").split("/"):
+        s = re.sub(r"[^A-Za-z0-9._-]", "-", s).lstrip(".-")
+        if s: segs.append(s[-100:])
+    return "/".join(segs)
+
+def demo_write(d, rel, data):
+    rel = safe_rel(rel)
+    if not rel or pathlib.PurePosixPath(rel).suffix.lower() not in DEMO_EXT: return False
+    p = (d / rel).resolve()
+    if d.resolve() not in p.parents: return False
+    p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(data); return True
+
+def demo_zip(d, data):
+    z = zipfile.ZipFile(io.BytesIO(data))
+    infos = [i for i in z.infolist() if not i.is_dir() and not i.filename.startswith("__MACOSX/")]
+    if len(infos) > 3000 or sum(i.file_size for i in infos) > 300_000_000: raise ApiError("that zip is too big (limit 3000 files, 300 MB unpacked)")
+    names = [i.filename.replace("\\", "/") for i in infos]
+    strip = len({n.split("/")[0] for n in names}) == 1 and all("/" in n for n in names)  # a zip that wraps everything in one folder
+    return sum(demo_write(d, n.split("/", 1)[1] if strip else n, z.read(i)) for i, n in zip(infos, names))
+
+def demo_entry(d):
+    if (d / "index.html").exists(): return "index.html"
+    hs = sorted((p.relative_to(d).as_posix() for p in d.rglob("*") if p.suffix.lower() in (".html", ".htm")), key=lambda s: (s.count("/"), s))
+    return hs[0] if hs else ""
+
 def route(method, name, q, body):
     if (method, name) == ("GET", "config"): return {"config": load()}
     if (method, name) == ("PUT", "config"):
         cfg = json.loads(body)
         if not isinstance(cfg, dict) or not isinstance(cfg.get("menu"), list): raise ApiError("bad config")
         normalize(cfg); page_map(cfg); save(cfg); w = build(cfg); STATE["sig"] = sig(); return {"config": cfg, "warnings": w}
+    if (method, name) == ("POST", "demo"):
+        f = slug((q.get("folder") or [""])[0] or "demo"); d = ROOT / "examples" / f; fn = (q.get("name") or ["file"])[0]; d.mkdir(parents=True, exist_ok=True)
+        try: n = demo_zip(d, body) if fn.lower().endswith(".zip") else int(demo_write(d, fn, body))
+        except zipfile.BadZipFile: raise ApiError("that zip file could not be opened")
+        return {"folder": f, "saved": n, "entry": demo_entry(d)}
+    if (method, name) == ("POST", "demo-page"):
+        b = json.loads(body or b"{}"); title = str(b.get("title") or "").strip() or "New demo"; sec = slug(b.get("section") or "games"); cfg = load()
+        m = next((x for x in cfg["menu"] if x["id"] == sec and x["type"] == "index"), None)
+        if not m: raise ApiError("pick a menu section that has a list, such as Games & Demos")
+        url = str(b.get("url") or "").strip()
+        if url:
+            if not re.match(r"https?://", url, re.I): raise ApiError("a link must start with https://")
+            target = url
+        else:
+            f = slug(b.get("folder") or ""); d = ROOT / "examples" / f; ent = demo_entry(d) if d.is_dir() else ""
+            if not ent: raise ApiError("no HTML file was found in what you dropped, so there is nothing to show")
+            target = f"examples/{f}/{ent}"
+        pm = page_map(cfg); base = slug(title); s = base; i = 2
+        while s in pm or any(x["id"] == s for x in m["items"]): s = f"{base}-{i}"; i += 1
+        m["items"].append({"id": s, "title": title, "slug": s, "summary": "Interactive demo"})
+        blocks = [{"type": "embed", "url": target, "title": title}, {"type": "link", "target": target, "label": "Open full screen", "note": "Opens the demo on its own, in a new tab."}]
+        PAGES.mkdir(exist_ok=True); write_atomic(PAGES / f"{s}.json", json.dumps({"blocks": blocks}, indent=1, ensure_ascii=False) + "\n")
+        save(cfg); w = build(cfg); STATE["sig"] = sig(); return {"config": cfg, "section": sec, "id": s, "warnings": w}
+    if (method, name) == ("GET", "status"): return publish_status()
+    if (method, name) == ("POST", "token"):  # the token itself is never sent back, only whether one is saved
+        try: t = str(json.loads(body or b"{}").get("token", "")).strip()
+        except ValueError: t = ""
+        if not t: set_token(""); return {"ok": True, "message": "Token forgotten. Paste a new one anytime.", **publish_status()}
+        if re.search(r"\s", t) or len(t) < 20: return {"ok": False, "message": "That does not look like a full token (no spaces, and it is long). Try copying it again.", **publish_status()}
+        good, words = check_token(t)
+        if good is False: return {"ok": False, "message": words, **publish_status()}
+        set_token(t); return {"ok": True, "message": words, **publish_status()}
+    if (method, name) == ("POST", "publish"):
+        try: msg = str(json.loads(body or b"{}").get("message", ""))
+        except ValueError: msg = ""
+        ok, words = publish_now(msg); return {"ok": ok, "message": words, **publish_status()}
     s = (q.get("slug") or [""])[0]
     if name in ("page", "upload"):
         cfg = load()
@@ -478,8 +651,47 @@ def cmd_serve(a):
     try: srv.serve_forever()
     except KeyboardInterrupt: print("\nstopped")
 
+def open_browser(url):
+    """Open the editor for you. Termux first (its own opener), then the normal way. Never fails loudly."""
+    try:
+        if shutil.which("termux-open-url"): subprocess.Popen(["termux-open-url", url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        else: webbrowser.open(url)
+    except Exception: pass
+
+def cmd_go(a):
+    """The one command: get the latest from GitHub, build, start, open the editor."""
+    print("\n  MAKURABA - starting...\n"); ensure_ignored()
+    try:  # start from whatever is newest on GitHub (quietly; skipped if offline or not set up)
+        if git("rev-parse", "--is-inside-work-tree", timeout=10).returncode == 0 and git("remote", timeout=10).stdout.strip():
+            r = git("pull", "--rebase", "--autostash", timeout=25)
+            print("  synced with GitHub" if r.returncode == 0 else "  (could not sync with GitHub right now; continuing with what is on this device)")
+    except (FileNotFoundError, subprocess.TimeoutExpired): pass
+    build(); threading.Thread(target=watch, daemon=True).start()
+    srv = port = None
+    for port in range(a.port, a.port + 11):
+        try: srv = http.server.ThreadingHTTPServer(("127.0.0.1", port), functools.partial(Handler, directory=str(ROOT))); break
+        except OSError: continue
+    if not srv: die("could not find a free port (8000-8010). Close other programs using them and try again.")
+    url = f"http://localhost:{port}/edit"
+    print(f"""
+  ============================================================
+   READY. The editor should open by itself. If it does not,
+   open this address in your browser:
+
+       {url}
+
+   1. Pick something on the left and type your changes.
+      (They save by themselves.)
+   2. Press the big gold PUBLISH button.
+   3. That is all. Close this window or press Ctrl+C to stop.
+  ============================================================
+""")
+    threading.Timer(0.8, open_browser, [url]).start()
+    try: srv.serve_forever()
+    except KeyboardInterrupt: print("\n  stopped. Bye!")
+
 def main():
-    ap = argparse.ArgumentParser(prog="hub.py", description=__doc__.split("\n")[0]); sub = ap.add_subparsers(dest="cmd", required=True, metavar="command")
+    ap = argparse.ArgumentParser(prog="hub.py", description=__doc__.split("\n")[0] + ". With no command it runs `go`: opens the editor."); sub = ap.add_subparsers(dest="cmd", required=False, metavar="command")
     def sp(name, fn, help, *pos, to=False, opts=()):
         p = sub.add_parser(name, help=help)
         for x in pos: p.add_argument(x)
@@ -487,6 +699,7 @@ def main():
         for o in opts: p.add_argument(*o[0], **o[1])
         p.set_defaults(fn=fn); return p
     P = ("--pos", dict(type=int, help="position, starting at 1 (default: end)")); S = ("--summary", dict()); T = ("--status", dict()); Hh = ("--hue", dict(type=int))
+    sp("go", cmd_go, "THE EASY WAY: sync, build, start, and open the editor (this is what plain `python3 hub.py` does)", opts=[(["--port"], dict(type=int, default=8000))])
     sp("list", cmd_list, "show the menu and every index list"); sp("build", cmd_build, "rebuild index.html and all pages from hub.json")
     sp("serve", cmd_serve, "build, then serve the site and the visual editor (/edit) at http://localhost:8000", opts=[(["--port"], dict(type=int, default=8000))])
     sp("publish", cmd_publish, "build, git commit, git push", "message")
@@ -503,6 +716,7 @@ def main():
     sp("menu-move", cmd_menu_move, "reorder the menu", "id", "pos").set_defaults()
     sp("menu-remove", cmd_menu_remove, "remove a menu item", "id", opts=[(["--yes"], dict(action="store_true"))])
     a = ap.parse_args()
+    if not a.cmd: a = ap.parse_args(["go"])
     if a.cmd == "menu-move": a.pos = int(a.pos)
     a.fn(a)
 

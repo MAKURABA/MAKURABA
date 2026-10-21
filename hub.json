@@ -52,6 +52,25 @@
    "type": "index",
    "icon": "triangle",
    "items": []
+  },
+  {
+   "id": "chemistry",
+   "label": "CHEMISTRY",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "atomic-primitives",
+     "title": "ATOMIC PRIMITIVES",
+     "items": [
+      {
+       "id": "hydrogen",
+       "title": "HYDROGEN",
+       "slug": "hydrogen"
+      }
+     ]
+    }
+   ]
   }
  ]
 }
