@@ -12,65 +12,7 @@
    "label": "MAIN PAGE",
    "type": "index",
    "icon": "triangle",
-   "items": [
-    {
-     "id": "makuraba",
-     "title": "MAKURABA",
-     "items": [
-      {
-       "id": "makuraba",
-       "title": "Eternal beginning",
-       "slug": "makuraba"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "id": "games",
-   "label": "GAMES & DEMOS",
-   "type": "index",
-   "icon": "triangle",
-   "items": [
-    {
-     "id": "about",
-     "title": "GAMES & DEMOS",
-     "slug": "about"
-    }
-   ]
-  },
-  {
-   "id": "stories",
-   "label": "STORIES",
-   "type": "index",
-   "icon": "triangle",
    "items": []
-  },
-  {
-   "id": "intelligence-modeling",
-   "label": "INTELLIGENCE MODELING",
-   "type": "index",
-   "icon": "triangle",
-   "items": []
-  },
-  {
-   "id": "chemistry",
-   "label": "CHEMISTRY",
-   "type": "index",
-   "icon": "triangle",
-   "items": [
-    {
-     "id": "atomic-primitives",
-     "title": "ATOMIC PRIMITIVES",
-     "items": [
-      {
-       "id": "hydrogen",
-       "title": "HYDROGEN",
-       "slug": "hydrogen"
-      }
-     ]
-    }
-   ]
   }
  ]
 }
