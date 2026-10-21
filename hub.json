@@ -13,6 +13,24 @@
    "type": "index",
    "icon": "triangle",
    "items": []
+  },
+  {
+   "id": "about",
+   "label": "ABOUT",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "project-makuraba",
+     "title": "Project MAKURABA",
+     "slug": "project-makuraba"
+    },
+    {
+     "id": "contact",
+     "title": "CONTACT",
+     "slug": "contact"
+    }
+   ]
   }
  ]
 }
