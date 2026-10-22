@@ -86,6 +86,16 @@
      "id": "psychological-matrixing",
      "title": "Psychological Matrixing",
      "slug": "psychological-matrixing"
+    },
+    {
+     "id": "g-of-n",
+     "title": "G of N",
+     "slug": "g-of-n"
+    },
+    {
+     "id": "quartz-outcome",
+     "title": "Quartz Outcome",
+     "slug": "quartz-outcome"
     }
    ]
   },
