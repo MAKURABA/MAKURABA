@@ -155,6 +155,11 @@
    "icon": "triangle",
    "items": [
     {
+     "id": "the-eternal-agnostic-observation-protocol",
+     "title": "The Eternal Agnostic Observation Protocol ",
+     "slug": "the-eternal-agnostic-observation-protocol"
+    },
+    {
      "id": "a-never-ending-begin",
      "title": "A Never Ending Begin",
      "slug": "a-never-ending-begin"

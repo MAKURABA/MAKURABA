@@ -10,6 +10,12 @@
    "type": "text",
    "text": "",
    "dropcap": false
+  },
+  {
+   "type": "image",
+   "file": "",
+   "alt": "",
+   "caption": ""
   }
  ]
 }
