@@ -80,15 +80,9 @@
    "icon": "triangle",
    "items": [
     {
-     "id": "the-man-in-the-bottle-effect",
-     "title": "The Man In The Bottle effect",
-     "items": [
-      {
-       "id": "the-psychological-donut",
-       "title": "The psychological donut",
-       "slug": "the-psychological-donut"
-      }
-     ]
+     "id": "the-psychological-donut",
+     "title": "The Man In The Bottle Effect",
+     "slug": "the-psychological-donut"
     }
    ]
   }
