@@ -14,11 +14,6 @@
    "icon": "triangle",
    "items": [
     {
-     "id": "makuraba",
-     "title": "Introduction page",
-     "slug": "makuraba"
-    },
-    {
      "id": "makuraba-system-rules",
      "title": "MAKURABA System Rules",
      "items": [
@@ -31,6 +26,11 @@
        "id": "makuraba-core-rpg-math",
        "title": "MAKURABA Core RPG Math",
        "slug": "makuraba-core-rpg-math"
+      },
+      {
+       "id": "progression-formulas",
+       "title": "Progression Formulas",
+       "slug": "progression-formulas"
       },
       {
        "id": "character-design",
@@ -63,6 +63,11 @@
        "slug": "makuraba-cosmology"
       }
      ]
+    },
+    {
+     "id": "makuraba",
+     "title": "Introduction page",
+     "slug": "makuraba"
     }
    ]
   },
@@ -165,6 +170,11 @@
      "id": "enchanted-artifact-generator",
      "title": "Enchanted Artifact Generator",
      "slug": "enchanted-artifact-generator"
+    },
+    {
+     "id": "alchemy-system-demo",
+     "title": "Alchemy System Demo",
+     "slug": "alchemy-system-demo"
     }
    ]
   },
@@ -265,6 +275,11 @@
      "id": "the-psychological-donut",
      "title": "The Man In The Bottle Effect",
      "slug": "the-psychological-donut"
+    },
+    {
+     "id": "a-battery-acid-test",
+     "title": "A Battery Acid Test",
+     "slug": "a-battery-acid-test"
     }
    ]
   },
