@@ -145,6 +145,26 @@
      "id": "sands",
      "title": "Sands",
      "slug": "sands"
+    },
+    {
+     "id": "chaos-scope-volume",
+     "title": "Chaos Scope Volume",
+     "slug": "chaos-scope-volume"
+    },
+    {
+     "id": "pentritris",
+     "title": "Pentritris",
+     "slug": "pentritris"
+    },
+    {
+     "id": "dungeon-array",
+     "title": "Dungeon Array",
+     "slug": "dungeon-array"
+    },
+    {
+     "id": "enchanted-artifact-generator",
+     "title": "Enchanted Artifact Generator",
+     "slug": "enchanted-artifact-generator"
     }
    ]
   },
