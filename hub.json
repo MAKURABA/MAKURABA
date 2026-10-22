@@ -25,7 +25,13 @@
    "label": "SHORT STORIES",
    "type": "index",
    "icon": "triangle",
-   "items": []
+   "items": [
+    {
+     "id": "the-demiurge",
+     "title": "The Demiurge",
+     "slug": "the-demiurge"
+    }
+   ]
   },
   {
    "id": "game-theory",
@@ -96,6 +102,21 @@
      "id": "quartz-outcome",
      "title": "Quartz Outcome",
      "slug": "quartz-outcome"
+    },
+    {
+     "id": "book-0",
+     "title": "Book Negative Zero",
+     "slug": "book-0"
+    },
+    {
+     "id": "book-zero",
+     "title": "Book Zero",
+     "slug": "book-zero"
+    },
+    {
+     "id": "book-of-zero-positive",
+     "title": "Book Zero Positive",
+     "slug": "book-of-zero-positive"
     }
    ]
   },
