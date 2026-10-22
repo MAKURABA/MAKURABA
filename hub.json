@@ -17,6 +17,52 @@
      "id": "makuraba",
      "title": "Introduction page",
      "slug": "makuraba"
+    },
+    {
+     "id": "makuraba-system-rules",
+     "title": "MAKURABA System Rules",
+     "items": [
+      {
+       "id": "makuraba-introduction",
+       "title": "MAKURABA Introduction",
+       "slug": "makuraba-introduction"
+      },
+      {
+       "id": "makuraba-core-rpg-math",
+       "title": "MAKURABA Core RPG Math",
+       "slug": "makuraba-core-rpg-math"
+      },
+      {
+       "id": "character-design",
+       "title": "Agent Assembly",
+       "slug": "character-design"
+      },
+      {
+       "id": "character-features",
+       "title": "Agent Features",
+       "slug": "character-features"
+      },
+      {
+       "id": "makuraba-strategy-system",
+       "title": "MAKURABA Strategy System",
+       "slug": "makuraba-strategy-system"
+      },
+      {
+       "id": "mass-combat",
+       "title": "Mass Combat",
+       "slug": "mass-combat"
+      },
+      {
+       "id": "economics",
+       "title": "Economics",
+       "slug": "economics"
+      },
+      {
+       "id": "makuraba-cosmology",
+       "title": "MAKURABA Cosmology",
+       "slug": "makuraba-cosmology"
+      }
+     ]
     }
    ]
   },
@@ -27,6 +73,11 @@
    "icon": "triangle",
    "items": [
     {
+     "id": "on-god-being",
+     "title": "On God Being",
+     "slug": "on-god-being"
+    },
+    {
      "id": "the-demiurge",
      "title": "The Demiurge",
      "slug": "the-demiurge"
@@ -35,6 +86,32 @@
      "id": "a-wheel-in-time",
      "title": "A Wheel In Time",
      "slug": "a-wheel-in-time"
+    },
+    {
+     "id": "a-rotten-ledger",
+     "title": "A Rotten Ledger",
+     "items": [
+      {
+       "id": "introduction",
+       "title": "Introduction",
+       "slug": "introduction"
+      },
+      {
+       "id": "puked-from-the-cold-earth",
+       "title": "Puked From The Cold Earth",
+       "slug": "puked-from-the-cold-earth"
+      },
+      {
+       "id": "an-uncomfortable-dawn",
+       "title": "An Uncomfortable Dawn",
+       "slug": "an-uncomfortable-dawn"
+      },
+      {
+       "id": "a-foul-literary-delight",
+       "title": "A Foul Literary Delight",
+       "slug": "a-foul-literary-delight"
+      }
+     ]
     }
    ]
   },
@@ -55,6 +132,21 @@
      "id": "cellular-evolution",
      "title": "Cellular Evolution",
      "slug": "cellular-evolution"
+    },
+    {
+     "id": "wang-tiles",
+     "title": "Wang Tiles",
+     "slug": "wang-tiles"
+    },
+    {
+     "id": "voxel-quadrants",
+     "title": "Oct-Tree Volume",
+     "slug": "voxel-quadrants"
+    },
+    {
+     "id": "iron-and-powder",
+     "title": "Iron And Powder",
+     "slug": "iron-and-powder"
     }
    ]
   },
