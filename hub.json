@@ -50,7 +50,13 @@
    "label": "GAMES & DEMOS",
    "type": "index",
    "icon": "triangle",
-   "items": []
+   "items": [
+    {
+     "id": "cellular-evolution",
+     "title": "Cellular Evolution",
+     "slug": "cellular-evolution"
+    }
+   ]
   },
   {
    "id": "random-nonsense",
@@ -65,6 +71,11 @@
    "type": "index",
    "icon": "triangle",
    "items": [
+    {
+     "id": "a-never-ending-begin",
+     "title": "A Never Ending Begin",
+     "slug": "a-never-ending-begin"
+    },
     {
      "id": "trinary-logics",
      "title": "Trinary Logics",
@@ -109,6 +120,16 @@
      "id": "a-garden-of-tests",
      "title": "A Garden Of Tests",
      "slug": "a-garden-of-tests"
+    },
+    {
+     "id": "time-space",
+     "title": "Time Space",
+     "slug": "time-space"
+    },
+    {
+     "id": "entropy",
+     "title": "Entropy",
+     "slug": "entropy"
     }
    ]
   },
@@ -142,6 +163,13 @@
      "slug": "contact"
     }
    ]
+  },
+  {
+   "id": "world-history",
+   "label": "WORLD HISTORY",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
   }
  ]
 }
