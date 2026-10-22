@@ -9,7 +9,41 @@
   },
   {
    "id": "main-page",
-   "label": "MAIN PAGE",
+   "label": "MAKURABA",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "makuraba",
+     "title": "Introduction page",
+     "slug": "makuraba"
+    }
+   ]
+  },
+  {
+   "id": "short-stories",
+   "label": "SHORT STORIES",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
+   "id": "game-theory",
+   "label": "GAME THEORY",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
+   "id": "games-demos",
+   "label": "GAMES & DEMOS",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
+   "id": "random-nonsense",
+   "label": "RANDOM NONSENSE",
    "type": "index",
    "icon": "triangle",
    "items": []
@@ -29,6 +63,32 @@
      "id": "contact",
      "title": "CONTACT",
      "slug": "contact"
+    }
+   ]
+  },
+  {
+   "id": "philosophical",
+   "label": "PROTOTHEOLOGY",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
+   "id": "agentic-psychology",
+   "label": "AGENTIC PSYCHOLOGY",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "the-man-in-the-bottle-effect",
+     "title": "The Man In The Bottle effect",
+     "items": [
+      {
+       "id": "the-psychological-donut",
+       "title": "The psychological donut",
+       "slug": "the-psychological-donut"
+      }
+     ]
     }
    ]
   }
