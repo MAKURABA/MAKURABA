@@ -116,13 +116,6 @@
    ]
   },
   {
-   "id": "game-theory",
-   "label": "GAME THEORY",
-   "type": "index",
-   "icon": "triangle",
-   "items": []
-  },
-  {
    "id": "games-demos",
    "label": "GAMES & DEMOS",
    "type": "index",
@@ -154,13 +147,6 @@
      "slug": "sands"
     }
    ]
-  },
-  {
-   "id": "random-nonsense",
-   "label": "RANDOM NONSENSE",
-   "type": "index",
-   "icon": "triangle",
-   "items": []
   },
   {
    "id": "philosophical",
@@ -231,6 +217,20 @@
    ]
   },
   {
+   "id": "game-theory",
+   "label": "GAME THEORY",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
+   "id": "computer-theory",
+   "label": "CALCULATED THEORY",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
    "id": "agentic-psychology",
    "label": "AGENTIC PSYCHOLOGY",
    "type": "index",
@@ -242,6 +242,13 @@
      "slug": "the-psychological-donut"
     }
    ]
+  },
+  {
+   "id": "world-history",
+   "label": "WORLD HISTORY",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
   },
   {
    "id": "about",
@@ -262,15 +269,15 @@
    ]
   },
   {
-   "id": "world-history",
-   "label": "WORLD HISTORY",
+   "id": "ezekiel-s-vision",
+   "label": "EZEKIEL’S VISION",
    "type": "index",
    "icon": "triangle",
    "items": []
   },
   {
-   "id": "computer-theory",
-   "label": "CALCULATED THEORY",
+   "id": "random-nonsense",
+   "label": "RANDOM NONSENSE",
    "type": "index",
    "icon": "triangle",
    "items": []

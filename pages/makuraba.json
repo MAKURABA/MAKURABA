@@ -2,9 +2,14 @@
  "blocks": [
   {
    "type": "image",
-   "file": "media/makuraba/4611.png",
+   "file": "media/makuraba/5514.png",
    "alt": "",
    "caption": ""
+  },
+  {
+   "type": "text",
+   "text": "",
+   "dropcap": false
   }
  ]
 }
