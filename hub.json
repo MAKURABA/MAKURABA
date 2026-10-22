@@ -68,10 +68,26 @@
   },
   {
    "id": "philosophical",
-   "label": "PROTOTHEOLOGY",
+   "label": "EAOP",
    "type": "index",
    "icon": "triangle",
-   "items": []
+   "items": [
+    {
+     "id": "trinary-logics",
+     "title": "Trinary Logics",
+     "slug": "trinary-logics"
+    },
+    {
+     "id": "dynamic-bound-relationship",
+     "title": "Dynamic Bound Relationship ",
+     "slug": "dynamic-bound-relationship"
+    },
+    {
+     "id": "psychological-matrixing",
+     "title": "Psychological Matrixing",
+     "slug": "psychological-matrixing"
+    }
+   ]
   },
   {
    "id": "agentic-psychology",
