@@ -132,6 +132,11 @@
      "id": "avalon-s-gates",
      "title": "Avalon's Gates",
      "slug": "avalon-s-gates"
+    },
+    {
+     "id": "a-insanity-most-sane",
+     "title": "A Insanity Most Sane",
+     "slug": "a-insanity-most-sane"
     }
    ]
   },
@@ -178,7 +183,7 @@
     },
     {
      "id": "dungeon-array",
-     "title": "Dungeon Array",
+     "title": "Dungeons Array Construction",
      "slug": "dungeon-array"
     },
     {
@@ -263,6 +268,11 @@
      "id": "entropy",
      "title": "Entropy",
      "slug": "entropy"
+    },
+    {
+     "id": "the-book-of-the-mad",
+     "title": "The Book Of The Mad",
+     "slug": "the-book-of-the-mad"
     }
    ]
   },
