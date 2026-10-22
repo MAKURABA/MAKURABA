@@ -30,6 +30,11 @@
      "id": "the-demiurge",
      "title": "The Demiurge",
      "slug": "the-demiurge"
+    },
+    {
+     "id": "a-wheel-in-time",
+     "title": "A Wheel In Time",
+     "slug": "a-wheel-in-time"
     }
    ]
   },
@@ -53,24 +58,6 @@
    "type": "index",
    "icon": "triangle",
    "items": []
-  },
-  {
-   "id": "about",
-   "label": "ABOUT",
-   "type": "index",
-   "icon": "triangle",
-   "items": [
-    {
-     "id": "project-makuraba",
-     "title": "Project MAKURABA",
-     "slug": "project-makuraba"
-    },
-    {
-     "id": "contact",
-     "title": "CONTACT",
-     "slug": "contact"
-    }
-   ]
   },
   {
    "id": "philosophical",
@@ -117,6 +104,11 @@
      "id": "book-of-zero-positive",
      "title": "Book Zero Positive",
      "slug": "book-of-zero-positive"
+    },
+    {
+     "id": "a-garden-of-tests",
+     "title": "A Garden Of Tests",
+     "slug": "a-garden-of-tests"
     }
    ]
   },
@@ -130,6 +122,24 @@
      "id": "the-psychological-donut",
      "title": "The Man In The Bottle Effect",
      "slug": "the-psychological-donut"
+    }
+   ]
+  },
+  {
+   "id": "about",
+   "label": "ABOUT",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "project-makuraba",
+     "title": "Project MAKURABA",
+     "slug": "project-makuraba"
+    },
+    {
+     "id": "contact",
+     "title": "CONTACT",
+     "slug": "contact"
     }
    ]
   }
