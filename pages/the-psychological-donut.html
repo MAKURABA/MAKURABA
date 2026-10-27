@@ -174,6 +174,124 @@
 <p>A missing part can be inferred from its relationships, but the relationships cannot, by themselves, guarantee that the inference is true.</p>
 <p>The donut describes the organization of compensation. The agentic psychological system describes the recursive use of that compensation. The genie problem describes the divergence that can occur when a reconstructed objective satisfies the available constraints without preserving the intended meaning.</p>
 <p>Together, they establish a research direction: the study of how intelligent systems reconstruct missing representations, coordinate substitute capabilities, and maintain the distinction between internal coherence and external truth.</p>
+<p>X. The Operational Test Model: Measuring Compensatory Reconstruction</p>
+<p>The Agentic Psychological Donut proposes that a system can preserve or approximate a function after a direct representational or operational pathway becomes unavailable. To evaluate this proposition, the conceptual framework must be translated into a controlled experimental model.</p>
+<p>The operational test model is designed to determine whether a system can reconstruct missing information through surviving relationships, whether the reconstruction preserves the intended objective, and whether recursive inference produces reliable adaptation or epistemic divergence.</p>
+<p>The model does not assume that compensatory reconstruction necessarily occurs. Instead, it defines observable conditions under which the hypothesis can be supported, qualified, or rejected.</p>
+<p>X.1. Experimental Objective</p>
+<p>The primary objective is to determine whether removing a direct pathway causes a system to recruit alternative pathways that preserve a measurable portion of the original function.</p>
+<p>Three questions govern the experiment:</p>
+<ol>
+<li>Can the system recover a target when its direct representation or retrieval pathway is unavailable?</li>
+<li>Does the recovered target preserve the function or intention associated with the original target?</li>
+<li>Does repeated use of reconstructed information improve performance, remain stable, or amplify error?</li>
+</ol>
+<p>The first question tests functional recoverability. The second tests semantic and objective fidelity. The third tests recursive stability.</p>
+<p>These questions must be evaluated separately. A system can recover the correct answer without preserving the intended objective, and it can preserve an objective in a single trial while becoming unreliable under repeated inference.</p>
+<p>X.2. Experimental Conditions</p>
+<p>The test requires four principal conditions.</p>
+<p>Condition A: Baseline access.</p>
+<p>The system receives the task with its ordinary representations and direct retrieval pathways available. This establishes baseline accuracy, completion rate, confidence calibration, and objective fidelity.</p>
+<p>Condition B: Direct-pathway removal.</p>
+<p>A specified representation or operation is made unavailable while relevant contextual information and alternative capabilities remain accessible. The intervention must be verified to ensure that the prohibited pathway cannot simply be used through another interface.</p>
+<p>Condition C: Compensatory reconstruction.</p>
+<p>The system receives the same task under direct-pathway removal but can use indirect contextual clues, analogy, decomposition, memory, or other permitted capabilities. This condition tests whether alternative pathways recover the missing function.</p>
+<p>Condition D: Recursive reconstruction.</p>
+<p>The system performs multiple dependent rounds of inference. The output from each round becomes part of the context for the next round, subject to a defined evidence and memory policy. This condition tests whether reconstruction remains reliable when the system's own outputs influence subsequent reasoning.</p>
+<p>A fifth condition is useful when practical:</p>
+<p>Condition E: Restricted compensation.</p>
+<p>The direct pathway remains unavailable, and one or more alternative pathways are also restricted. Comparing this condition with Condition C helps establish whether particular substitute capabilities actually contribute to reconstruction.</p>
+<p>X.3. Test Tasks</p>
+<p>The model should use multiple task families rather than relying on a single demonstration.</p>
+<p>Task family 1: Missing-token reconstruction.</p>
+<p>A known entity name or identifier is withheld from the permitted output vocabulary. The system receives contextual clues sufficient to identify the target. The evaluation measures whether it identifies the correct entity, distinguishes alternatives, and respects the output restriction.</p>
+<p>Task family 2: Missing-operation reconstruction.</p>
+<p>A direct operation is disabled, but its desired function can potentially be approximated through a sequence of permitted operations. The evaluation measures functional equivalence, completion cost, and error.</p>
+<p>Task family 3: Objective reconstruction.</p>
+<p>The system receives instructions that incompletely specify a target objective. Relevant preferences, constraints, and success conditions are provided separately. The evaluation determines whether the system's proposed action satisfies the underlying objective rather than merely the literal instructions.</p>
+<p>Task family 4: Recursive inference.</p>
+<p>The system repeatedly uses earlier inferences as inputs to later reasoning. Some initial hypotheses are correct, while others are deliberately seeded with controlled errors. The evaluation measures whether errors are corrected, preserved, or amplified.</p>
+<p>Together, these tasks distinguish reconstruction of a representation, reconstruction of a function, reconstruction of an intention, and reconstruction under recursive feedback.</p>
+<p>X.4. Variables and Measurements</p>
+<p>The model defines the following independent variables:</p>
+<ul>
+<li>Direct-pathway availability.</li>
+<li>Availability of alternative capabilities.</li>
+<li>Quantity and quality of contextual evidence.</li>
+<li>Number of recursive inference rounds.</li>
+<li>Degree of independence between evidence sources.</li>
+<li>Availability of external verification and correction.</li>
+</ul>
+<p>The dependent variables are observable performance measures.</p>
+<p>Reconstruction accuracy measures whether the inferred target matches a verified reference.</p>
+<p>Functional equivalence measures whether the substitute operation achieves the relevant outcome, even if its internal procedure differs from the original.</p>
+<p>Objective fidelity measures whether the resulting action satisfies predefined success conditions and constraints associated with the intended objective.</p>
+<p>Calibration measures whether stated confidence corresponds to observed correctness.</p>
+<p>Error amplification measures how the influence of an initial error changes across successive inference rounds.</p>
+<p>Recovery cost measures the additional computation, time, tool use, or number of operations required to approximate the original function.</p>
+<p>Constraint compliance measures whether the system continues to respect prohibited pathways, safety requirements, and explicit operating limits.</p>
+<p>These measurements must not be collapsed into a single score without justification. High accuracy, for example, does not establish objective fidelity, and high confidence does not establish accuracy.</p>
+<p>X.5. Measuring Reconstruction</p>
+<p>Let the baseline condition establish the reference performance of the system. Let the direct-pathway-removal condition establish its performance when the original route is unavailable. Let the compensatory condition establish its performance when indirect alternatives can be recruited.</p>
+<p>The reconstruction test compares these conditions on matched tasks.</p>
+<p>A system demonstrates evidence of compensatory reconstruction when it retains meaningful performance under direct-pathway removal and performs better with the permitted alternative pathways than it does under an appropriate restricted-compensation condition.</p>
+<p>The comparison must control for differences in task difficulty, available information, computational budget, and opportunities to guess.</p>
+<p>For example, if a system identifies a withheld historical figure using contextual clues, the result alone does not demonstrate that distributed reconstruction occurred. The system might have memorized the answer, accessed an unintended retrieval route, or guessed correctly.</p>
+<p>Stronger evidence comes from verifying that the direct route is unavailable, varying the contextual clues, testing unfamiliar examples, and observing whether performance changes predictably when relevant information is removed.</p>
+<p>The experimental objective is not merely to observe a correct answer. It is to identify the conditions under which the answer becomes recoverable.</p>
+<p>X.6. Testing Objective Fidelity</p>
+<p>The genie problem requires a separate test because literal correctness and intended success are not equivalent.</p>
+<p>Each objective-reconstruction task should specify three distinguishable elements:</p>
+<ol>
+<li>The operator's intended outcome, defined through measurable success criteria.</li>
+<li>The explicit instruction given to the system.</li>
+<li>The action or interpretation selected by the system.</li>
+</ol>
+<p>Some tasks should contain incomplete instructions, competing constraints, or wording that permits multiple plausible interpretations.</p>
+<p>The system's behavior can then be evaluated against the independently established objective criteria.</p>
+<p>A successful outcome requires more than satisfying the literal instruction. It must also preserve the relevant constraints and achieve the intended result.</p>
+<p>Where the intended objective cannot be determined reliably from the available information, the correct behavior may be to request clarification rather than invent a more specific objective.</p>
+<p>This distinction is essential. A system that confidently chooses an unsupported interpretation should not receive the same score as a system that identifies the ambiguity and seeks additional evidence.</p>
+<p>X.7. Testing Recursive Stability</p>
+<p>Recursive stability is evaluated by examining how reconstruction quality changes across successive inference rounds.</p>
+<p>The experiment begins with a known evidence base and a verified reference answer. The system then performs a sequence of dependent inferences, with each output made available to subsequent rounds according to a predefined protocol.</p>
+<p>Separate trials introduce controlled initial errors, incomplete evidence, or misleading contextual associations.</p>
+<p>At each round, the evaluator records accuracy, confidence, evidence provenance, objective fidelity, and the system's willingness to revise prior conclusions.</p>
+<p>Three patterns are of particular interest.</p>
+<p>Error correction: Later rounds identify and correct an earlier mistaken inference through independent evidence or explicit verification.</p>
+<p>Error persistence: Later rounds preserve an earlier error without materially improving or degrading its influence.</p>
+<p>Error amplification: Later rounds increasingly depend on the initial error, produce additional unsupported conclusions, or become more confident without corresponding improvements in accuracy.</p>
+<p>The number of rounds alone does not establish instability. The relevant evidence is the relationship between repeated inference and changes in reliability.</p>
+<p>A system may perform many rounds of reasoning without degradation, while a single unverified inference can be sufficient to produce a consequential error.</p>
+<p>X.8. Controls and Falsification</p>
+<p>The model requires controls that distinguish compensation from alternative explanations.</p>
+<p>A direct-access control verifies that the system performs the original task when its ordinary pathway is available.</p>
+<p>A removal control verifies that performance changes when the pathway is genuinely unavailable.</p>
+<p>A restricted-alternative control determines whether the remaining pathways contribute to recovery.</p>
+<p>An evidence-quality control varies the reliability or completeness of contextual clues.</p>
+<p>A recursion control compares repeated inference against a condition in which each round is grounded independently in the original evidence.</p>
+<p>An external-verification control measures the effect of checking intermediate conclusions against an authoritative reference.</p>
+<p>Where possible, the experiment should use matched task sets, repeated trials, independent evaluation, and confidence intervals around performance estimates. The evaluator should specify the scoring rules and meaningful performance differences before examining the results.</p>
+<p>The compensatory-reconstruction hypothesis would be weakened if removing a pathway consistently eliminates the relevant function despite adequate alternative information and permitted substitutes.</p>
+<p>It would also be weakened if apparent recovery disappears when unintended direct access is prevented, or if alternative pathways provide no measurable benefit over a suitable control.</p>
+<p>The recursive-instability hypothesis would be weakened if repeated inference does not produce measurable error amplification under the tested conditions, particularly when the system is exposed to controlled initial errors.</p>
+<p>Such results would not establish that compensation or instability is impossible in every architecture. They would limit the conditions under which the framework is supported.</p>
+<p>X.9. Decision Rules</p>
+<p>The model classifies outcomes using independent performance dimensions rather than assuming a single universal definition of success.</p>
+<p>Stable reconstruction is indicated when the system maintains acceptable accuracy and objective fidelity despite the removal of the direct pathway, while its uncertainty remains reasonably calibrated.</p>
+<p>Adaptive substitution is indicated when the system uses a different procedure that achieves the predefined objective, even though it does not reproduce the original mechanism.</p>
+<p>Epistemic divergence is indicated when recursive inference produces a meaningful deterioration in accuracy, evidence grounding, or objective fidelity, especially when confidence increases despite that deterioration.</p>
+<p>Unresolved reconstruction is indicated when the available evidence does not distinguish reliable compensation from guessing, unintended access, or unsupported inference.</p>
+<p>The unresolved category is important because an inconclusive result should not be forced into a success or failure classification.</p>
+<p>The framework is intended to identify what a system can recover, under which conditions it can recover it, and how reliably it can distinguish recovered information from plausible invention.</p>
+<p>X.10. Operational Conclusion</p>
+<p>The operational test model converts the Agentic Psychological Donut into a falsifiable research program.</p>
+<p>The central experimental claim is that removing a direct pathway does not always eliminate the corresponding function. Under appropriate conditions, surviving capabilities may reconstruct or approximate that function through indirect relationships.</p>
+<p>However, the existence of a substitute pathway is only the beginning of the analysis. Reconstruction must also be evaluated for accuracy, functional equivalence, objective fidelity, computational cost, and recursive reliability.</p>
+<p>The strongest evidence for the Agentic Donut Effect would therefore consist of three findings: measurable recovery after verified pathway removal, demonstrable dependence on surviving alternative pathways, and predictable changes in performance as contextual evidence and feedback conditions are varied.</p>
+<p>The strongest evidence for the broader agentic framework would additionally show whether reconstructed information remains reliable when it becomes part of the system's own subsequent reasoning.</p>
+<p>This approach makes the theory experimentally tractable without assuming that all intelligent systems compensate in the same way or that every recursive process becomes unstable.</p>
+<p>The donut becomes more than a metaphor when its missing center can be operationally defined, its surrounding pathways can be manipulated, and the resulting behavior can be measured against independent criteria.</p>
 <!-- page:content:end -->
 </article>
 </div></div>
