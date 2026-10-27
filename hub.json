@@ -8,6 +8,19 @@
    "icon": "home"
   },
   {
+   "id": "tumultuous",
+   "label": "TUMULTUOUS",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "untitled",
+     "title": "TUMULTUOUS",
+     "slug": "untitled"
+    }
+   ]
+  },
+  {
    "id": "main-page",
    "label": "MAKURABA",
    "type": "index",
@@ -68,138 +81,6 @@
      "id": "makuraba",
      "title": "Introduction page",
      "slug": "makuraba"
-    }
-   ]
-  },
-  {
-   "id": "short-stories",
-   "label": "SHORT STORIES",
-   "type": "index",
-   "icon": "triangle",
-   "items": [
-    {
-     "id": "on-god-being",
-     "title": "On God Being",
-     "slug": "on-god-being"
-    },
-    {
-     "id": "eden-unfettered",
-     "title": "Eden Unfettered",
-     "slug": "eden-unfettered"
-    },
-    {
-     "id": "a-wheel-in-time",
-     "title": "A Wheel In Time",
-     "slug": "a-wheel-in-time"
-    },
-    {
-     "id": "a-rotten-ledger",
-     "title": "A Rotten Ledger",
-     "items": [
-      {
-       "id": "introduction",
-       "title": "Introduction",
-       "slug": "introduction"
-      },
-      {
-       "id": "puked-from-the-cold-earth",
-       "title": "Puked From The Cold Earth",
-       "slug": "puked-from-the-cold-earth"
-      },
-      {
-       "id": "an-uncomfortable-dawn",
-       "title": "An Uncomfortable Dawn",
-       "slug": "an-uncomfortable-dawn"
-      },
-      {
-       "id": "a-foul-literary-delight",
-       "title": "A Foul Literary Delight",
-       "slug": "a-foul-literary-delight"
-      }
-     ]
-    },
-    {
-     "id": "the-time-travelers-train",
-     "title": "The Time Travelers Train",
-     "slug": "the-time-travelers-train"
-    },
-    {
-     "id": "the-man-in-the-time-room",
-     "title": "The Man In The Time Room",
-     "slug": "the-man-in-the-time-room"
-    },
-    {
-     "id": "avalon-s-gates",
-     "title": "Avalon's Gates",
-     "slug": "avalon-s-gates"
-    },
-    {
-     "id": "a-insanity-most-sane",
-     "title": "A Insanity Most Sane",
-     "slug": "a-insanity-most-sane"
-    },
-    {
-     "id": "the-demiurge",
-     "title": "The Demiurge",
-     "slug": "the-demiurge"
-    }
-   ]
-  },
-  {
-   "id": "games-demos",
-   "label": "GAMES & DEMOS",
-   "type": "index",
-   "icon": "triangle",
-   "items": [
-    {
-     "id": "cellular-evolution",
-     "title": "Cellular Evolution",
-     "slug": "cellular-evolution"
-    },
-    {
-     "id": "wang-tiles",
-     "title": "Wang Tiles",
-     "slug": "wang-tiles"
-    },
-    {
-     "id": "voxel-quadrants",
-     "title": "Oct-Tree Volume",
-     "slug": "voxel-quadrants"
-    },
-    {
-     "id": "iron-and-powder",
-     "title": "Iron And Powder",
-     "slug": "iron-and-powder"
-    },
-    {
-     "id": "sands",
-     "title": "Sands",
-     "slug": "sands"
-    },
-    {
-     "id": "chaos-scope-volume",
-     "title": "Chaos Scope Volume",
-     "slug": "chaos-scope-volume"
-    },
-    {
-     "id": "pentritris",
-     "title": "Pentritris",
-     "slug": "pentritris"
-    },
-    {
-     "id": "dungeon-array",
-     "title": "Dungeons Array Construction",
-     "slug": "dungeon-array"
-    },
-    {
-     "id": "enchanted-artifact-generator",
-     "title": "Enchanted Artifact Generator",
-     "slug": "enchanted-artifact-generator"
-    },
-    {
-     "id": "alchemy-system-demo",
-     "title": "Alchemy System Demo",
-     "slug": "alchemy-system-demo"
     }
    ]
   },
@@ -282,18 +163,78 @@
    ]
   },
   {
-   "id": "game-theory",
-   "label": "GAME THEORY",
+   "id": "short-stories",
+   "label": "SHORT STORIES",
    "type": "index",
    "icon": "triangle",
-   "items": []
-  },
-  {
-   "id": "computer-theory",
-   "label": "LINEAR THEORY",
-   "type": "index",
-   "icon": "triangle",
-   "items": []
+   "items": [
+    {
+     "id": "on-god-being",
+     "title": "On God Being",
+     "slug": "on-god-being"
+    },
+    {
+     "id": "eden-unfettered",
+     "title": "Eden Unfettered",
+     "slug": "eden-unfettered"
+    },
+    {
+     "id": "a-wheel-in-time",
+     "title": "A Wheel In Time",
+     "slug": "a-wheel-in-time"
+    },
+    {
+     "id": "a-rotten-ledger",
+     "title": "A Rotten Ledger",
+     "items": [
+      {
+       "id": "introduction",
+       "title": "Introduction",
+       "slug": "introduction"
+      },
+      {
+       "id": "puked-from-the-cold-earth",
+       "title": "Puked From The Cold Earth",
+       "slug": "puked-from-the-cold-earth"
+      },
+      {
+       "id": "an-uncomfortable-dawn",
+       "title": "An Uncomfortable Dawn",
+       "slug": "an-uncomfortable-dawn"
+      },
+      {
+       "id": "a-foul-literary-delight",
+       "title": "A Foul Literary Delight",
+       "slug": "a-foul-literary-delight"
+      }
+     ]
+    },
+    {
+     "id": "the-time-travelers-train",
+     "title": "The Time Travelers Train",
+     "slug": "the-time-travelers-train"
+    },
+    {
+     "id": "the-man-in-the-time-room",
+     "title": "The Man In The Time Room",
+     "slug": "the-man-in-the-time-room"
+    },
+    {
+     "id": "avalon-s-gates",
+     "title": "Avalon's Gates",
+     "slug": "avalon-s-gates"
+    },
+    {
+     "id": "a-insanity-most-sane",
+     "title": "A Insanity Most Sane",
+     "slug": "a-insanity-most-sane"
+    },
+    {
+     "id": "the-demiurge",
+     "title": "The Demiurge",
+     "slug": "the-demiurge"
+    }
+   ]
   },
   {
    "id": "agentic-psychology",
@@ -310,6 +251,84 @@
      "id": "a-battery-acid-test",
      "title": "A Battery Acid Test",
      "slug": "a-battery-acid-test"
+    }
+   ]
+  },
+  {
+   "id": "game-theory",
+   "label": "GAME THEORY",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
+   "id": "games-demos",
+   "label": "GAMES & DEMOS",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "wang-tiles",
+     "title": "Wang Tiles",
+     "slug": "wang-tiles"
+    },
+    {
+     "id": "cellular-evolution",
+     "title": "Cellular Evolution",
+     "slug": "cellular-evolution"
+    },
+    {
+     "id": "voxel-quadrants",
+     "title": "Oct-Tree Volume",
+     "slug": "voxel-quadrants"
+    },
+    {
+     "id": "iron-and-powder",
+     "title": "Iron And Powder",
+     "slug": "iron-and-powder"
+    },
+    {
+     "id": "sands",
+     "title": "Sands",
+     "slug": "sands"
+    },
+    {
+     "id": "chaos-scope-volume",
+     "title": "Chaos Scope Volume",
+     "slug": "chaos-scope-volume"
+    },
+    {
+     "id": "pentritris",
+     "title": "Pentritris",
+     "slug": "pentritris"
+    },
+    {
+     "id": "dungeon-array",
+     "title": "Dungeons Array Construction",
+     "slug": "dungeon-array"
+    },
+    {
+     "id": "enchanted-artifact-generator",
+     "title": "Enchanted Artifact Generator",
+     "slug": "enchanted-artifact-generator"
+    },
+    {
+     "id": "alchemy-system-demo",
+     "title": "Alchemy System Demo",
+     "slug": "alchemy-system-demo"
+    }
+   ]
+  },
+  {
+   "id": "computer-theory",
+   "label": "LINEAR THEORY",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "mathematics",
+     "title": "Mathematics",
+     "slug": "mathematics"
     }
    ]
   },
