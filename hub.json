@@ -17,6 +17,12 @@
      "id": "untitled",
      "title": "TUMULTUOUS",
      "slug": "untitled"
+    },
+    {
+     "id": "the-doctrine-of-the-eternal-dog",
+     "title": "The Doctrine of the Eternal Dog",
+     "slug": "the-doctrine-of-the-eternal-dog",
+     "summary": ""
     }
    ]
   },
@@ -26,6 +32,11 @@
    "type": "index",
    "icon": "triangle",
    "items": [
+    {
+     "id": "project-makuraba",
+     "title": "THE TEMPLE: AN AGNOSTIC ARCHITECTURE FOR UNIVERSAL EXPLORATION",
+     "slug": "project-makuraba"
+    },
     {
      "id": "makuraba-system-rules",
      "title": "MAKURABA System Rules",
@@ -76,11 +87,6 @@
        "slug": "makuraba-cosmology"
       }
      ]
-    },
-    {
-     "id": "makuraba",
-     "title": "Introduction page",
-     "slug": "makuraba"
     }
    ]
   },
@@ -170,7 +176,7 @@
    "items": [
     {
      "id": "on-god-being",
-     "title": "On God Being",
+     "title": "THE GOD WHO WANTED TO DIE",
      "slug": "on-god-being"
     },
     {
@@ -346,16 +352,18 @@
    "icon": "triangle",
    "items": [
     {
-     "id": "project-makuraba",
-     "title": "Project MAKURABA",
-     "slug": "project-makuraba"
-    },
-    {
      "id": "contact",
      "title": "CONTACT",
      "slug": "contact"
     }
    ]
+  },
+  {
+   "id": "hall-of-prophets",
+   "label": "HALL OF PROPHETS",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
   }
  ]
 }
