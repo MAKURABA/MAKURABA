@@ -364,6 +364,19 @@
    "type": "index",
    "icon": "triangle",
    "items": []
+  },
+  {
+   "id": "dgvm",
+   "label": "DGVM",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "dgvm",
+     "title": "DGVM",
+     "slug": "dgvm"
+    }
+   ]
   }
  ]
 }
