@@ -1,6 +1,12 @@
 {
  "blocks": [
   {
+   "type": "image",
+   "file": "media/g-of-n/9008.png",
+   "alt": "",
+   "caption": ""
+  },
+  {
    "type": "text",
    "text": "The mist of dual ",
    "dropcap": false
