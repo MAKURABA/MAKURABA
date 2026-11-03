@@ -108,6 +108,11 @@
      "id": "book-0",
      "title": "BOOK 0",
      "slug": "book-0"
+    },
+    {
+     "id": "mono-maximum",
+     "title": "MONO-MAXIMUM",
+     "slug": "mono-maximum"
     }
    ]
   },
