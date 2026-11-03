@@ -60,6 +60,11 @@
      "slug": "the-supreme-hypervisor"
     },
     {
+     "id": "the-monad-s-passage",
+     "title": "THE MONAD'S PASSAGE",
+     "slug": "the-monad-s-passage"
+    },
+    {
      "id": "delta",
      "title": "DELTA",
      "slug": "delta"
@@ -75,9 +80,14 @@
      "slug": "the-golden-lattice"
     },
     {
-     "id": "the-monad-s-passage",
-     "title": "THE MONAD'S PASSAGE",
-     "slug": "the-monad-s-passage"
+     "id": "cosmology",
+     "title": "COSMOLOGY",
+     "slug": "cosmology"
+    },
+    {
+     "id": "book-0",
+     "title": "BOOK 0",
+     "slug": "book-0"
     }
    ]
   },
@@ -100,6 +110,25 @@
    "type": "index",
    "icon": "triangle",
    "items": []
+  },
+  {
+   "id": "demonstrations",
+   "label": "DEMONSTRATIONS",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "space-exploration",
+     "title": "INFINITE SPACE EXPLORATION",
+     "slug": "space-exploration"
+    },
+    {
+     "id": "infinite-field-explorer",
+     "title": "Infinite field explorer",
+     "slug": "infinite-field-explorer",
+     "summary": "Interactive demo"
+    }
+   ]
   }
  ]
 }

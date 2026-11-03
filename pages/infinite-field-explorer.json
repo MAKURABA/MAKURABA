@@ -1,0 +1,15 @@
+{
+ "blocks": [
+  {
+   "type": "embed",
+   "url": "examples/infinite-field-explorer/infinite_field_explorer-29.html",
+   "title": "Infinite field explorer"
+  },
+  {
+   "type": "link",
+   "target": "examples/infinite-field-explorer/infinite_field_explorer-29.html",
+   "label": "Open full screen",
+   "note": "Opens the demo on its own, in a new tab."
+  }
+ ]
+}
