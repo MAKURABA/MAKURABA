@@ -156,6 +156,19 @@
      "summary": "Interactive demo"
     }
    ]
+  },
+  {
+   "id": "prophetic-agents",
+   "label": "PROPHETIC AGENTS",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "rabbit-don",
+     "title": "RABBIT DON",
+     "slug": "rabbit-don"
+    }
+   ]
   }
  ]
 }
