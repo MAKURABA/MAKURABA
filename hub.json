@@ -127,6 +127,11 @@
      "id": "rabbit-don",
      "title": "RABBIT DON",
      "slug": "rabbit-don"
+    },
+    {
+     "id": "king-sterno",
+     "title": "AXI",
+     "slug": "king-sterno"
     }
    ]
   },
@@ -168,6 +173,11 @@
      "id": "greek-mythology",
      "title": "Greek Mythology",
      "slug": "greek-mythology"
+    },
+    {
+     "id": "norse-mythology",
+     "title": "Norse Mythology",
+     "slug": "norse-mythology"
     }
    ]
   },
