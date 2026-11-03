@@ -55,6 +55,11 @@
      "summary": "This page is a work in progress*"
     },
     {
+     "id": "the-supreme-hypervisor",
+     "title": "THE SUPREME HYPERVISOR",
+     "slug": "the-supreme-hypervisor"
+    },
+    {
      "id": "delta",
      "title": "DELTA",
      "slug": "delta"
@@ -63,6 +68,11 @@
      "id": "delta-bias-doctrine",
      "title": "DELTA BIAS DOCTRINE",
      "slug": "delta-bias-doctrine"
+    },
+    {
+     "id": "the-golden-lattice",
+     "title": "THE GOLDEN LATTICE",
+     "slug": "the-golden-lattice"
     }
    ]
   },
@@ -78,6 +88,13 @@
      "slug": "the-psychological-donut"
     }
    ]
+  },
+  {
+   "id": "encyclopedia",
+   "label": "ENCYCLOPEDIA",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
   }
  ]
 }
