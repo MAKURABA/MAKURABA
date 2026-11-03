@@ -112,6 +112,13 @@
    ]
   },
   {
+   "id": "mythos",
+   "label": "MYTHOS",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
    "id": "agentic-psychology",
    "label": "AGENTIC PSYCHOLOGY",
    "type": "index",
@@ -121,6 +128,11 @@
      "id": "the-psychological-donut",
      "title": "The Man In The Bottle Effect",
      "slug": "the-psychological-donut"
+    },
+    {
+     "id": "makuraba-agent-testing",
+     "title": "MAKURABA agent testing",
+     "slug": "makuraba-agent-testing"
     }
    ]
   },
