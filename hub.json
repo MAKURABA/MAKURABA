@@ -111,8 +111,9 @@
     },
     {
      "id": "book-0",
-     "title": "BOOK 0",
-     "slug": "book-0"
+     "title": "BOOK -0 part I",
+     "slug": "book-0",
+     "summary": "Book Negative zero part one"
     }
    ]
   },
@@ -161,14 +162,14 @@
    "icon": "triangle",
    "items": [
     {
-     "id": "manifold",
-     "title": "Manifold",
-     "slug": "manifold"
-    },
-    {
      "id": "aperion",
      "title": "Aperion",
      "slug": "aperion"
+    },
+    {
+     "id": "manifold",
+     "title": "Manifold",
+     "slug": "manifold"
     }
    ]
   },
