@@ -58,6 +58,11 @@
      "id": "delta",
      "title": "DELTA",
      "slug": "delta"
+    },
+    {
+     "id": "delta-bias-doctrine",
+     "title": "DELTA BIAS DOCTRINE",
+     "slug": "delta-bias-doctrine"
     }
    ]
   },
