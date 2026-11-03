@@ -118,13 +118,6 @@
    ]
   },
   {
-   "id": "mythos",
-   "label": "MYTHOS",
-   "type": "index",
-   "icon": "triangle",
-   "items": []
-  },
-  {
    "id": "prophetic-agents",
    "label": "PROPHETIC AGENTS",
    "type": "index",
@@ -170,6 +163,11 @@
      "id": "manifold",
      "title": "Manifold",
      "slug": "manifold"
+    },
+    {
+     "id": "greek-mythology",
+     "title": "Greek Mythology",
+     "slug": "greek-mythology"
     }
    ]
   },
@@ -192,7 +190,13 @@
    "label": "PROJECTS",
    "type": "index",
    "icon": "triangle",
-   "items": []
+   "items": [
+    {
+     "id": "mega-glitch",
+     "title": "MEGA-GLITCH",
+     "slug": "mega-glitch"
+    }
+   ]
   }
  ]
 }
