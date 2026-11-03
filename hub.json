@@ -70,6 +70,11 @@
      "slug": "g-of-n"
     },
     {
+     "id": "mono-maximum",
+     "title": "MONO-MAXIMUM",
+     "slug": "mono-maximum"
+    },
+    {
      "id": "hypersphere-manifold",
      "title": "HYPERSPHERE MANIFOLD",
      "slug": "hypersphere-manifold"
@@ -108,11 +113,6 @@
      "id": "book-0",
      "title": "BOOK 0",
      "slug": "book-0"
-    },
-    {
-     "id": "mono-maximum",
-     "title": "MONO-MAXIMUM",
-     "slug": "mono-maximum"
     }
    ]
   },
@@ -122,6 +122,19 @@
    "type": "index",
    "icon": "triangle",
    "items": []
+  },
+  {
+   "id": "prophetic-agents",
+   "label": "PROPHETIC AGENTS",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "rabbit-don",
+     "title": "RABBIT DON",
+     "slug": "rabbit-don"
+    }
+   ]
   },
   {
    "id": "agentic-psychology",
@@ -146,7 +159,13 @@
    "label": "ENCYCLOPEDIA",
    "type": "index",
    "icon": "triangle",
-   "items": []
+   "items": [
+    {
+     "id": "manifold",
+     "title": "Manifold",
+     "slug": "manifold"
+    }
+   ]
   },
   {
    "id": "demonstrations",
@@ -163,17 +182,11 @@
    ]
   },
   {
-   "id": "prophetic-agents",
-   "label": "PROPHETIC AGENTS",
+   "id": "makuraba-games",
+   "label": "PROJECTS",
    "type": "index",
    "icon": "triangle",
-   "items": [
-    {
-     "id": "rabbit-don",
-     "title": "RABBIT DON",
-     "slug": "rabbit-don"
-    }
-   ]
+   "items": []
   }
  ]
 }

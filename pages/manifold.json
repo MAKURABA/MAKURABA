@@ -1,0 +1,21 @@
+{
+ "blocks": [
+  {
+   "type": "image",
+   "file": "media/manifold/9016.png",
+   "alt": "",
+   "caption": ""
+  },
+  {
+   "type": "image",
+   "file": "media/manifold/9017.png",
+   "alt": "",
+   "caption": ""
+  },
+  {
+   "type": "text",
+   "text": "The Manifold\n\nAn Introduction to Geometric Continuity\n\nA manifold is a mathematical space that can appear complicated when viewed as a whole, yet behaves like ordinary, familiar geometry when examined locally.\n\nImagine the surface of the Earth. Viewed from space, it is a sphere: curved, continuous, and finite. But if you stand on a small patch of its surface, the ground appears relatively flat. You can walk in different directions, measure distances, and establish coordinates without needing to account for the curvature of the entire planet.\n\nThis is the central principle of a manifold: a space whose local structure can be understood through simpler geometric descriptions, even when its overall structure is considerably more complex.\n\nManifolds are not necessarily flat, spherical, or even three-dimensional. They can have any number of dimensions, and their geometry can be curved, distorted, connected, or otherwise structured. What makes something a manifold is not its appearance, but the mathematical consistency of its local neighborhoods and how those neighborhoods connect.\n\n1. Locality and Continuity\n\nA manifold is constructed from local regions, often called charts. Each chart provides a coordinate system for describing a portion of the space.\n\nWhere charts overlap, their coordinate descriptions must fit together consistently. This allows the manifold to be understood as one continuous mathematical object rather than a collection of disconnected pieces.\n\n2. Dimensions and Geometry\n\nThe dimension of a manifold describes how many independent coordinates are needed to specify a position locally.\n\n- A line is a one-dimensional manifold.\n- A surface is generally a two-dimensional manifold.\n- Ordinary three-dimensional space is a three-dimensional manifold.\n- Spacetime, in general relativity, is modeled as a four-dimensional manifold.\n\nImportantly, the number of dimensions does not determine whether a manifold is curved. Curvature is an additional geometric property.\n\n3. Topology and Transformation\n\nTopology concerns the properties of a space that remain unchanged under continuous deformation.\n\nA sphere and a cube, for example, have equivalent surface topology: one can be continuously reshaped into the other without cutting or joining anything.\n\nDifferential geometry extends this investigation by studying measurements, curvature, distances, and directional relationships within the manifold.\n\n4. Why Manifolds Matter\n\nManifolds provide the mathematical foundation for describing systems that cannot be adequately represented by ordinary flat geometry.\n\nThey appear throughout:\n\n- General relativity and gravitational physics.\n- Quantum mechanics and configuration spaces.\n- Fluid dynamics and continuous fields.\n- Robotics and multidimensional motion.\n- Differential equations and mathematical physics.\n\nThey allow complex relationships to be represented through a coherent underlying space.\n\n5. The Deeper Principle\n\nPerhaps the most interesting feature of a manifold is that its total structure need not be immediately apparent from any individual portion of it.\n\nA local observer can describe their immediate surroundings without possessing a complete description of the entire space. Yet every local description participates in a larger geometric structure.\n\nThis distinction between the local and the global is fundamental.\n\nA manifold is therefore not simply a shape. It is a mathematically organized space in which local relationships combine to establish a larger continuous structure.\n\n---\n\nMAKURABA — Foundational Encyclopedia",
+   "dropcap": false
+  }
+ ]
+}
