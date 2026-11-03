@@ -60,9 +60,29 @@
      "slug": "the-supreme-hypervisor"
     },
     {
+     "id": "proto-atomos",
+     "title": "PROTO-ATOMOS",
+     "slug": "proto-atomos"
+    },
+    {
+     "id": "g-of-n",
+     "title": "G of N",
+     "slug": "g-of-n"
+    },
+    {
+     "id": "hypersphere-manifold",
+     "title": "HYPERSPHERE MANIFOLD",
+     "slug": "hypersphere-manifold"
+    },
+    {
      "id": "the-monad-s-passage",
      "title": "THE MONAD'S PASSAGE",
      "slug": "the-monad-s-passage"
+    },
+    {
+     "id": "the-vessel",
+     "title": "THE VESSEL",
+     "slug": "the-vessel"
     },
     {
      "id": "delta",
@@ -113,15 +133,10 @@
   },
   {
    "id": "demonstrations",
-   "label": "DEMONSTRATIONS",
+   "label": "DEMOS",
    "type": "index",
    "icon": "triangle",
    "items": [
-    {
-     "id": "space-exploration",
-     "title": "INFINITE SPACE EXPLORATION",
-     "slug": "space-exploration"
-    },
     {
      "id": "infinite-field-explorer",
      "title": "Infinite field explorer",

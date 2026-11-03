@@ -1,3 +1,9 @@
 {
- "blocks": []
+ "blocks": [
+  {
+   "type": "text",
+   "text": "The mist of dual ",
+   "dropcap": false
+  }
+ ]
 }

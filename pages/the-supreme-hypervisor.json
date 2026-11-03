@@ -1,3 +1,9 @@
 {
- "blocks": []
+ "blocks": [
+  {
+   "type": "text",
+   "text": "Player theory",
+   "dropcap": false
+  }
+ ]
 }
