@@ -114,6 +114,11 @@
      "title": "BOOK NEGATIVE ZERO : part I",
      "slug": "book-0",
      "summary": ""
+    },
+    {
+     "id": "time-court",
+     "title": "TIME COURT",
+     "slug": "time-court"
     }
    ]
   },
@@ -130,8 +135,9 @@
     },
     {
      "id": "king-sterno",
-     "title": "AXI",
-     "slug": "king-sterno"
+     "title": "AXIOM",
+     "slug": "king-sterno",
+     "summary": ""
     }
    ]
   },
@@ -205,6 +211,19 @@
      "id": "mega-glitch",
      "title": "MEGA-GLITCH",
      "slug": "mega-glitch"
+    }
+   ]
+  },
+  {
+   "id": "reference-material",
+   "label": "REFERENCE MATERIAL",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "lost-truth",
+     "title": "EXTERNAL REFERENCES",
+     "slug": "lost-truth"
     }
    ]
   }

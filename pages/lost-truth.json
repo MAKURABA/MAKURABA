@@ -1,0 +1,38 @@
+{
+ "blocks": [
+  {
+   "type": "image",
+   "file": "media/lost-truth/9040.jpg",
+   "alt": "",
+   "caption": ""
+  },
+  {
+   "type": "link",
+   "target": "https://losttruth.org/library/",
+   "label": "Lost Truth",
+   "note": ""
+  },
+  {
+   "type": "text",
+   "text": "\n\n\nAI-assisted translation enables texts to be examined independently across languages, with strict rules to preserve the original evidence, disclose uncertainty, and minimize inherited interpretive bias.",
+   "dropcap": false
+  },
+  {
+   "type": "image",
+   "file": "media/lost-truth/9041.jpg",
+   "alt": "",
+   "caption": ""
+  },
+  {
+   "type": "link",
+   "target": "https://www.redblobgames.com/",
+   "label": "Red Blob Games",
+   "note": ""
+  },
+  {
+   "type": "text",
+   "text": "is an educational website created by Amit Patel that explains mathematics, computer science, and game-development algorithms through interactive visual demonstrations. It covers subjects such as procedural map generation, pathfinding (A*, Dijkstra), graph theory, geometric grids, probability, noise functions, and spatial algorithms. Rather than simply presenting documentation, it lets you manipulate diagrams, experiment with parameters, and observe how algorithms behave in real time. It is an exceptionally useful resource for understanding and implementing the underlying mathematics of procedural worlds, navigation, terrain generation, and simulation systems. ",
+   "dropcap": false
+  }
+ ]
+}
