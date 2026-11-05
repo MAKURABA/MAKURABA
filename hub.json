@@ -246,6 +246,13 @@
      "slug": "lost-truth"
     }
    ]
+  },
+  {
+   "id": "a-history-of-video-games",
+   "label": "A HISTORY OF VIDEO GAMES",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
   }
  ]
 }
