@@ -199,6 +199,11 @@
      "id": "assyria",
      "title": "Assyria",
      "slug": "assyria"
+    },
+    {
+     "id": "byzantine-empire",
+     "title": "Byzantine empire",
+     "slug": "byzantine-empire"
     }
    ]
   },
