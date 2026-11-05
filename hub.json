@@ -156,6 +156,11 @@
      "id": "makuraba-agent-testing",
      "title": "MAKURABA agent testing",
      "slug": "makuraba-agent-testing"
+    },
+    {
+     "id": "recurring-entities",
+     "title": "RECURRING ENTITIES",
+     "slug": "recurring-entities"
     }
    ]
   },
