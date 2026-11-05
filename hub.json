@@ -208,6 +208,20 @@
    ]
   },
   {
+   "id": "a-history-of-video-games",
+   "label": "A HISTORY OF VIDEO GAMES",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
+   "id": "silicon-and-software",
+   "label": "SILICON AND SOFTWARE ",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
    "id": "demonstrations",
    "label": "DEMOS",
    "type": "index",
@@ -246,13 +260,6 @@
      "slug": "lost-truth"
     }
    ]
-  },
-  {
-   "id": "a-history-of-video-games",
-   "label": "A HISTORY OF VIDEO GAMES",
-   "type": "index",
-   "icon": "triangle",
-   "items": []
   }
  ]
 }
