@@ -184,6 +184,11 @@
      "id": "norse-mythology",
      "title": "Norse Mythology",
      "slug": "norse-mythology"
+    },
+    {
+     "id": "chinese-mythology",
+     "title": "Chinese Mythology",
+     "slug": "chinese-mythology"
     }
    ]
   },
