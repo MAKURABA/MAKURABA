@@ -123,6 +123,13 @@
    ]
   },
   {
+   "id": "makuraba-game-systems",
+   "label": "MAKURABA GAME SYSTEMS",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
    "id": "prophetic-agents",
    "label": "PROPHETIC AGENTS",
    "type": "index",
@@ -204,6 +211,12 @@
      "id": "byzantine-empire",
      "title": "Byzantine empire",
      "slug": "byzantine-empire"
+    },
+    {
+     "id": "the-mathematical-symbol-encyclopedia",
+     "title": "The Mathematical Symbol Encyclopedia",
+     "slug": "the-mathematical-symbol-encyclopedia",
+     "summary": "Interactive demo"
     }
    ]
   },

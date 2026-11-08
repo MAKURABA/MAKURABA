@@ -1,0 +1,15 @@
+{
+ "blocks": [
+  {
+   "type": "embed",
+   "url": "examples/the-mathematical-symbol-encyclopedia/The-Mathematical-Symbol-Encyclopedia.html",
+   "title": "The Mathematical Symbol Encyclopedia"
+  },
+  {
+   "type": "link",
+   "target": "examples/the-mathematical-symbol-encyclopedia/The-Mathematical-Symbol-Encyclopedia.html",
+   "label": "Open full screen",
+   "note": "Opens the demo on its own, in a new tab."
+  }
+ ]
+}

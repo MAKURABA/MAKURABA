@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Mathematical Symbol Encyclopedia</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&display=swap">
+<style>
+:root{--gold:#d9ae4c;--gold-hi:#f4d98a;--gold-lo:#8a6420;--line:rgba(217,174,76,.38);--ink:#ece7d6;--mute:#a3a9b8;--void:#030308;--red:#e0212b;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{margin:0;background:var(--void);color:var(--ink);font:14px/1.55 system-ui,-apple-system,Roboto,"Segoe UI",sans-serif}
+header,main{max-width:1000px;margin:0 auto;padding:0 12px}
+h1{font:900 clamp(17px,4.6vw,26px)/1.2 Cinzel,"Trajan Pro",Georgia,serif;letter-spacing:.18em;color:var(--gold-hi);margin:22px 0 6px;text-transform:uppercase;text-align:center}
+.sub{color:var(--mute);margin:0 0 14px;text-align:center;font-size:12px;letter-spacing:.05em}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);background:#070810;padding:8px 0;z-index:5;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 -12px;padding-left:12px;padding-right:12px}
+.bar::after{content:"";position:absolute;left:50%;bottom:-7px;margin-left:-7px;border:7px solid transparent;border-top-color:var(--red);border-bottom:0;pointer-events:none}
+input{width:100%;padding:10px;font:inherit;font-size:15px;background:#0b0b14;border:1px solid var(--line);color:var(--ink);border-radius:0}
+nav{display:flex;flex-wrap:wrap;gap:4px;margin:16px 0 12px}
+nav a{min-height:30px;display:flex;align-items:center;padding:0 9px;border:1px solid var(--line);background:linear-gradient(#1b1608,#0a0a12);color:var(--ink);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+nav a:active{background:linear-gradient(#f4d98a,#d9ae4c 55%,#8a6420);color:#1a1203}
+h2{font:900 15px Cinzel,Georgia,serif;letter-spacing:.16em;color:var(--gold-hi);border-bottom:1px solid var(--gold);padding-bottom:5px;margin:34px 0 6px;text-transform:uppercase}
+.intro{color:var(--mute);margin:0 0 8px;font-size:12px}
+.w{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:660px;background:rgba(5,6,16,.96);font-size:12.5px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{font-size:10px;font-weight:600;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;background:#0b0b14}
+td.s{font-size:22px;color:var(--gold-hi);text-align:center;white-space:nowrap;width:70px;font-family:Georgia,"Cambria Math",serif}
+td.p{font-style:italic;color:var(--mute)}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.92em;color:var(--ink)}
+.note{background:rgba(5,6,16,.96);border:1px solid var(--line);border-top:2px solid var(--gold);padding:10px 14px;margin:14px 0;color:var(--mute);font-size:12.5px}
+.note b{color:var(--gold-hi);font-weight:600}
+footer{margin:40px auto 60px;max-width:1000px;padding:0 12px;color:var(--mute);font-size:12px;text-align:center}
+footer b{font-family:Cinzel,Georgia,serif;letter-spacing:.2em;color:var(--gold-lo);display:block;margin-bottom:6px}
+tr.h{display:none}
+.card{border:1px solid var(--line);border-top:2px solid var(--gold);background:rgba(5,6,16,.96);padding:12px 14px;margin:12px 0}
+.card h3{font:900 12px Cinzel,Georgia,serif;letter-spacing:.14em;color:var(--gold);margin:0 0 4px;text-transform:uppercase}
+.eq{font:italic 17px Georgia,"Cambria Math",serif;color:var(--gold-hi);margin:6px 0;overflow-x:auto;white-space:nowrap;padding:2px 0}
+.card p,.card li{margin:4px 0;font-size:13px}.card ol,.card ul{margin:4px 0 4px 18px;padding:0}
+.k{color:#ff6b73;font-weight:600}.t{color:var(--mute)}
+</style></head><body>
+<header>
+<h1>The Mathematical Symbol Encyclopedia</h1>
+<p class="sub">A catalogue of mathematical and physical notation: name, pronunciation, meaning and example, organised by field.</p>
+<div class="bar"><input id="q" type="search" placeholder="Search any symbol, name or meaning…" aria-label="Search"></div>
+<nav id="nav"></nav>
+<div class="note"><b>Read this first.</b> Notation is conventional, not universal. The same glyph can mean different things in different fields (see “Context-dependent symbols”). Always check how an author defines a symbol before relying on its usual meaning.<br><b>Status.</b> Working draft: not yet independently reviewed. Historical dates and constant values are approximate. The first section gives definition-grade entries with LaTeX and Unicode codes.</div>
+</header>
+<main id="m"></main>
+<footer><b>Closing note.</b> Symbols are compressed definitions, and the same glyph can carry different meanings in different fields. Check an author’s definitions before relying on convention. Entries are grouped by field; use the search box to find a symbol, name or meaning.</footer>
+<script>
+const D=`
+##Core Definitions: Formal Statements¦Definition-grade entries: type, precise meaning, edge cases, and the LaTeX · Unicode codes.¦Symbol,Name,Type,Definition and edge cases,LaTeX · Unicode
+∑¦summation¦finite I, terms in a commutative monoid → same¦Σ_{i∈I} aᵢ is the sum over I. Empty sum = 0. An infinite series is the limit of partial sums when it exists; otherwise it diverges (unless a summation method is named).¦\\sum · U+2211
+∏¦product¦finite I, terms in a commutative monoid → same¦Empty product = 1. An infinite product converges when its partial products have a nonzero limit.¦\\prod · U+220F
+!¦factorial¦ℕ → ℕ¦n! = ∏ₖ₌₁ⁿ k, with 0! = 1 (empty product). Undefined for negative integers; Γ(n+1) extends it to complex n except at poles.¦n! · U+0021
+∪¦union¦sets × sets → set¦A ∪ B = {x : x ∈ A or x ∈ B}. Associative, commutative, idempotent. The union of an empty family is ∅.¦\\cup · U+222A
+∩¦intersection¦sets × sets → set¦A ∩ B = {x : x ∈ A and x ∈ B}. The intersection of an empty family is not a set in ZFC; it is taken to be the ambient universe.¦\\cap · U+2229
+∖¦set difference¦sets × sets → set¦A ∖ B = {x ∈ A : x ∉ B} = A ∖ (A ∩ B). Not commutative.¦\\setminus · U+2216
+⊆ ⊂¦subset¦relation on sets¦A ⊆ B iff ∀x (x ∈ A ⇒ x ∈ B). ∅ ⊆ A for every A, and A ⊆ A. ⊂ means “proper” in some texts and “subset” in others, so check the source.¦\\subseteq · U+2286 ; \\subset · U+2282
+∅¦empty set¦set¦The unique set with no elements. ∣∅∣ = 0 and 𝒫(∅) = {∅}.¦\\varnothing · U+2205
+𝒫¦power set¦set → set¦𝒫(A) = {B : B ⊆ A}. ∣𝒫(A)∣ = 2^∣A∣ for finite A, and ∣𝒫(A)∣ > ∣A∣ always (Cantor).¦\\mathcal{P} · U+1D4AB
+∣A∣¦cardinality¦set → cardinal¦Finite: the number of elements. Infinite: a cardinal number, with ∣A∣ = ∣B∣ iff a bijection A → B exists.¦\\lvert A\\rvert · U+007C
+∀ ∃¦quantifiers¦formula → formula¦∀x∈∅ P(x) is true (vacuous); ∃x∈∅ P(x) is false. Order matters: ∀x∃y R ≠ ∃y∀x R in general. ∃! means exactly one.¦\\forall · U+2200 ; \\exists · U+2203
+¬ ∧ ∨¦connectives¦{T,F} → {T,F}¦¬P flips truth; P ∧ Q is true iff both are; P ∨ Q is true iff at least one is (inclusive or). Precedence: ¬ binds tighter than ∧, which binds tighter than ∨.¦\\neg \\land \\lor · U+00AC U+2227 U+2228
+⇒¦implication¦{T,F}² → {T,F}¦P ⇒ Q is false only when P is true and Q is false. A false hypothesis makes it true (vacuous truth). It states a truth-functional relation, not causation.¦\\Rightarrow · U+21D2
+⇔¦biconditional¦{T,F}² → {T,F}¦P ⇔ Q is true iff P and Q have the same truth value; equivalent to (P⇒Q) ∧ (Q⇒P).¦\\Leftrightarrow · U+21D4
+∈¦membership¦element × set¦x ∈ A states that x is an element of A. Not transitive: 1 ∈ {1} and {1} ∈ {{1}} but 1 ∉ {{1}}.¦\\in · U+2208
+f: A → B¦function¦sets A, B¦A is the domain, B the codomain, and f assigns exactly one f(x) ∈ B to each x ∈ A. The image f(A) ⊆ B. Injective: f(x)=f(y) ⇒ x=y. Surjective: image = B. Bijective: both.¦f\\colon A \\to B · U+2192
+↦¦maps to¦element → element¦x ↦ e(x) defines the rule of a function on elements without naming it; the function’s own type is written f: A → B.¦\\mapsto · U+21A6
+∘¦composition¦functions → function¦(g ∘ f)(x) = g(f(x)). Requires the codomain of f to lie in the domain of g. Associative; not commutative in general.¦\\circ · U+2218
+∣x∣¦absolute value, modulus¦ℝ → [0,∞) or ℂ → [0,∞)¦Real: x if x ≥ 0, else −x. Complex: √(a² + b²) for a + bi. ∣x∣ = 0 iff x = 0, and ∣xy∣ = ∣x∣∣y∣.¦\\lvert x\\rvert · U+007C
+√¦square root¦[0,∞) → [0,∞)¦√x is the unique non-negative y with y² = x. Hence √(x²) = ∣x∣, not x. In ℂ it is the principal branch, with a cut along the negative real axis.¦\\sqrt{x} · U+221A
+log, ln¦logarithm¦(0,∞) → ℝ¦log_b x = y iff b^y = x, for b > 0, b ≠ 1, x > 0. ln is base e. Bare “log” is base 10, e or 2 depending on field. The complex log is multi-valued.¦\\log \\ln · plain letters
+lim¦limit¦function, point → value¦lim_{x→a} f(x) = L iff ∀ε>0 ∃δ>0 ∀x (0 < ∣x−a∣ < δ ⇒ ∣f(x)−L∣ < ε). The limit, if it exists, is unique, and f(a) itself plays no role. Infinite limits and limits at ∞ use modified definitions.¦\\lim_{x\\to a} · U+2192
+f′(a)¦derivative¦differentiable f → function¦f′(a) = lim_{h→0} (f(a+h) − f(a))/h when the limit exists. Differentiable ⇒ continuous, but not conversely (∣x∣ at 0).¦f'(a) \\frac{df}{dx} · U+2032
+∫ₐᵇ¦definite integral¦integrable f → ℝ¦Riemann: limit of sums Σ f(xᵢ*)Δxᵢ as the mesh → 0. ∫ₐᵇ = −∫ᵦᵃ. Improper integrals are defined as limits and may diverge. Lebesgue integrals extend this class.¦\\int_a^b · U+222B
+∂¦partial derivative¦f: ℝⁿ → ℝ¦∂f/∂xᵢ differentiates in xᵢ with the other variables fixed. Existence of all partials does not imply differentiability. On sets, ∂A is the boundary.¦\\partial · U+2202
+∇¦gradient¦scalar field → vector field¦∇f = (∂f/∂x₁, …, ∂f/∂xₙ). It points in the direction of steepest increase, with magnitude equal to that rate.¦\\nabla · U+2207
+AB¦matrix product¦m×n × n×p → m×p¦(AB)ᵢⱼ = Σₖ Aᵢₖ Bₖⱼ. Defined only when the inner dimensions match. Associative and distributive, but AB ≠ BA in general, and (AB)ᵀ = BᵀAᵀ.¦AB · plain letters
+det¦determinant¦n×n matrices → scalar¦Unique alternating multilinear form with det I = 1. det(AB) = det A · det B. A is invertible iff det A ≠ 0.¦\\det · plain letters
+⟨u,v⟩¦inner product¦V × V → F¦Conjugate-symmetric, linear in one slot, and positive definite. Physics: antilinear in the first slot (bra). Many math texts: antilinear in the second. State the convention.¦\\langle u,v\\rangle · U+27E8 U+27E9
+‖x‖¦norm¦V → [0,∞)¦‖x‖ = 0 iff x = 0; ‖αx‖ = ∣α∣‖x‖; ‖x+y‖ ≤ ‖x‖ + ‖y‖. The inner-product norm is √⟨x,x⟩.¦\\lVert x\\rVert · U+2016
+ℕ¦natural numbers¦set¦ISO 80000-2 takes ℕ = {0,1,2,…}. Many texts use {1,2,3,…}. Write ℕ₀ or ℤ⁺ when it matters.¦\\mathbb{N} · U+2115
+mod¦modulo¦ℤ × ℤ⁺ → ℤ¦a ≡ b (mod n) iff n ∣ (a − b). The operation a mod n is the remainder in {0,…,n−1}; programming languages differ on negative a.¦\\bmod \\pmod{n} · U+2261
+sup, inf¦supremum, infimum¦bounded set → ℝ¦sup S is the least upper bound. Every non-empty subset of ℝ that is bounded above has one (completeness). In the extended reals, sup ∅ = −∞ and inf ∅ = +∞.¦\\sup \\inf · plain letters
+P(A∣B)¦conditional probability¦events → [0,1]¦P(A∣B) = P(A ∩ B)/P(B), defined only when P(B) > 0. Bayes: P(A∣B) = P(B∣A)P(A)/P(B).¦P(A\\mid B) · U+2223
+E[X]¦expectation¦random variable → ℝ¦E[X] = ∫X dP, defined when E∣X∣ < ∞ (or when one of E[X⁺], E[X⁻] is finite). It may fail to exist, as for the Cauchy distribution.¦\\mathbb{E}[X] · U+1D53C
+O(g)¦big O¦class of functions¦f ∈ O(g) iff ∃C, n₀ ∀n ≥ n₀: ∣f(n)∣ ≤ C∣g(n)∣. The usual “f = O(g)” is an abuse of notation for membership.¦O(g) · plain letter O
+δ(x)¦Dirac delta¦distribution¦Not a function. Defined by ∫δ(x)φ(x)dx = φ(0) for test functions φ. Kronecker δᵢⱼ is a separate discrete symbol.¦\\delta(x) · U+03B4
+[A,B]¦commutator¦operators → operator¦[A,B] = AB − BA. Zero iff A and B commute. In Lie theory the same bracket notation is the Lie bracket.¦[A,B] · U+005B U+005D
+##Arithmetic and Elementary Operations¦Operators acting on numbers and expressions.
++¦plus¦“plus”¦Addition; also unary positive¦3 + 2 = 5
+−¦minus¦“minus”¦Subtraction or negation (U+2212, distinct from hyphen)¦5 − 2 = 3; −x
+×¦times / cross¦“times”, “cross”¦Multiplication; vector cross product¦3 × 2 = 6; u × v
+·¦dot / middle dot¦“times”, “dot”¦Multiplication; dot product¦3 · 2 = 6; u · v
+÷¦obelus¦“divided by”¦Division¦6 ÷ 2 = 3
+/¦slash / solidus¦“over”, “divided by”¦Division or fraction; quotient structures¦6/2 = 3; G/H
+±¦plus-minus¦“plus or minus”¦Both signs; tolerance¦x = ±2
+∓¦minus-plus¦“minus or plus”¦Opposite sign to a paired ±¦a ± b ∓ c
+√¦radical¦“square root of”¦Principal non-negative root¦√9 = 3
+∛ ∜¦cube / fourth root¦“cube root of”¦Root of given index¦∛8 = 2
+!¦factorial¦“n factorial”¦Product 1·2·…·n, with 0! = 1¦4! = 24
+‼¦double factorial¦“n double factorial”¦Product of same-parity integers down to 1 or 2¦7‼ = 105
+%¦percent¦“percent”¦Per hundred¦25% = 0.25
+‰¦per mille¦“per mille”¦Per thousand¦5‰ = 0.005
+∣x∣¦absolute value¦“absolute value of x”¦Distance from zero¦∣−5∣ = 5
+⌊x⌋¦floor¦“floor of x”¦Greatest integer ≤ x¦⌊2.7⌋ = 2
+⌈x⌉¦ceiling¦“ceiling of x”¦Least integer ≥ x¦⌈2.1⌉ = 3
+mod¦modulo¦“mod”¦Remainder after division¦7 mod 5 = 2
+∣¦divides¦“divides”¦a ∣ b: b = ka for some integer k¦3 ∣ 12
+∤¦does not divide¦“does not divide”¦Negation of ∣¦5 ∤ 12
+gcd, lcm¦gcd / lcm¦“gee-see-dee”¦Greatest common divisor, least common multiple¦gcd(12,18) = 6
+##Relations and Comparison¦Statements comparing two objects.
+=¦equals¦“equals”¦Same value or object¦2 + 3 = 5
+≠¦not equal¦“is not equal to”¦Different values¦2 ≠ 3
+< >¦less / greater than¦“less than”¦Strict order¦2 < x < 10
+≤ ≥¦at most / at least¦“less than or equal to”¦Non-strict order¦x ≥ 0
+≪ ≫¦much less / greater¦“much less than”¦Order of magnitude difference¦ε ≪ 1
+≈¦approximately equal¦“approximately”¦Close in value¦π ≈ 3.14159
+≡¦identical / congruent¦“is identical to”, “is congruent to”¦Identity, or congruence modulo n¦7 ≡ 2 (mod 5)
+≔ :=¦defined as¦“is defined to be”¦Introduces a definition¦f(x) := x² + 1
+∝¦proportional to¦“is proportional to”¦Constant ratio¦F ∝ a
+∼¦tilde¦“is similar to”, “is distributed as”¦Similarity, equivalence relation, distribution¦X ∼ N(0,1)
+≅¦congruent / isomorphic¦“is isomorphic to”¦Same structure¦ℤ/2ℤ ≅ C₂
+≃¦asymptotically / homotopy equivalent¦“is equivalent to”¦Context dependent¦X ≃ Y
+≺ ≻¦precedes / succeeds¦“precedes”¦General (partial) order¦a ≺ b
+⊴ ⊲¦normal subgroup¦“is a normal subgroup of”¦Conjugation-invariant subgroup¦A₃ ⊴ S₃
+##Grouping and Scope¦Delimiters fixing order and extent.
+( )¦parentheses¦“open paren”¦Grouping; function arguments; open interval; ordered pair¦2(3 + 4) = 14; (a,b)
+[ ]¦square brackets¦“bracket”¦Closed interval; matrix; commutator; Iverson bracket¦[0,1]; [A,B] = AB − BA
+{ }¦braces¦“curly braces”¦Set notation; grouping¦{1,2,3}
+⟨ ⟩¦angle brackets¦“angle”¦Inner product; generated subgroup; expectation (physics)¦⟨u,v⟩; ⟨a⟩
+‖x‖¦norm¦“norm of x”¦Length or size of a vector or operator¦‖(3,4)‖ = 5
+⋯ … ⋮ ⋱¦ellipses¦“dot dot dot”¦Omitted pattern (horizontal, vertical, diagonal)¦1, 2, …, n
+##Exponents and Logarithms¦Powers and their inverses.
+xⁿ¦power¦“x to the n”¦Repeated multiplication¦2⁵ = 32
+x⁻ⁿ¦negative power¦“x to the minus n”¦Reciprocal power¦2⁻² = 1/4
+eˣ, exp¦exponential¦“e to the x”¦Function equal to its own derivative¦e⁰ = 1
+log, log_b¦logarithm¦“log base b”¦Inverse of b^x; bare log varies by field¦log₂ 8 = 3
+ln¦natural log¦“lawn”, “natural log”¦Log base e¦ln e = 1
+lg, lb¦common / binary log¦“log ten”, “log two”¦Base 10 (lg) or base 2 (lb), by convention¦lb 1024 = 10
+##Number Systems and Constants¦Standard sets and special values.
+ℕ¦natural numbers¦“the naturals”¦Counting numbers (0 included by convention in some texts)¦ℕ = {0,1,2,…}
+ℤ¦integers¦“the integers”¦Whole numbers (German Zahlen)¦−3 ∈ ℤ
+ℚ¦rationals¦“the rationals”¦Quotients of integers (Quotient)¦1/3 ∈ ℚ
+ℝ¦reals¦“the reals”¦Complete ordered field¦√2 ∈ ℝ ∖ ℚ
+ℂ¦complex numbers¦“the complexes”¦a + bi with a, b real¦z = 3 + 4i
+ℍ¦quaternions¦“the quaternions”¦Noncommutative division algebra (Hamilton)¦ij = k
+𝔽ₚ¦finite field¦“F p”¦Integers mod prime p¦𝔽₇
+𝔽₂, GF(2)¦two-element field¦“F two”¦{0,1} with addition = XOR (1+1=0) and multiplication = AND; GF(2ⁿ) extends it¦1 + 1 = 0
+ℙ¦primes / projective space¦“the primes”¦Context dependent¦ℙ = {2,3,5,…}
+π¦pi¦“pie”¦Circumference ÷ diameter¦C = 2πr
+e¦Euler’s number¦“e”¦Base of natural logarithm ≈ 2.71828¦e = lim (1 + 1/n)ⁿ
+i¦imaginary unit¦“i”¦Satisfies i² = −1¦e^{iπ} + 1 = 0
+φ¦golden ratio¦“fie”¦(1 + √5)/2¦φ² = φ + 1
+γ¦Euler–Mascheroni constant¦“gamma”¦lim (Hₙ − ln n) ≈ 0.5772¦γ ≈ 0.5772
+∞¦infinity¦“infinity”¦Unbounded quantity (not a real number)¦x → ∞
+ℵ₀ ℵ₁¦aleph¦“aleph null”¦Infinite cardinalities¦∣ℕ∣ = ℵ₀
+##Set Theory: Formal Definitions¦Definition-grade entries. ∈ ∪ ∩ ∖ ⊆ ∅ 𝒫 and ∣A∣ are in Core Definitions.¦Symbol,Name,Type,Definition and edge cases,LaTeX · Unicode
+∋ ∉¦contains as member, not a member¦relation¦A ∋ x means x ∈ A. x ∉ A means ¬(x ∈ A).¦\\ni · U+220B ; \\notin · U+2209
+⊊¦proper subset¦relation on sets¦A ⊊ B iff A ⊆ B and A ≠ B. Not the same as ⊄, which says some element of A is missing from B.¦\\subsetneq · U+228A
+⊃ ⊇¦superset¦relation on sets¦A ⊇ B iff B ⊆ A. A ⊃ B has the same convention problem as ⊂.¦\\supset \\supseteq · U+2283 U+2287
+⊄ ⊈¦not a subset¦relation on sets¦A ⊈ B iff ∃x (x ∈ A and x ∉ B). So A ⊈ B implies A ≠ ∅.¦\\nsubseteq · U+2288 ; U+2284
+⋃ ⋂¦indexed union, intersection¦family of sets → set¦⋃ᵢ Aᵢ = {x : ∃i∈I, x ∈ Aᵢ}. ⋂ᵢ Aᵢ = {x : ∀i∈I, x ∈ Aᵢ}, defined for I ≠ ∅.¦\\bigcup \\bigcap · U+22C3 U+22C2
+△¦symmetric difference¦sets × sets → set¦A △ B = (A∖B) ∪ (B∖A) = (A∪B)∖(A∩B). Associative and commutative, with A △ A = ∅. (𝒫(X), △, ∩) is a ring in which 1 + 1 = 0.¦\\triangle · U+25B3 (also \\Delta · U+0394)
+Aᶜ¦complement¦subset of X → subset of X¦Aᶜ = X ∖ A relative to a fixed universe X. De Morgan: (A ∪ B)ᶜ = Aᶜ ∩ Bᶜ and (A ∩ B)ᶜ = Aᶜ ∪ Bᶜ.¦A^{c} \\overline{A} · U+1D9C
+(a,b)¦ordered pair¦element × element → set¦Kuratowski: (a,b) = {{a},{a,b}}. The defining property is (a,b) = (c,d) iff a = c and b = d. Unlike {a,b}, order matters.¦(a,b) · U+0028
+×¦Cartesian product¦sets × sets → set¦A × B = {(a,b) : a ∈ A, b ∈ B}. ∣A × B∣ = ∣A∣∣B∣, and A × B = ∅ if either is empty. Not commutative as sets of pairs.¦\\times · U+00D7
+Bᴬ¦function set¦sets → set¦Bᴬ is the set of all functions A → B. ∣Bᴬ∣ = ∣B∣^∣A∣, and 𝒫(A) corresponds to {0,1}ᴬ via indicator functions.¦B^{A} · U+1D2C
+⊔¦disjoint union¦family → set¦⊔ᵢ Aᵢ = ⋃ᵢ ({i} × Aᵢ), which tags each element with its index. ∣A ⊔ B∣ = ∣A∣ + ∣B∣ even when A and B overlap.¦\\sqcup · U+2294
+{x ∣ P(x)}¦set-builder¦formula → set¦Separation allows only {x ∈ A ∣ P(x)} with A already a set. Unrestricted comprehension gives Russell’s paradox: R = {x ∣ x ∉ x} is contradictory.¦\\{x \\mid P(x)\\} · U+007B U+007D
+∼, [a], A/∼¦equivalence relation, class, quotient¦relation on A¦∼ is an equivalence if reflexive, symmetric and transitive. [a] = {x : x ∼ a}. The classes partition A, and A/∼ is the set of classes.¦\\sim [a] A/{\\sim} · U+223C
+≤ ⪯¦partial order¦relation on A¦Reflexive, antisymmetric (a ≤ b and b ≤ a ⇒ a = b), transitive. Total (linear) if every pair is comparable. ⊆ on 𝒫(X) is partial but not total.¦\\leq \\preceq · U+2264 U+2AAF
+Extensionality¦axiom¦sentence¦∀A∀B (∀x (x ∈ A ⇔ x ∈ B) ⇒ A = B). A set is determined by its members, so order and repetition do not matter: {1,2} = {2,1,1}.¦\\forall x(x \\in A \\iff x \\in B) \\Rightarrow A=B
+Infinity, von Neumann ℕ¦axiom and construction¦sentence¦There is a set containing ∅ and closed under S(x) = x ∪ {x}. Natural numbers: 0 = ∅, n+1 = n ∪ {n}, so n = {0,…,n−1}.¦S(x)=x\\cup\\{x\\}
+Choice (AC)¦axiom¦sentence¦Every family of non-empty sets has a choice function. Equivalent to Zorn’s lemma and to the well-ordering theorem. Independent of ZF.¦\\prod_{i}A_i \\neq \\varnothing
+Foundation¦axiom¦sentence¦Every non-empty set has an ∈-minimal element. Hence no set is a member of itself and there is no infinite descending ∈-chain.¦x \\notin x
+##Logic: Formal Definitions¦Definition-grade entries. ¬ ∧ ∨ ⇒ ⇔ ∀ ∃ are in Core Definitions.¦Symbol,Name,Type,Definition and edge cases,LaTeX · Unicode
+⇐¦reverse implication¦{T,F}² → {T,F}¦P ⇐ Q means Q ⇒ P. Its contrapositive is ¬P ⇒ ¬Q. The converse of P ⇒ Q is Q ⇒ P, which is not equivalent to it.¦\\Leftarrow · U+21D0
+⊕ ⊻¦exclusive or¦{T,F}² → {T,F}¦P ⊕ Q ≡ (P ∨ Q) ∧ ¬(P ∧ Q) ≡ ¬(P ⇔ Q). Associative and commutative; on {0,1} it is addition mod 2.¦\\oplus \\veebar · U+2295 U+22BB
+≡ (logical)¦logical equivalence¦formula × formula¦φ ≡ ψ iff φ and ψ have the same truth value under every valuation. Distinct from ⇔, which is a connective inside the language.¦\\equiv · U+2261
+⊤ ⊥¦true, false¦constants¦⊤ is true under every valuation, ⊥ under none. ⊥ ⇒ P is true for any P (ex falso). The glyph ⊥ also means “perpendicular”.¦\\top \\bot · U+22A4 U+22A5
+∃!¦unique existence¦formula → formula¦∃!x P(x) abbreviates ∃x P(x) ∧ ∀y∀z (P(y) ∧ P(z) ⇒ y = z). Equivalent to ∃x ∀y (P(y) ⇔ y = x).¦\\exists! · U+2203 U+0021
+∄¦does not exist¦formula → formula¦∄x P(x) means ¬∃x P(x), equivalently ∀x ¬P(x).¦\\nexists · U+2204
+∀x∈A, ∃x∈A¦bounded quantifiers¦abbreviations¦∀x∈A P(x) abbreviates ∀x (x ∈ A ⇒ P(x)). ∃x∈A P(x) abbreviates ∃x (x ∈ A ∧ P(x)). Over A = ∅ the first is true, the second false.¦\\forall x \\in A · U+2200 U+2208
+De Morgan¦duality laws¦equivalences¦¬(P ∧ Q) ≡ ¬P ∨ ¬Q and ¬(P ∨ Q) ≡ ¬P ∧ ¬Q. Quantifier form: ¬∀x P ≡ ∃x ¬P and ¬∃x P ≡ ∀x ¬P.¦\\neg(P\\land Q) \\equiv \\neg P \\lor \\neg Q
+free, bound¦variable status¦syntax¦In ∀x P(x,y), x is bound and y is free. Renaming a bound variable (to one not already used) preserves meaning. Substitution φ[t/x] replaces free occurrences only.¦\\varphi[t/x]
+precedence¦conventional binding order¦convention¦Usual order from tightest: ¬, ∧, ∨, ⇒, ⇔. ⇒ is usually right-associative: P ⇒ Q ⇒ R means P ⇒ (Q ⇒ R). Conventions vary, so parenthesise.¦( ) · U+0028 U+0029
+⊢¦syntactic consequence¦set of formulas × formula¦Γ ⊢ φ means φ has a derivation from Γ in a stated proof system. It depends on the system chosen. ⊢ φ means φ is a theorem.¦\\vdash · U+22A2
+⊨¦semantic consequence¦set of formulas × formula¦Γ ⊨ φ means every model satisfying all of Γ satisfies φ. ⊨ φ means φ is valid (true in all models).¦\\models · U+22A8
+soundness, completeness¦meta-theorems¦⊢ versus ⊨¦Soundness: Γ ⊢ φ ⇒ Γ ⊨ φ. Completeness: Γ ⊨ φ ⇒ Γ ⊢ φ (Gödel 1929, first-order logic). It fails for standard second-order semantics.¦\\vdash \\iff \\models
+∴ ∵¦therefore, because¦informal markers¦Not connectives of the formal language; they mark inference in prose. ∴ may be read as “hence”, ∵ as “since”.¦\\therefore \\because · U+2234 U+2235
+□ ◇¦necessity, possibility¦modal operators¦In Kripke semantics, □φ holds at w iff φ holds at every world accessible from w; ◇φ ≡ ¬□¬φ. Properties of □ depend on the accessibility relation.¦\\Box \\Diamond · U+25A1 U+25C7
+∎¦end of proof¦marker¦Marks the end of a proof (“Q.E.D.”). Equivalent to □ or ▪ depending on author.¦\\blacksquare \\qed · U+220E
+##Algebra, Functions and Sequences¦Mapping and structure.
+f(x)¦function value¦“f of x”¦Output of f at x¦f(3) = 10
+f: A → B¦function type¦“f from A to B”¦Domain and codomain¦f: ℝ → ℝ
+↦¦maps to¦“maps to”¦Rule for elements¦x ↦ x²
+∘¦composition¦“composed with”¦(f ∘ g)(x) = f(g(x))¦g applied first
+f⁻¹¦inverse function¦“f inverse”¦Undoes f (not 1/f)¦f⁻¹(f(x)) = x
+↪ ↠ ⤖¦injective / surjective / bijective¦“hooked arrow”¦Embedding, onto map, bijection¦ℕ ↪ ℤ
+Σ¦summation¦“sum from i = 1 to n”¦Add indexed terms¦Σᵢ₌₁⁵ i = 15
+Π¦product¦“product”¦Multiply indexed terms¦Πᵢ₌₁⁴ i = 24
+(ⁿₖ)¦binomial coefficient¦“n choose k”¦n!/(k!(n−k)!)¦(⁵₂) = 10
+ker, im¦kernel, image¦“kernel”¦Elements sent to 0; set of outputs¦ker f = {x ∣ f(x)=0}
+G/H¦quotient group¦“G mod H”¦Cosets of H in G¦ℤ/nℤ
+⊕ ⊗¦direct sum, tensor product¦“direct sum”, “tensor”¦Combine modules or spaces¦V ⊗ W
+δᵢⱼ¦Kronecker delta¦“delta i j”¦1 if i = j else 0¦Σⱼ δᵢⱼ aⱼ = aᵢ
+##Calculus and Analysis¦Limits, change and accumulation.
+lim¦limit¦“limit as x approaches a”¦Value approached¦limₓ→₂ (x+3) = 5
+→¦tends to¦“approaches”¦Limiting behaviour¦n → ∞
+Δ¦delta (finite change)¦“delta”¦Difference of values¦Δx = x₂ − x₁
+dy/dx, f′¦derivative¦“dee y dee x”, “f prime”¦Instantaneous rate of change¦(x²)′ = 2x
+f″, d²y/dx²¦second derivative¦“f double prime”¦Derivative of derivative¦(x³)″ = 6x
+ẋ¦time derivative¦“x dot”¦Newton notation for d/dt¦v = ẋ
+∂¦partial derivative¦“partial”, “del”¦Derivative in one variable¦∂f/∂x
+∇¦nabla¦“del”, “nabla”¦Gradient operator¦∇f = (∂f/∂x, ∂f/∂y)
+∇· ∇×¦divergence / curl¦“div”, “curl”¦Vector field derivatives¦∇·F, ∇×F
+∇² Δ¦Laplacian¦“Laplacian”¦Sum of second partials¦∇²f = Σ ∂²f/∂xᵢ²
+∫¦integral¦“integral”¦Accumulation; antiderivative¦∫₀³ 2x dx = 9
+∬ ∭¦multiple integral¦“double integral”¦Area and volume integration¦∬ f dA
+∮¦contour integral¦“contour integral”¦Around a closed path¦∮ f dz
+∑ ∏¦large operators¦“sum”¦Series and infinite products¦Σₙ₌₁^∞ 1/n²
+sup, inf¦supremum, infimum¦“soup”, “inf”¦Least upper / greatest lower bound¦sup(0,1) = 1
+lim sup, lim inf¦limit superior / inferior¦“limsup”¦Eventual extreme limits¦lim sup aₙ
+ε δ¦epsilon, delta¦“epsilon”¦Arbitrarily small positive numbers¦∀ε>0 ∃δ>0 …
+##Linear Algebra¦Vectors, matrices and transformations.
+v⃗, 𝐯¦vector¦“vector v”¦Element of a vector space¦v = (3,4)
+v̂¦unit vector¦“v hat”¦Length one in direction of v¦v̂ = v/‖v‖
+u · v¦dot product¦“u dot v”¦Σ uᵢvᵢ¦(1,2)·(3,4) = 11
+u × v¦cross product¦“u cross v”¦Perpendicular vector in ℝ³¦i × j = k
+⟨u,v⟩¦inner product¦“inner product”¦Generalised dot product¦⟨u,u⟩ = ‖u‖²
+Aᵀ¦transpose¦“A transpose”¦Swap rows and columns¦(AB)ᵀ = BᵀAᵀ
+A⁻¹¦inverse matrix¦“A inverse”¦AA⁻¹ = I¦exists iff det A ≠ 0
+A†, A*¦conjugate transpose¦“A dagger”¦Transpose with complex conjugate¦U†U = I
+det, tr¦determinant, trace¦“det”, “trace”¦Scalar invariants of a matrix¦tr(A) = Σ aᵢᵢ
+rank, null¦rank, null space¦“rank”¦Dimension of image; solutions of Ax = 0¦rank A + dim ker A = n
+I, 0¦identity, zero¦“identity”¦Neutral matrices¦AI = A
+λ¦eigenvalue¦“lambda”¦Scalar with Av = λv¦Av = λv
+⊥ ∥¦perpendicular / parallel¦“perp”, “parallel”¦Orthogonality; direction¦u ⊥ v ⇔ u·v = 0
+span, dim¦span, dimension¦“span”¦Linear combinations; basis size¦dim ℝⁿ = n
+##Geometry and Trigonometry¦Shapes, angles and circular functions.
+∠¦angle¦“angle”¦Angle between rays¦∠ABC = 90°
+∟¦right angle¦“right angle”¦Exactly 90°¦∟
+△ □ ○¦triangle, square, circle¦“triangle”¦Shape markers¦△ABC
+° ′ ″¦degree, minute, second¦“degrees”¦Angular units; also feet/inches¦180° = π rad
+≅ ∼¦congruent / similar¦“congruent”, “similar”¦Same shape and size / same shape¦△ABC ≅ △DEF
+‾AB ↔AB¦segment / line¦“segment AB”¦Bar over: segment; double arrow: line; single arrow: ray¦AB̄
+sin cos tan¦trig functions¦“sine”, “cosine”, “tangent”¦Ratios on the unit circle¦sin²θ + cos²θ = 1
+csc sec cot¦reciprocal trig¦“cosecant”, “secant”¦1/sin, 1/cos, 1/tan¦sec θ = 1/cos θ
+arcsin sin⁻¹¦inverse trig¦“arc sine”¦Inverse functions (sin⁻¹ ≠ 1/sin)¦arcsin ½ = 30°
+sinh cosh tanh¦hyperbolic¦“cinch”, “cosh”, “tanch”¦Exponential analogues¦cosh²x − sinh²x = 1
+rad¦radian¦“radians”¦Angle with arc length = radius¦2π rad = 360°
+##Probability and Statistics¦Uncertainty and data.
+P(A), Pr¦probability¦“probability of A”¦Measure in [0,1]¦P(heads) = ½
+P(A∣B)¦conditional probability¦“P of A given B”¦P(A∩B)/P(B)¦Bayes: P(A∣B) = P(B∣A)P(A)/P(B)
+E[X]¦expectation¦“expected value of X”¦Probability-weighted mean¦E[X] = Σ xᵢP(xᵢ)
+Var(X), σ²¦variance¦“variance”¦E[(X − μ)²]¦Var(X) = E[X²] − E[X]²
+σ, μ¦standard deviation, mean¦“sigma”, “mu”¦Population spread and centre¦X ∼ N(μ,σ²)
+x̄, p̂¦sample mean / proportion¦“x bar”, “p hat”¦Estimators from data¦x̄ = Σxᵢ/n
+⫫ ⊥⊥¦independent¦“independent of”¦Statistical independence¦X ⫫ Y
+ρ, r¦correlation¦“rho”¦Linear association in [−1,1]¦ρ(X,Y)
+χ²¦chi-squared¦“kai squared”¦Distribution and test statistic¦χ²(k)
+##Topology and Advanced Structures¦Space, continuity and boundaries.
+∂A¦boundary¦“boundary of A”¦Closure minus interior¦∂[0,1] = {0,1}
+Ā, cl A¦closure¦“A bar”¦Smallest closed set containing A¦cl(0,1) = [0,1]
+int A, A°¦interior¦“interior of A”¦Largest open subset¦int[0,1] = (0,1)
+≅ ≃¦homeomorphic¦“homeomorphic to”¦Continuous bijection with continuous inverse¦S¹ ≅ ∂B²
+π₁(X)¦fundamental group¦“pi one of X”¦Loops up to homotopy¦π₁(S¹) ≅ ℤ
+Sⁿ Bⁿ¦sphere / ball¦“n-sphere”¦Unit sphere / ball in ℝⁿ⁺¹ / ℝⁿ¦S² ⊂ ℝ³
+Hₙ, Hⁿ¦homology / cohomology¦“H n”¦Algebraic invariants of spaces¦H₁(S¹) = ℤ
+χ(X)¦Euler characteristic¦“chi”¦V − E + F analogue¦χ(S²) = 2
+Hom(A,B)¦morphisms¦“hom of A B”¦Structure-preserving maps (category theory)¦Hom(ℤ,ℤ) ≅ ℤ
+⇒ ⟹¦natural transformation¦“natural transformation”¦Morphism between functors¦η: F ⇒ G
+lim colim¦limit / colimit¦“limit”¦Universal constructions¦lim F
+##Asymptotics and Computation¦Growth rates.
+O(n)¦big O¦“big oh”¦Upper bound up to constant¦3n²+5n ∈ O(n²)
+Ω(n)¦big omega¦“big omega”¦Lower bound¦n log n ∈ Ω(n)
+Θ(n)¦big theta¦“big theta”¦Tight bound¦3n² ∈ Θ(n²)
+o(n) ω(n)¦little o / omega¦“little oh”¦Strictly smaller / larger growth¦n ∈ o(n²)
+∼¦asymptotic equivalence¦“is asymptotic to”¦Ratio tends to 1¦n! ∼ √(2πn)(n/e)ⁿ
+##Mathematical Physics¦Notation for physical theories.
+ħ¦reduced Planck constant¦“h bar”¦h/2π¦E = ħω
+Ĥ¦Hamiltonian operator¦“H hat”¦Energy operator¦iħ ∂ψ/∂t = Ĥψ
+ψ ∣ψ⟩ ⟨ψ∣¦ket / bra¦“ket psi”¦Dirac notation for states¦⟨φ∣ψ⟩
+□¦d’Alembertian¦“box”¦Wave operator¦□φ = 0
+εᵢⱼₖ¦Levi-Civita symbol¦“epsilon i j k”¦Totally antisymmetric tensor¦(a×b)ᵢ = εᵢⱼₖ aⱼ bₖ
+gμν¦metric tensor¦“g mu nu”¦Defines distances in curved space¦ds² = gμν dxμ dxν
+Γ, R, Rμν¦Christoffel, Riemann, Ricci¦“gamma”¦Connection and curvature¦Gμν = 8πG Tμν
+Tμν¦stress-energy tensor¦“T mu nu”¦Source of gravity¦∇μ Tμν = 0
+##Quantum Mechanics: States and Operators¦Dirac notation, observables and dynamics.
+∣ψ⟩¦ket¦“ket psi”¦State vector in Hilbert space ℋ¦∣ψ⟩ = α∣0⟩ + β∣1⟩
+⟨φ∣¦bra¦“bra phi”¦Dual vector (conjugate transpose of a ket)¦⟨φ∣ = (∣φ⟩)†
+⟨φ∣ψ⟩¦bracket / amplitude¦“bra-ket”¦Inner product; ∣⟨φ∣ψ⟩∣² is a transition probability¦⟨0∣1⟩ = 0
+∣ψ⟩⟨φ∣¦outer product¦“ket-bra”¦Operator built from two states; ∣ψ⟩⟨ψ∣ projects¦P̂ = ∣ψ⟩⟨ψ∣
+Ψ(x,t)¦wavefunction¦“sigh of x and t”¦Position-space amplitude; ∣Ψ∣² is a probability density (Born rule)¦∫∣Ψ∣² dx = 1
+Â, B̂¦hatted operator¦“A hat”¦Linear operator representing an observable¦x̂ψ = xψ
+Ĥ¦Hamiltonian¦“H hat”¦Total-energy operator generating time evolution¦iħ ∂ₜ∣ψ⟩ = Ĥ∣ψ⟩
+p̂¦momentum operator¦“p hat”¦−iħ∇ in position representation¦p̂ = −iħ ∂/∂x
+[Â,B̂]¦commutator¦“commutator”¦ÂB̂ − B̂Â; nonzero means no shared eigenbasis¦[x̂,p̂] = iħ
+{Â,B̂}¦anticommutator¦“anticommutator”¦ÂB̂ + B̂Â (fermionic algebra)¦{σₓ,σ_y} = 0
+ΔxΔp ≥ ħ/2¦uncertainty relation¦“delta x delta p”¦Heisenberg bound from non-commutation¦Δx Δp ≥ ħ/2
+⟨Â⟩¦expectation value¦“expectation of A”¦⟨ψ∣Â∣ψ⟩¦⟨Ĥ⟩ = E
+Â∣a⟩ = a∣a⟩¦eigenvalue equation¦“A on a equals a”¦Measurement outcomes are eigenvalues¦Ĥ∣n⟩ = Eₙ∣n⟩
+Û(t)¦time-evolution operator¦“U of t”¦Unitary: Û†Û = 1¦Û = e^{−iĤt/ħ}
+ρ̂¦density operator¦“rho hat”¦Describes pure and mixed states¦ρ̂ = Σ pᵢ∣ψᵢ⟩⟨ψᵢ∣
+Tr¦trace¦“trace”¦Basis-independent sum of diagonal entries¦⟨Â⟩ = Tr(ρ̂Â)
+⊗¦tensor product¦“tensor”¦Joins Hilbert spaces of subsystems; basis of entanglement¦ℋ_A ⊗ ℋ_B
+∑∣x⟩⟨x∣ = 1¦completeness¦“resolution of identity”¦Σ over a basis, or ∫dx for a continuum¦∫dx ∣x⟩⟨x∣ = 1
+δ(x−x′)¦Dirac delta¦“delta”¦Distribution with ∫δ f = f(0) (not a true function)¦⟨x∣x′⟩ = δ(x−x′)
+σₓ σ_y σ_z¦Pauli matrices¦“sigma x”¦Spin-½ observables, 2×2 Hermitian, square to 1¦S = (ħ/2)σ
+L̂ Ŝ Ĵ¦angular momentum¦“L hat”¦Orbital, spin and total angular momentum¦[L̂ₓ,L̂_y] = iħL̂_z
+∣l,m⟩¦angular-momentum state¦“ket l m”¦Joint eigenstate of L̂² and L̂_z¦L̂²∣l,m⟩ = ħ²l(l+1)∣l,m⟩
+â â†¦annihilation / creation¦“a, a dagger”¦Ladder operators for oscillator modes¦[â,â†] = 1
+N̂ = â†â¦number operator¦“N hat”¦Counts quanta¦N̂∣n⟩ = n∣n⟩
+∣0⟩¦vacuum / ground state¦“vacuum”¦Lowest-energy state, annihilated by â¦â∣0⟩ = 0
+†¦dagger¦“dagger”¦Hermitian adjoint¦Â = Â† means Hermitian
+ℋ¦Hilbert space¦“Hilbert space”¦Complete inner-product space of states¦L²(ℝ)
+∣↑⟩ ∣↓⟩¦spin states¦“spin up”¦Eigenstates of σ_z¦σ_z∣↑⟩ = ∣↑⟩
+##Quantum Field Theory and Path Integrals¦From particles to fields.
+S, ℒ¦action, Lagrangian¦“S”, “script L”¦S = ∫ℒ dt (or ∫ℒ d⁴x for densities)¦δS = 0
+∫𝒟φ e^{iS/ħ}¦path integral¦“functional integral”¦Sum over all field configurations¦Z = ∫𝒟φ e^{iS[φ]/ħ}
+δ/δφ¦functional derivative¦“delta by delta phi”¦Variation of a functional¦δS/δφ = 0
+ℋ¦Hamiltonian density¦“script H”¦Energy density of a field¦H = ∫ℋ d³x
+{A,B}_PB¦Poisson bracket¦“Poisson bracket”¦Classical analogue of [Â,B̂]/(iħ)¦{q,p} = 1
+T¦time ordering¦“T”¦Orders operators by time¦⟨0∣Tφ(x)φ(y)∣0⟩
+⟨0∣…∣0⟩¦vacuum expectation¦“VEV”¦Correlation functions¦⟨0∣φ²∣0⟩
+S¦S-matrix¦“S matrix”¦Scattering amplitudes between in and out states¦⟨f∣S∣i⟩
+γᵘ¦gamma matrices¦“gamma mu”¦Dirac algebra {γᵘ,γᵛ} = 2ηᵘᵛ¦(iγᵘ∂ᵤ − m)ψ = 0
+ψ̄¦Dirac adjoint¦“psi bar”¦ψ†γ⁰¦ψ̄ψ
+∂̸¦Feynman slash¦“d-slash”¦γᵘ∂ᵤ¦i∂̸ψ = mψ
+Aμ, Fμν¦gauge field, field strength¦“A mu”¦Fμν = ∂μAν − ∂νAμ¦∂μFμν = Jν
+Dμ¦gauge covariant derivative¦“D mu”¦∂μ − igAμ; keeps gauge symmetry local¦Dμψ
+ημν¦Minkowski metric¦“eta mu nu”¦diag(+,−,−,−) or (−,+,+,+): check the author¦ds² = ημν dxμ dxν
+Gμν, Λ¦Einstein tensor, cosmological constant¦“G mu nu”¦Gμν + Λgμν = 8πG Tμν/c⁴¦field equations
+Z¦partition function¦“Z”¦Statistical sum; generates thermodynamics and correlators¦Z = Tr e^{−βĤ}
+β¦inverse temperature¦“beta”¦1/(k_B T)¦e^{−βE}
+kB¦Boltzmann constant¦“k B”¦Links temperature to energy¦S = k_B ln Ω
+##Infinity and the Transfinite¦Sizes of infinity, ordinals and their notation.
+∞ +∞ −∞¦infinity¦“infinity”¦Unbounded direction, not a real number¦lim_{x→∞} 1/x = 0
+ℝ̄ = ℝ ∪ {±∞}¦extended reals¦“extended reals”¦Adds endpoints so limits always exist¦sup ∅ = −∞
+ℂ̂ = ℂ ∪ {∞}¦Riemann sphere¦“C hat”¦One point at infinity; ℙ¹(ℂ)¦1/0 = ∞
+∞̃¦complex infinity¦“complex infinity”¦Unsigned infinity of the Riemann sphere¦1/0 = ∞̃
+ℵ₀¦aleph-null¦“aleph null”¦Cardinality of ℕ, ℤ, ℚ¦∣ℕ∣ = ℵ₀
+𝔠, 2^ℵ₀¦continuum¦“c”, “two to the aleph null”¦Cardinality of ℝ; Cantor: 𝔠 > ℵ₀¦∣ℝ∣ = 𝔠
+ℵ₁ ℵ_α¦aleph hierarchy¦“aleph one”¦Successive infinite cardinals¦ℵ₁ = next after ℵ₀
+ℶₙ¦beth numbers¦“beth”¦ℶ₀ = ℵ₀, ℶₙ₊₁ = 2^{ℶₙ}¦ℶ₁ = 𝔠
+CH¦continuum hypothesis¦“C-H”¦𝔠 = ℵ₁; independent of ZFC¦ZFC ⊬ CH, ZFC ⊬ ¬CH
+∣A∣ = ∣B∣¦equinumerous¦“same cardinality”¦A bijection A → B exists¦∣ℕ∣ = ∣ℤ∣
+∣A∣ < ∣𝒫(A)∣¦Cantor’s theorem¦“strictly smaller”¦Power set is always larger¦∣ℕ∣ < ∣𝒫(ℕ)∣
+κ λ¦cardinal variables¦“kappa”¦Generic infinite cardinals¦κ + κ = κ
+ω¦first infinite ordinal¦“little omega”¦Order type of ℕ¦ω = {0,1,2,…}
+ω+1, ω·2, ω²¦ordinal arithmetic¦“omega plus one”¦Non-commutative: 1 + ω = ω ≠ ω + 1¦ω + 1 > ω
+ε₀¦epsilon-naught¦“epsilon nought”¦Limit of ω, ω^ω, ω^ω^ω, …¦ε₀ = ω^{ε₀}
+ω₁ Ω¦first uncountable ordinal¦“omega one”¦Least ordinal of cardinality ℵ₁¦ω₁ = ℵ₁ as cardinal
+Ord, V¦class of ordinals, universe¦“Ord”¦Proper classes, too big to be sets¦Ord ∉ Ord
+AC, ZFC¦axiom of choice, ZF + C¦“A-C”¦Foundation for infinite choice and well-ordering¦Zorn’s lemma
+∞ − ∞, ∞/∞¦indeterminate forms¦“infinity minus infinity”¦Not defined by arithmetic; evaluate via limits¦0·∞, 0/0, 1^∞, 0⁰, ∞⁰
+x → a⁺, a⁻¦one-sided limit¦“from the right”¦Approach from above/below¦lim_{x→0⁺} ln x = −∞
+∫₀^∞¦improper integral¦“integral to infinity”¦Defined as lim_{b→∞} ∫₀ᵇ¦∫₀^∞ e^{−x} dx = 1
+Σₙ₌₁^∞¦infinite series¦“sum to infinity”¦Limit of partial sums if it exists¦Σ 2⁻ⁿ = 1
+ζ(s)¦zeta function¦“zeta”¦Σ n⁻ˢ continued analytically¦ζ(−1) = −1/12 (regularised, not an ordinary sum)
+∗ℝ¦hyperreals¦“star R”¦Nonstandard reals with infinitesimals and infinite numbers¦ε > 0, ε < 1/n ∀n
+st(x)¦standard part¦“standard part”¦Nearest real to a finite hyperreal¦st(3 + ε) = 3
+H¦hyperinteger / infinite number¦“big H”¦Hyperreal greater than every real¦H > n ∀n ∈ ℕ
+δ(0)¦delta at zero¦“delta of zero”¦Formally infinite; meaningful only inside integrals¦∫δ = 1
+Λ_cut¦cutoff¦“lambda cutoff”¦Regulator that tames UV divergences in QFT¦∫^{Λ} d⁴k
+ε → 0¦dimensional regularisation¦“epsilon”¦Isolates divergences as poles 1/ε¦d = 4 − ε
+μ_R¦renormalisation scale¦“mu”¦Absorbs infinities into measured parameters¦β(g) = μ ∂g/∂μ
+##Statistical Mechanics and Thermodynamics¦Entropy and ensembles.
+S¦entropy¦“S”¦S = k_B ln Ω (Boltzmann); −k_B Σ p ln p (Gibbs)¦ΔS ≥ 0
+Ω¦multiplicity¦“big omega”¦Number of accessible microstates¦Ω(E)
+đQ, đW¦inexact differential¦“d-bar Q”¦Path-dependent infinitesimal¦dU = đQ − đW
+⟨·⟩¦ensemble average¦“expectation”¦Average over a distribution¦⟨E⟩ = −∂ln Z/∂β
+μ_c¦chemical potential¦“mu”¦Energy cost per added particle¦μ = ∂F/∂N
+F, G¦free energies¦“F”, “G”¦Helmholtz F = U − TS, Gibbs G = H − TS¦F = −k_BT ln Z
+S_vN¦von Neumann entropy¦“S von Neumann”¦−Tr(ρ̂ ln ρ̂)¦S_vN = 0 for pure states
+##Advanced Quantum Mechanics and Quantum Information¦Perturbation, open systems, entanglement.
+Ĥ₀ + λV̂¦perturbation¦“H naught plus lambda V”¦Small correction to a solvable Hamiltonian¦Eₙ ≈ Eₙ⁽⁰⁾ + λ⟨n∣V̂∣n⟩
+Eₙ⁽¹⁾ Eₙ⁽²⁾¦perturbative orders¦“first-order energy”¦Superscript in parentheses counts the order, not a power¦Eₙ⁽²⁾ = Σ ∣⟨m∣V̂∣n⟩∣²/(Eₙ−Eₘ)
+Γ_{i→f}¦transition rate¦“gamma i to f”¦Fermi’s golden rule: (2π/ħ)∣⟨f∣V̂∣i⟩∣²ρ(E_f)¦decay rates
+G(E), K(x,t;x′,t′)¦Green’s function, propagator¦“Green’s function”¦Amplitude to go from (x′,t′) to (x,t)¦K = ⟨x∣e^{−iĤt/ħ}∣x′⟩
+W(x,p)¦Wigner function¦“Wigner”¦Quasi-probability on phase space; can be negative¦∬W dx dp = 1
+γ_B¦Berry phase¦“Berry phase”¦Geometric phase from adiabatic loops¦γ = i∮⟨n∣∇n⟩·dR
+𝓛[ρ̂]¦Lindblad superoperator¦“Lindbladian”¦Generator of open-system dynamics¦dρ̂/dt = −i[Ĥ,ρ̂]/ħ + 𝓛[ρ̂]
+Π̂, Θ̂¦parity, time reversal¦“parity operator”¦Discrete symmetries; Θ̂ is antiunitary¦Π̂ψ(x) = ψ(−x)
+⟨j₁m₁j₂m₂∣JM⟩¦Clebsch–Gordan¦“Clebsch–Gordan”¦Coefficients for adding angular momenta¦½ ⊗ ½ = 1 ⊕ 0
+∣Φ⁺⟩¦Bell state¦“phi plus”¦Maximally entangled two-qubit state¦(∣00⟩ + ∣11⟩)/√2
+H, X, Z, CNOT¦quantum gates¦“Hadamard”¦Unitary operations on qubits¦H∣0⟩ = (∣0⟩ + ∣1⟩)/√2
+F(ρ,σ)¦fidelity¦“fidelity”¦Overlap of two quantum states¦F = 1 iff ρ = σ
+S(ρ‖σ)¦relative entropy¦“relative entropy”¦Tr ρ(ln ρ − ln σ) ≥ 0¦S(ρ‖ρ) = 0
+ℏ → 0¦classical limit¦“h-bar to zero”¦Correspondence principle: commutators → Poisson brackets¦[·,·]/(iħ) → {·,·}
+##Particle Physics and Gauge Theory¦Symmetry groups, particles and constants.
+U(1), SU(N), SO(n)¦Lie groups¦“S-U-two”¦Unitary, special unitary, orthogonal groups¦SU(3)×SU(2)×U(1)
+𝔰𝔲(2), 𝔤¦Lie algebra¦“little s-u-two”¦Tangent space at the identity of a group¦[Tᵃ,Tᵇ] = i fᵃᵇᶜ Tᶜ
+fᵃᵇᶜ¦structure constants¦“f a b c”¦Define the Lie bracket in a basis¦fᵃᵇᶜ = εᵃᵇᶜ for SU(2)
+Tᵃ, λᵃ¦generators¦“T a”¦Hermitian basis of the algebra; λᵃ are Gell-Mann matrices¦Tᵃ = λᵃ/2
+⟨φ⟩ = v¦Higgs VEV¦“v”¦Vacuum value that breaks electroweak symmetry¦v ≈ 246 GeV
+γ W± Z⁰ g¦gauge bosons¦“photon”, “W plus”¦Force carriers of EM, weak and strong interactions¦m_W < m_Z
+q ℓ ν¦quark, lepton, neutrino¦“q”¦Fermion species labels¦u, d, e⁻, νₑ
+V_ud, V_CKM¦CKM matrix element¦“V u d”¦Quark mixing amplitudes¦∣V_ud∣ ≈ 0.974
+α, α_s, θ_W¦coupling and mixing¦“alpha”¦Fine-structure, strong coupling, Weinberg angle¦α ≈ 1/137
+G_F¦Fermi constant¦“G F”¦Strength of weak interaction at low energy¦≈ 1.17×10⁻⁵ GeV⁻²
+i/(p²−m²+iε)¦Feynman propagator¦“i over p squared minus m squared”¦+iε sets causal contour, with ε → 0⁺ at the end¦scalar propagator
+t → −iτ¦Wick rotation¦“Wick rotation”¦Real to imaginary time; turns e^{iS} into e^{−S_E}¦Z = ∫𝒟φ e^{−S_E}
+Res_{z=a}¦residue¦“residue at a”¦Coefficient of (z−a)⁻¹ in Laurent series¦∮f dz = 2πi ΣRes
+##Manipulating Infinity: Regularisation, Summation and Limits¦Making divergent expressions meaningful.
+PV ∫, P∫¦Cauchy principal value¦“principal value”¦Symmetric excision of a singularity¦PV∫₋₁¹ dx/x = 0
+Pf, f.p.¦Hadamard finite part¦“finite part”¦Discards the divergent piece of an integral¦Pf∫₀¹ x⁻² dx = −1
+Σ_Abel, Σ_Cesàro¦Abel, Cesàro summation¦“Abel sum”¦Assign values to divergent series by smoothing¦1 − 1 + 1 − … = ½
+ℬ[f]¦Borel summation¦“Borel transform”¦Resums divergent asymptotic series¦Σ aₙgⁿ → ∫₀^∞ e^{−t}Σ aₙ(gt)ⁿ/n! dt
+[m/n]¦Padé approximant¦“Padé m over n”¦Rational function matching a series¦[1/1] of e^x = (1+x/2)/(1−x/2)
+Γ(s)¦gamma function¦“gamma”¦Extends n! to complex s; poles at 0, −1, −2, …¦Γ(n+1) = n!
+f ~ Σ aₙxⁿ¦asymptotic series¦“asymptotic to”¦Accurate truncation but possibly divergent¦Stirling’s series
+n! ∼ √(2πn)(n/e)ⁿ¦Stirling¦“Stirling”¦Growth of the factorial¦ln n! ≈ n ln n − n
+N → ∞¦thermodynamic limit¦“N to infinity”¦Particle number and volume grow, density fixed¦phase transitions need it
+1/N¦large-N expansion¦“one over N”¦Expansion in the number of components¦planar diagrams
+X ∪ {∞}, X*¦one-point compactification¦“Alexandroff”¦Adds one point so X becomes compact¦ℝ² ∪ {∞} ≅ S²
+ℙⁿ¦projective space¦“P n”¦Adds a hyperplane at infinity¦ℙ¹ ≅ ℂ̂
+𝐍𝐨¦surreal numbers¦“surreals”¦Ordered field containing ℝ, ordinals, infinitesimals¦ω, 1/ω, ω − 1
+Ш¦Dirac comb¦“sha”¦Periodic train of delta functions¦Σₙ δ(x − nT)
+θ(x)¦Heaviside step¦“theta of x”¦0 for x<0, 1 for x>0; θ′ = δ¦∫ δ = θ
+ℱ, ℒ¦Fourier, Laplace transform¦“Fourier transform”¦f̂(k) = ∫f e^{−ikx}dx; ℒ[f](s) = ∫₀^∞ f e^{−st}dt¦ℱ[δ] = 1
+lim_{x→∞} f/g¦growth comparison¦“limit of f over g”¦Decides f ≪ g, f ∼ g or f ≫ g¦ln x ≪ xᵃ ≪ eˣ
+L’Hôpital¦L’Hôpital rule¦“lo-pee-tal”¦For 0/0 or ∞/∞: lim f/g = lim f′/g′¦(sin x)/x → 1
+##Number Theory, Combinatorics and Graphs¦Discrete structures.
+φ(n)¦Euler totient¦“phi of n”¦Count of 1…n coprime to n¦φ(12) = 4
+μ(n)¦Möbius function¦“mu of n”¦0 if n has a square factor, else (−1)^k for k primes¦μ(30) = −1
+π(x)¦prime-counting function¦“pi of x”¦Number of primes ≤ x; π(x) ∼ x/ln x¦π(10) = 4
+σ(n), d(n)¦divisor functions¦“sigma of n”¦Sum / count of divisors¦σ(6) = 12
+(a/p)¦Legendre symbol¦“a over p”¦+1, −1 or 0 by quadratic residuosity mod p¦(2/7) = 1
+Πₚ¦product over primes¦“product over p”¦Euler product of ζ¦ζ(s) = Πₚ (1 − p⁻ˢ)⁻¹
+{ⁿₖ}, [ⁿₖ]¦Stirling numbers¦“Stirling second kind”¦Partitions into k blocks / cycles¦{4 2} = 7
+Bₙ, Fₙ, Cₙ¦Bell, Fibonacci, Catalan¦“Fibonacci”¦Famous integer sequences¦F₁₀ = 55
+G = (V,E)¦graph¦“G equals V comma E”¦Vertices and edges¦Kₙ has n(n−1)/2 edges
+deg(v), χ(G)¦degree, chromatic number¦“degree of v”¦Edges at v; minimum colours¦χ(K₄) = 4
+P, NP, ≤ₚ¦complexity classes¦“P versus NP”¦Polynomial time; verifiable in polynomial time; reduction¦3-SAT ∈ NP
+##Category Theory¦Objects, morphisms and functors.
+Ob(𝒞), id_A¦objects, identity¦“objects of C”¦Class of objects; identity morphism¦f ∘ id = f
+F: 𝒞 → 𝒟¦functor¦“F from C to D”¦Preserves composition and identities¦F(g∘f) = F(g)∘F(f)
+Nat(F,G), η¦natural transformation¦“eta”¦Family ηₓ: F(x) → G(x) commuting with morphisms¦η: F ⇒ G
+F ⊣ G¦adjunction¦“F left adjoint to G”¦Hom(FA,B) ≅ Hom(A,GB)¦free ⊣ forgetful
+𝒞ᵒᵖ¦opposite category¦“C op”¦Reverse all arrows¦contravariant = covariant on 𝒞ᵒᵖ
+0, 1¦initial, terminal object¦“initial”¦Unique map out of / into every object¦∅ initial in Set
+×, ⨿, ∏, ∐¦product, coproduct¦“product”¦Universal constructions; ⨿ is disjoint union in Set¦A × B
+↣ ↠¦monomorphism, epimorphism¦“mono”¦Left/right-cancellable arrows¦injective ⇒ mono in Set
+≃¦equivalence of categories¦“equivalent to”¦Functors inverse up to natural isomorphism¦Vect_fd ≃ Matr
+Set Grp Top Vect¦named categories¦“Set”¦Sets, groups, spaces, vector spaces with structure-preserving maps¦Hom_Grp(G,H)
+y(A)¦Yoneda embedding¦“Yoneda”¦A ↦ Hom(−,A); fully faithful¦Nat(y(A),F) ≅ F(A)
+##Mathematical Alphabets¦Font styles carry meaning.
+𝔸 ℝ ℂ¦blackboard bold¦“double-struck”¦Standard sets and fields¦𝔽ₚ, ℍ
+𝒜 ℱ ℒ¦script / calligraphic¦“script A”¦Families, σ-algebras, operators, Lagrangians¦ℱ = σ-algebra
+𝔄 𝔤 𝔰𝔲¦fraktur¦“fraktur g”¦Lie algebras, ideals¦𝔰𝔬(3)
+𝐀 𝐯¦bold¦“bold v”¦Vectors, matrices (also bold italic)¦𝐅 = m𝐚
+ℵ ℶ ℷ¦Hebrew letters¦“aleph, beth, gimel”¦Infinite cardinals¦ℵ₀, ℶ₁
+Ш¦Cyrillic sha¦“sha”¦Tate–Shafarevich group; Dirac comb¦Ш(E/ℚ)
+ℓ ℘ ℏ¦special letters¦“ell”, “Weierstrass p”¦Lengths/ℓᵖ spaces; elliptic function; Planck¦ℓ², ℘(z)
+##Common Pitfalls¦Frequent misreadings and how to avoid them.¦Symbol,Topic,Mistake,Correct usage,Related
+sin⁻¹¦inverse vs reciprocal¦Reading as 1/sin¦arcsin x; 1/sin x is csc x; sin²x means (sin x)²¦arcsin, csc
+f⁻¹¦inverse vs reciprocal¦Reading as 1/f¦Inverse function, not reciprocal; exists only for bijections¦∘, ↔
+⊂¦subset convention¦Assuming proper subset always¦Some authors: ⊂ is non-strict; use ⊆ / ⊊ for clarity¦⊆, ⊊
+∣¦bar overloading¦Confusing divides, absolute value, conditional¦a ∣ b divides; ∣x∣ magnitude; P(A∣B) given¦∤, ∣x∣, ‖x‖
+=¦equality vs identity¦Treating equation as identity¦x²=4 holds for some x; (x+1)² ≡ x²+2x+1 for all x¦≡, ≔
+δ¦many deltas¦Mixing Dirac and Kronecker¦δ(x) is a distribution; δᵢⱼ is a discrete 0/1 symbol¦Δ, ∂
+∂¦partial vs boundary¦Reading ∂A as a derivative¦For sets, ∂A is the boundary¦∂f/∂x, ∂M
+[·,·]¦brackets¦Assuming interval¦May be commutator, Lie bracket, floor-like or matrix¦{·,·}, ⟨·⟩
+ΔxΔp¦uncertainty¦Reading Δ as a measurement error¦Δx is a standard deviation of a state¦σₓ, [x̂,p̂]
+⟨ψ∣φ⟩¦bra-ket¦Treating as a product of numbers¦Complex inner product; antilinear in the bra¦∣φ⟩⟨ψ∣
+∞¦infinity¦Using as an ordinary number¦∞ − ∞, ∞/∞ are indeterminate; compare cardinality or limits¦ℵ₀, lim
+Σ 1/n¦divergent series¦Treating 1+2+3+… = −1/12 literally¦That is the value of ζ(−1) by continuation, not a sum¦ζ(s), Σ_Abel
+ln, log¦base convention¦Assuming log is base 10¦Base e in maths, 10 in some sciences, 2 in CS¦ln, lg, lb
+ħ vs h¦Planck constants¦Mixing h and ħ in formulas¦ħ = h/2π; ω pairs with ħ, ν with h¦E = ħω = hν
+##Historical Origins¦Who introduced the notation, approximately. Dates are first use or popularisation, and attributions are simplified.¦Symbol,Name,Introduced by,Year,Note
++ −¦plus, minus¦Johannes Widmann¦1489¦First printed in German commercial arithmetic
+=¦equals¦Robert Recorde¦1557¦Two parallel lines because nothing is more alike
+× ·¦times, dot¦Oughtred, Leibniz¦1631, 1698¦× in Clavis Mathematicae; Leibniz favoured the dot
+√¦radical¦Christoff Rudolff¦1525¦Derived from a stylised r (radix)
+< >¦less, greater¦Thomas Harriot¦1631¦Published posthumously
+∴ ÷¦therefore, obelus¦Johann Rahn¦1659¦Appeared in an algebra text
+∞¦infinity¦John Wallis¦1655¦Used in De sectionibus conicis
+∫ dy/dx¦integral, derivative¦Gottfried Leibniz¦1675¦Elongated s for summa
+f′¦prime¦Joseph-Louis Lagrange¦1770s¦Derivative as a derived function
+∂¦partial¦Legendre; Jacobi¦1786; 1841¦Popularised by Jacobi
+Σ¦sigma sum¦Leonhard Euler¦1755¦Also introduced f(x), i and standard e
+π¦pi¦William Jones; Euler¦1706; 1737¦Euler’s usage made it standard
+e, i¦Euler’s number, imaginary unit¦Euler¦1727–1777¦e c. 1727; i in 1777
+!¦factorial¦Christian Kramp¦1808¦Notation for n factorial
+≡¦congruence¦Carl Friedrich Gauss¦1801¦Disquisitiones Arithmeticae
+∇¦nabla¦William Rowan Hamilton¦1837¦Inverted Δ; name suggested later
+∈ ∃ ∪ ∩¦membership, existence, union, intersection¦Giuseppe Peano¦1888–1895¦∈ from Greek ἐστί
+ℵ¦aleph¦Georg Cantor¦1890s¦Transfinite cardinals
+∀¦for all¦Gerhard Gentzen¦1935¦Dual of Peano’s ∃ inversion
+∅¦empty set¦André Weil¦1939¦Bourbaki group
+⟨∣⟩¦bra-ket¦Paul Dirac¦1939¦Pun on “bracket”
+ħ¦h-bar¦Paul Dirac¦1930¦h/2π, widely used after The Principles of Quantum Mechanics
+O(·)¦big O¦Paul Bachmann; Edmund Landau¦1894; 1909¦“Landau symbol”
+##Differential Geometry and Exterior Calculus¦Forms, manifolds and flows.
+d¦exterior derivative¦“d”¦Takes k-forms to (k+1)-forms; d² = 0¦d(f dx) = df ∧ dx
+∧¦wedge product¦“wedge”¦Antisymmetric product of forms (also logical AND)¦dx ∧ dy = −dy ∧ dx
+⋆¦Hodge star¦“star”¦Maps k-forms to (n−k)-forms using a metric¦⋆dx = dy ∧ dz in ℝ³
+ι_X¦interior product¦“i X”¦Contracts a form with a vector field¦ι_X dx = X¹
+ℒ_X¦Lie derivative¦“Lie derivative along X”¦Change of a tensor along the flow of X¦ℒ_X = dι_X + ι_X d
+Ωᵏ(M)¦differential forms¦“omega k of M”¦Smooth antisymmetric covariant tensor fields¦Ω⁰(M) = functions
+T_pM, T*_pM¦tangent, cotangent space¦“T p M”¦Vectors, covectors at the point p¦dim T_pM = dim M
+[X,Y]¦Lie bracket¦“bracket”¦XY − YX for vector fields¦[∂ₓ, x∂_y] = ∂_y
+∇_X Y¦covariant derivative¦“nabla X of Y”¦Derivative of Y along X using a connection¦∇_X f = X(f)
+♭ ♯¦musical isomorphisms¦“flat, sharp”¦Lower, raise indices with the metric¦vᵢ = gᵢⱼvʲ
+∫_M ω¦integral of a form¦“integral over M”¦Orientation-dependent integral¦∫_M dω = ∫_∂M ω (Stokes)
+Hᵏ_dR(M)¦de Rham cohomology¦“H k de Rham”¦Closed forms modulo exact forms¦H¹_dR(S¹) = ℝ
+∧ᵏV¦exterior power¦“lambda k of V”¦Space of antisymmetric k-vectors¦dim ∧ᵏℝⁿ = (ⁿₖ)
+##Measure Theory and Functional Analysis¦Size, integration and function spaces.
+(Ω,ℱ,P)¦probability space¦“omega F P”¦Sample space, σ-algebra, measure with P(Ω) = 1¦fair die
+σ(𝒜)¦generated σ-algebra¦“sigma of A”¦Smallest σ-algebra containing 𝒜¦Borel sets
+μ, ν¦measure¦“mu”¦Countably additive set function¦μ(∅) = 0
+a.e.¦almost everywhere¦“almost everywhere”¦Except on a set of measure zero¦f = g a.e.
+∫ f dμ¦Lebesgue integral¦“integral of f d-mu”¦Integral with respect to a measure¦∫1_A dμ = μ(A)
+Lᵖ, ℓᵖ¦Lebesgue, sequence spaces¦“L p”¦Functions or sequences with finite p-norm¦‖f‖ₚ = (∫∣f∣ᵖ)^{1/p}
+C(X), Cᵏ, C^∞¦function spaces¦“C k”¦Continuous; k times continuously differentiable; smooth¦e^x ∈ C^∞
+supp f¦support¦“support of f”¦Closure of {x : f(x) ≠ 0}¦supp θ = [0,∞)
+1_A, χ_A¦indicator function¦“indicator of A”¦1 on A, 0 elsewhere¦1_ℚ
+f ∗ g¦convolution¦“f convolved with g”¦∫ f(y)g(x−y)dy¦ℱ[f∗g] = f̂ ĝ
+σ(A), B(ℋ)¦spectrum, bounded operators¦“spectrum of A”¦λ such that A − λI is not invertible¦σ(Â) ⊂ ℝ if Hermitian
+⇀ →ᵈ →ᵖ¦weak, distribution, probability convergence¦“converges weakly”¦Modes of convergence for sequences¦Xₙ →ᵈ X
+##Logic, Proof Theory and Computation¦Formal systems and lambda calculus.
+⊬ ⊭¦does not prove, entail¦“does not prove”¦Negations of ⊢ and ⊨¦ZFC ⊬ CH
+Γ ⊢ A¦sequent¦“Gamma proves A”¦A follows from assumptions Γ¦A, A→B ⊢ B
+⊩¦forces¦“forces”¦Cohen forcing, Kripke semantics¦p ⊩ φ
+⟦φ⟧¦semantic brackets¦“denotation of φ”¦Meaning of φ in a model¦⟦P∧Q⟧ = ⟦P⟧ ∩ ⟦Q⟧
+λx.M¦lambda abstraction¦“lambda x dot M”¦Anonymous function¦(λx.x+1)
+→_β¦beta reduction¦“reduces to”¦Function application step¦(λx.M)N →_β M[N/x]
+⊸ ⅋¦linear implication, par¦“lollipop”¦Linear logic connectives¦A ⊸ B
+≜¦defined as¦“is defined as”¦Alternative to := ¦f ≜ λx.x²
+##Physical Constants¦Values are approximate (exact where defined in the SI).¦Symbol,Name,Say,Value,Role
+c¦speed of light¦“c”¦299 792 458 m/s (exact)¦E = mc²
+h, ħ¦Planck constant¦“h”, “h bar”¦6.62607015×10⁻³⁴ J·s (exact); ħ = h/2π ≈ 1.0546×10⁻³⁴ J·s¦E = hν = ħω
+k_B¦Boltzmann constant¦“k B”¦1.380649×10⁻²³ J/K (exact)¦S = k_B ln Ω
+e¦elementary charge¦“e”¦1.602176634×10⁻¹⁹ C (exact)¦charge of a proton
+N_A¦Avogadro constant¦“N A”¦6.02214076×10²³ mol⁻¹ (exact)¦R = N_A k_B
+R¦gas constant¦“R”¦8.314462618 J/(mol·K)¦PV = nRT
+G¦gravitational constant¦“big G”¦6.6743×10⁻¹¹ m³ kg⁻¹ s⁻²¦F = Gm₁m₂/r²
+ε₀, μ₀¦vacuum permittivity, permeability¦“epsilon naught”¦8.8542×10⁻¹² F/m; 1.2566×10⁻⁶ N/A²¦c² = 1/(ε₀μ₀)
+α¦fine-structure constant¦“alpha”¦≈ 1/137.036 (dimensionless)¦α = e²/(4πε₀ħc)
+m_e, m_p¦electron, proton mass¦“m e”¦9.1094×10⁻³¹ kg; 1.6726×10⁻²⁷ kg¦m_p/m_e ≈ 1836
+a₀¦Bohr radius¦“a naught”¦5.29177×10⁻¹¹ m¦a₀ = ħ/(m_e c α)
+R_∞¦Rydberg constant¦“Rydberg”¦1.09737×10⁷ m⁻¹¦hydrogen spectral lines
+μ_B¦Bohr magneton¦“mu B”¦9.2740×10⁻²⁴ J/T¦eħ/(2m_e)
+σ_SB¦Stefan–Boltzmann constant¦“sigma”¦5.6704×10⁻⁸ W m⁻² K⁻⁴¦j = σT⁴
+G_F¦Fermi constant¦“G F”¦1.16638×10⁻⁵ GeV⁻²¦weak coupling; muon decay Γ ∝ G_F²m_μ⁵
+ℓ_P, t_P, m_P¦Planck length, time, mass¦“Planck length”¦1.616×10⁻³⁵ m; 5.391×10⁻⁴⁴ s; 2.176×10⁻⁸ kg¦ℓ_P = √(ħG/c³)
+##SI Units and Prefixes¦Base units, common derived units, and decimal prefixes.
+m, kg, s¦metre, kilogram, second¦“metre”¦Length, mass, time¦base units
+A, K, mol, cd¦ampere, kelvin, mole, candela¦“ampere”¦Current, temperature, amount, luminous intensity¦base units
+Hz¦hertz¦“hertz”¦Cycles per second, s⁻¹¦f = 1/T
+N, Pa¦newton, pascal¦“newton”¦Force kg·m/s²; pressure N/m²¦F = ma
+J, W¦joule, watt¦“joule”¦Energy N·m; power J/s¦P = IV
+C, V, Ω¦coulomb, volt, ohm¦“coulomb”¦Charge A·s; potential J/C; resistance V/A¦V = IR
+F, H, S¦farad, henry, siemens¦“farad”¦Capacitance, inductance, conductance¦C = Q/V
+T, Wb¦tesla, weber¦“tesla”¦Magnetic flux density Wb/m²; flux V·s¦B
+eV¦electronvolt¦“electron volt”¦1.602×10⁻¹⁹ J¦m_e c² ≈ 511 keV
+k M G T¦kilo, mega, giga, tera¦“kilo”¦10³, 10⁶, 10⁹, 10¹²¦GHz
+m μ n p f¦milli, micro, nano, pico, femto¦“milli”¦10⁻³, 10⁻⁶, 10⁻⁹, 10⁻¹², 10⁻¹⁵¦μm, ns
+##Greek Letters and Their Common Uses¦Context determines meaning.
+α β γ¦alpha, beta, gamma¦“al-fa”¦Angles, coefficients, parameters; γ also Lorentz factor¦α = 0.05
+δ Δ¦delta¦“del-ta”¦Small change; Dirac delta; Kronecker delta; Laplacian¦δ(x)
+ε¦epsilon¦“ep-si-lon”¦Arbitrarily small quantity¦∀ε>0
+ζ η θ¦zeta, eta, theta¦“zay-ta”¦Zeta function; efficiency; angles¦ζ(2) = π²/6
+κ λ μ ν¦kappa, lambda, mu, nu¦“lam-da”¦Curvature; eigenvalue/wavelength; mean/measure; frequency¦Av = λv
+ξ ρ σ τ¦xi, rho, sigma, tau¦“zie”, “roe”¦Variables; density/correlation; deviation/permutation; time constant¦σ ∈ Sₙ
+φ Φ ψ Ψ¦phi, psi¦“fie”, “sigh”¦Angle, golden ratio, CDF; wavefunction¦Φ(x)
+χ ω Ω¦chi, omega¦“kie”, “oh-may-ga”¦Statistics; angular frequency, ordinal; sample space¦ω = 2πf
+`;
+const m=document.getElementById('m'),nav=document.getElementById('nav');
+D.trim().split('##').filter(Boolean).forEach((blk,i)=>{
+ const L=blk.trim().split('\n'),[t,d,hd]=L[0].split('¦');
+ const id='s'+i;
+ nav.insertAdjacentHTML('beforeend',`<a href="#${id}">${t.split(':')[0].split(' and ')[0].split(',')[0]}</a>`);
+ let h=`<section id="${id}"><h2>${i+1}. ${t}</h2><p class="intro">${d}</p><div class="w"><table><thead><tr>${(hd||'Symbol,Name,Say,Meaning,Example').split(',').map(x=>'<th>'+x+'</th>').join('')}</tr></thead><tbody>`;
+ L.slice(1).forEach(r=>{const c=r.split('¦');if(c.length<5)return;
+  h+=`<tr><td class="s">${c[0]}</td><td>${c[1]}</td><td class="p">${c[2]}</td><td>${c[3]}</td><td><code>${c[4]}</code></td></tr>`});
+ m.insertAdjacentHTML('beforeend',h+'</tbody></table></div></section>');
+});
+const ctx=`<section id="ctx"><h2>${document.querySelectorAll('section').length+1}. Context-Dependent Symbols</h2><p class="intro">One glyph, many meanings.</p><div class="w"><table><thead><tr><th>Symbol</th><th>Possible meanings</th></tr></thead><tbody>
+<tr><td class="s">Δ</td><td>Finite change; Laplacian; symmetric difference; discriminant</td></tr>
+<tr><td class="s">∂</td><td>Partial derivative; boundary of a set or manifold</td></tr>
+<tr><td class="s">δ</td><td>Small quantity; variation; Dirac delta; Kronecker delta</td></tr>
+<tr><td class="s">σ</td><td>Standard deviation; permutation; conductivity; stress; sigma-algebra (σ-)</td></tr>
+<tr><td class="s">π</td><td>Circle constant; projection; permutation; prime-counting function π(x)</td></tr>
+<tr><td class="s">⊂</td><td>Subset (possibly equal) or proper subset, by author</td></tr>
+<tr><td class="s">×</td><td>Multiplication; cross product; Cartesian product; direct product</td></tr>
+<tr><td class="s">∼</td><td>Similar; distributed as; equivalent; asymptotic to; row-equivalent</td></tr>
+<tr><td class="s">⊥</td><td>Perpendicular; falsity; bottom element; orthogonal complement</td></tr>
+<tr><td class="s">Γ</td><td>Gamma function; Christoffel symbol; set of premises; gamma distribution</td></tr>
+</tbody></table></div></section>`;
+m.insertAdjacentHTML('beforeend',ctx);
+document.querySelector('.sub').textContent+=' '+document.querySelectorAll('tbody tr').length+' entries in '+document.querySelectorAll('section').length+' sections.';
+document.getElementById('q').addEventListener('input',e=>{
+ const v=e.target.value.toLowerCase().trim();
+ document.querySelectorAll('tbody tr').forEach(r=>r.classList.toggle('h',v&&!r.textContent.toLowerCase().includes(v)));
+ document.querySelectorAll('section').forEach(s=>s.style.display=(v&&![...s.querySelectorAll('tbody tr')].some(r=>!r.classList.contains('h')))?'none':'');
+});
+</script></body></html>
