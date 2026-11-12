@@ -177,6 +177,19 @@
    ]
   },
   {
+   "id": "human-nature",
+   "label": "HUMAN NATURE",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "mammalian-organic-synthesis-of-biological-energy",
+     "title": "Mammalian Organic Synthesis of Biological Energy",
+     "slug": "mammalian-organic-synthesis-of-biological-energy"
+    }
+   ]
+  },
+  {
    "id": "encyclopedia",
    "label": "ENCYCLOPEDIA",
    "type": "index",
