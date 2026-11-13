@@ -8,6 +8,19 @@
    "icon": "home"
   },
   {
+   "id": "the-sovereign-mind",
+   "label": "THE SOVEREIGN MIND",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "the-sovereign-individual",
+     "title": "The sovereign individual",
+     "slug": "the-sovereign-individual"
+    }
+   ]
+  },
+  {
    "id": "tumultuous",
    "label": "TUMULTUOUS",
    "type": "index",
