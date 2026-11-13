@@ -177,6 +177,13 @@
    ]
   },
   {
+   "id": "synthoid-nature",
+   "label": "SYNTHOID NATURE",
+   "type": "index",
+   "icon": "triangle",
+   "items": []
+  },
+  {
    "id": "human-nature",
    "label": "HUMAN NATURE",
    "type": "index",
