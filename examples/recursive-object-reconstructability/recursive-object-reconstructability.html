@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="author" content="MAKURABA">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recursive Object Reconstructability: From Apples to Weight Space</title>
+<style>
+  :root {
+    --bg: #f7f4ec; --paper: #fffdf8; --ink: #1d1b16; --quiet: #5f5a4e;
+    --rule: #d9d2c0; --accent: #2f6fdb; --accent-tint: rgba(47,111,219,0.12);
+    --band: #ebe8e1; --code-bg: #f1ede2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141310; --paper: #1c1b17; --ink: #ece7da; --quiet: #a59f90;
+      --rule: #3a372f; --accent: #6b9cff; --accent-tint: rgba(107,156,255,0.16);
+      --band: #26241f; --code-bg: #24221d;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 17px/1.6 Georgia, "Iowan Old Style", "Times New Roman", serif;
+  }
+  main {
+    max-width: 820px; margin: 0 auto; padding: 32px 20px 64px;
+    background: var(--paper); min-height: 100vh;
+  }
+  h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 6px; }
+  .byline { color: var(--quiet); font-size: 0.9rem; margin-bottom: 28px; }
+  h2 {
+    font-size: 1.35rem; margin: 44px 0 12px; padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+  p, li { max-width: 70ch; }
+  nav.toc {
+    border: 1px solid var(--rule); border-radius: 8px; padding: 12px 18px;
+    font-size: 0.95rem; margin-bottom: 8px;
+  }
+  nav.toc ol { margin: 6px 0 0; padding-left: 22px; }
+  nav.toc a { color: var(--accent); text-decoration: none; }
+  .table-wrap { overflow-x: auto; margin: 16px 0; -webkit-overflow-scrolling: touch; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; min-width: 520px; }
+  th, td { border-bottom: 1px solid var(--rule); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { font-family: system-ui, -apple-system, sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--quiet); }
+  .math {
+    background: var(--code-bg); border-radius: 8px; padding: 14px 18px; margin: 14px 0;
+    font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", Georgia, serif;
+    font-size: 1.05rem; overflow-x: auto; white-space: nowrap;
+  }
+  blockquote {
+    margin: 18px 0; padding: 14px 18px; border-left: 3px solid var(--accent);
+    background: var(--accent-tint); border-radius: 0 8px 8px 0;
+  }
+  code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.88em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; word-break: break-all; }
+  .note { color: var(--quiet); font-size: 0.9rem; }
+  figure { margin: 22px 0; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { color: var(--quiet); font-size: 0.85rem; margin-top: 6px; }
+  svg .ink { fill: var(--ink); } svg .quiet { fill: var(--quiet); }
+  svg .box { fill: none; stroke: var(--quiet); stroke-width: 1.25; }
+  svg .box-main { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 2; }
+  svg .band { fill: var(--band); }
+  svg .edge { fill: none; stroke: var(--quiet); stroke-width: 1.25; }
+  svg .arrowhead { fill: var(--quiet); }
+  svg text { font-family: system-ui, -apple-system, sans-serif; }
+  ol.refs li { margin-bottom: 6px; font-size: 0.92rem; }
+</style>
+</head>
+<body>
+<main>
+<a href="index.html" style="display:inline-block;font:600 0.75rem system-ui,sans-serif;letter-spacing:0.12em;text-transform:uppercase;color:#f2cf6a;text-decoration:none;margin:0 0 10px">◆ MAKURABA · Apple of Apples</a>
+
+<h1>Recursive Object Reconstructability: From Apples to Weight Space</h1>
+<div class="byline">November 12, 2026 · MAKURABA</div>
+
+<nav class="toc">
+  <strong>Contents</strong>
+  <ol>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#definitions">Formal definitions</a></li>
+    <li><a href="#apple">Worked example: from crab apple to Apple II</a></li>
+    <li><a href="#geometry">Geometry: Hilbert space versus hypersphere</a></li>
+    <li><a href="#ai">The AI version: models as points in weight space</a></li>
+    <li><a href="#conjecture">The conjecture and its predictions</a></li>
+    <li><a href="#experiment">Experiment plan on a small model</a></li>
+    <li><a href="#human">The human personality parallel</a></li>
+    <li><a href="#philosophy">Philosophy versus testable claim</a></li>
+    <li><a href="#references">References</a></li>
+  </ol>
+</nav>
+
+<h2 id="abstract">1. Abstract</h2>
+<p>Any object can be treated as a seed point in a space of describable configurations. Only a small, structured, connected part of that space can actually exist. The conjecture makes three claims about that part:</p>
+<ol>
+  <li>Realizable sets are low-dimensional regions inside high-dimensional descriptor spaces.</li>
+  <li>How they branch is set by couplings between qualities: changing one trait drags others with it.</li>
+  <li>Repeated small-step reconstruction from a seed can only reach the connected region around that seed.</li>
+</ol>
+<p>Applied to neural networks, it predicts that independently trained models end up with unique weights but converge in behavior. It also predicts that behavioral traits sit along low-dimensional directions that can be extracted and transplanted. The crab apple is the teaching example. Trained models are where the claims can be tested.</p>
+
+<h2 id="definitions">2. Formal definitions</h2>
+<p>Six objects carry the whole framework. Extraction is many-to-one, so the framework is built on an encoder and decoder pair, not a bijection.</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>Symbol</th><th>Name</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><i>O</i></td><td>Object space</td><td>The actual things: every real apple.</td></tr>
+    <tr><td><i>F</i> = ℝ<sup><i>n</i></sup></td><td>Descriptor space</td><td>One axis per measurable quality (hue, mass, firmness, sugar, acidity, speckle density). Everything we can describe.</td></tr>
+    <tr><td><i>E</i>: <i>O</i> → <i>F</i></td><td>Encoder (extraction)</td><td>Measurement. Many apples map to one description, so <i>E</i> loses information and is not invertible.</td></tr>
+    <tr><td><i>R</i>: <i>F</i> → <i>O</i> ∪ {∅}</td><td>Decoder (reconstruction)</td><td>Breeding, synthesis or generation. Returns ∅ where no real object fits the description.</td></tr>
+    <tr><td><i>V</i> ⊂ <i>F</i></td><td>Realizable set</td><td>Descriptions that some real object can satisfy under the domain's constraints.</td></tr>
+    <tr><td><i>d</i></td><td>Metric on <i>F</i></td><td>Distance between configurations, after putting the axes on a common scale.</td></tr>
+  </tbody>
+</table></div>
+
+<p>The realizable set and the reconstruction gap:</p>
+<div class="math"><i>V</i> = { <i>x</i> ∈ <i>F</i> : <i>R</i>(<i>x</i>) ≠ ∅ },&emsp;&emsp;Δ(<i>A</i>) = <i>d</i><sub><i>O</i></sub>( <i>A</i>, <i>R</i>(<i>E</i>(<i>A</i>)) )</div>
+<p>Δ(<i>A</i>) measures what the description failed to capture. Δ = 0 for every <i>A</i> would make <i>E</i> a bijection onto <i>V</i>. In practice Δ &gt; 0, and its size is a measurable property of your chosen descriptors.</p>
+
+<p><strong>Choosing <i>d</i>.</strong> Raw axes mix grams, degrees and percentages, so standardize each one first (z-scores). Better still, use the Mahalanobis distance built from the covariance Σ of real apples. That builds the couplings between traits into the geometry:</p>
+<div class="math"><i>d</i>(<i>x</i>, <i>y</i>) = √( (<i>x</i> − <i>y</i>)<sup>⊤</sup> Σ<sup>−1</sup> (<i>x</i> − <i>y</i>) )</div>
+
+<p><strong>Step-bounded reachability.</strong> Recursion, "each new apple becomes the next seed," is a walk through <i>V</i> where each step has length at most ε:</p>
+<div class="math">Reach<sub><i>k</i></sub>(<i>x</i><sub>0</sub>, ε) = { <i>x</i><sub><i>k</i></sub> : <i>x</i><sub><i>i</i>+1</sub> ∈ <i>V</i>,&ensp;<i>d</i>(<i>x</i><sub><i>i</i></sub>, <i>x</i><sub><i>i</i>+1</sub>) ≤ ε,&ensp;<i>i</i> = 0, …, <i>k</i> − 1 }</div>
+<p>As <i>k</i> → ∞ this fills the connected component of <i>V</i> that contains <i>x</i><sub>0</sub>, at resolution ε. Two consequences follow:</p>
+<ul>
+  <li><strong>The seed matters only if steps are bounded.</strong> With unbounded jumps, any point of <i>V</i> is reachable and Apple I is just a choice of origin.</li>
+  <li><strong>Islands are real.</strong> Regions of <i>V</i> cut off from <i>x</i><sub>0</sub> by gaps wider than ε can never be reached from it, however long the recursion runs. That is a testable claim, not a metaphor.</li>
+</ul>
+
+<h2 id="apple">3. Worked example: from crab apple to Apple II</h2>
+<p>Apple I is a small green crab apple, encoded as a point in an 8-axis descriptor space. Apple II is a deliberate move to another point in <i>V</i>. The values below are illustrative, chosen to be plausible rather than measured.</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>Quality (axis)</th><th>Unit</th><th>Apple I (seed)</th><th>Apple II (reconfigured)</th><th>Coupled with</th></tr></thead>
+  <tbody>
+    <tr><td>Diameter</td><td>mm</td><td>30</td><td>75</td><td>Mass, cell number</td></tr>
+    <tr><td>Mass</td><td>g</td><td>15</td><td>180</td><td>Diameter (roughly cubic)</td></tr>
+    <tr><td>Ground colour hue</td><td>degrees</td><td>110 (green)</td><td>60 (yellow)</td><td>Ripening stage</td></tr>
+    <tr><td>Red blush coverage</td><td>% surface</td><td>10, in 2 bands</td><td>60, banded</td><td>Anthocyanin genes, sun exposure</td></tr>
+    <tr><td>Yellow patches</td><td>% surface</td><td>15</td><td>30</td><td>Chlorophyll loss</td></tr>
+    <tr><td>Speckles (lenticels)</td><td>count per cm²</td><td>3</td><td>1</td><td>Skin expansion</td></tr>
+    <tr><td>Sugar</td><td>°Brix</td><td>10</td><td>14</td><td>Partly independent of acidity</td></tr>
+    <tr><td>Acidity</td><td>% malic acid</td><td>2.0</td><td>0.6</td><td>Controlled largely by one locus (<i>Ma</i>)</td></tr>
+  </tbody>
+</table></div>
+
+<p><strong>Why this is a reconfiguration, not a copy.</strong> <i>E</i>(Apple I) gives a point <i>x</i><sub>0</sub>. Choosing <i>x</i><sub>1</sub> = <i>E</i>(Apple II) means editing coordinates. <i>R</i>(<i>x</i><sub>1</sub>) is then whatever real process produces an apple near <i>x</i><sub>1</sub>. In nature, that process is breeding: crab apples are among the ancestors of modern cultivars, so this path actually happened.</p>
+
+<p><strong>Where branches come from.</strong> Each axis that can vary freely multiplies the options. Each coupling turns a free branch into a conditional one:</p>
+<ul>
+  <li><strong>Free axes multiply.</strong> If blush and acidity really are independent, 3 blush levels × 3 acidity levels gives 9 branches.</li>
+  <li><strong>Coupled axes condition.</strong> Diameter and mass cannot move separately: mass scales roughly with diameter cubed at fixed density. Choosing one fixes most of the other.</li>
+  <li><strong>Single genes move several traits.</strong> In apples, one transcription factor (<i>MdMYB10</i>) controls red pigment in skin and, in some variants, in flesh. Red-fleshed varieties are a branch opened by changing that one gene. This is pleiotropy: one change, several moved traits.</li>
+</ul>
+
+<p><strong>The infographic's gemstone, yarn and plasma apples</strong> are points in <i>F</i> only if <i>F</i> gets new axes for material and phase. They show the combinatorial space, not <i>V</i>. Adding axes changes the question you are asking. They work as art, but they are not apples.</p>
+
+<p><strong>This has been done formally before.</strong> In 1966 the palaeontologist David Raup modelled coiled shells with three parameters: how fast the whorl expands, its distance from the axis, and how fast it moves along the axis. He found that real species fill only a small part of the parameter cube. That is the earliest clean demonstration that <i>V</i> is much smaller than <i>F</i>. The field it started is called theoretical morphospace.</p>
+
+<h2 id="geometry">4. Geometry: Hilbert space versus hypersphere</h2>
+<p>The Hilbert sphere is the right idea, and apples become a Hilbert space rigorously in two ways. A sphere appears only when you normalize away size.</p>
+
+<p><strong>A Hilbert space</strong> is a vector space with an inner product ⟨<i>x</i>, <i>y</i>⟩ that is complete, meaning limits of sequences stay inside it. Any finite list of numbers with the dot product already qualifies. So the 8-axis table above is a Hilbert space trivially. Calling it one adds nothing until the description becomes infinite-dimensional.</p>
+
+<p><strong>Where the Hilbert space becomes real: the apple's surface.</strong> Describe the skin as a radius <i>r</i>(θ, φ) for every direction from the centre. That function lives in <i>L</i><sup>2</sup>(<i>S</i><sup>2</sup>), a genuine infinite-dimensional Hilbert space. Expanding it in spherical harmonics gives coefficients that are coordinates in that space:</p>
+<div class="math"><i>r</i>(θ, φ) = Σ<sub>ℓ=0</sub><sup>∞</sup> Σ<sub><i>m</i>=−ℓ</sub><sup>ℓ</sup> <i>c</i><sub>ℓ<i>m</i></sub> <i>Y</i><sub>ℓ<i>m</i></sub>(θ, φ)</div>
+<p><i>c</i><sub>00</sub> is overall size. The ℓ = 1 terms are offset from the centre, and ℓ = 2 is elongation or flattening. The crab apple's asymmetry and stem dimple live in the higher ℓ. Truncating at some ℓ is exactly the lossy encoder <i>E</i>, and the dropped terms are Δ. Skin colour can be expanded the same way.</p>
+
+<p><strong>Where the hypersphere becomes real: shape without size.</strong> Remove position, rotation and scale from a set of surface landmarks and what remains is pure shape. Kendall's shape theory shows that shapes normalized this way live on a hypersphere, or a quotient of one. So the "sphere of apples" is precise once stated as the space of apple shapes modulo position, rotation and scale. Distance on it is an angle: two apples of different sizes but the same proportions sit at the same point.</p>
+
+<p><strong>Rule of thumb.</strong> Use a Hilbert space when descriptions are functions such as shapes, spectra or signals. Use a sphere when only direction matters, as with cosine similarity of embeddings. Use plain ℝ<sup><i>n</i></sup> with a good metric for everything else.</p>
+
+<h2 id="ai">5. The AI version: models as points in weight space</h2>
+<p>A trained network is literally a point θ in ℝ<sup><i>N</i></sup>, where <i>N</i> runs from thousands to hundreds of billions of parameters. With the dot product that space is a Hilbert space, so here the framework is exact rather than an analogy. Existing research already covers most of the apple sequence:</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>Apple framework</th><th>Neural-network counterpart</th><th>What it shows</th></tr></thead>
+  <tbody>
+    <tr><td>Apple I, the seed <i>x</i><sub>0</sub></td><td>Pretrained base model θ<sub>0</sub></td><td>Every fine-tune starts here</td></tr>
+    <tr><td>Reconfigured Apple II</td><td>Fine-tuned model θ<sub>0</sub> + Δ</td><td>Reconfiguration is a displacement vector</td></tr>
+    <tr><td>Extracting one quality</td><td>Task vectors (Ilharco et al., 2023)</td><td>τ = θ<sub>ft</sub> − θ<sub>0</sub> can be added to, subtracted from or combined across models</td></tr>
+    <tr><td>Personality traits</td><td>Persona vectors (Chen et al., 2025)</td><td>Traits such as sycophancy match directions in activation space that can be measured and steered</td></tr>
+    <tr><td>Low-dimensional <i>V</i></td><td>Intrinsic dimension (Li et al., 2018; Aghajanyan et al., 2021)</td><td>Fine-tuning reaches most of its gain inside a random subspace of a few hundred to a few thousand dimensions</td></tr>
+    <tr><td>Low-rank reconfiguration</td><td>LoRA (Hu et al., 2021)</td><td>Useful Δ can be confined to low-rank matrices</td></tr>
+    <tr><td>Connected <i>V</i></td><td>Mode connectivity (Garipov et al., 2018; Draxler et al., 2018)</td><td>Separately trained solutions are joined by low-loss paths</td></tr>
+    <tr><td>Same apple, different description</td><td>Permutation symmetry (Entezari et al., 2022; Ainsworth et al., 2023)</td><td>After neurons are aligned, many independent solutions are almost linearly connected</td></tr>
+  </tbody>
+</table></div>
+
+<p><strong>Three spaces, not one.</strong> Most confusion comes from mixing these up:</p>
+<ul>
+  <li><strong>Weight space θ</strong> is the substrate, like the apple's genome.</li>
+  <li><strong>Activation space <i>h</i>(<i>x</i>)</strong> is the internal representation on an input, like development and tissue. Persona vectors live here.</li>
+  <li><strong>Function space <i>f</i>(<i>x</i>)</strong> is behavior, like the phenotype. A model's "personality" is a property of this space.</li>
+</ul>
+
+<p><strong>Weight distance is not personality distance.</strong> Reorder the hidden units of a layer, along with their connections, and θ changes completely while <i>f</i> stays identical. So the meaningful space is weight space modulo symmetries, written ℝ<sup><i>N</i></sup> / <i>G</i>. In practice you compare models with:</p>
+<ul>
+  <li><strong>Function distance:</strong> how often two models disagree on a fixed probe set, or the KL divergence between their output distributions.</li>
+  <li><strong>Representation similarity:</strong> CKA (Kornblith et al., 2019) compares activation geometry and ignores rotations and neuron order.</li>
+  <li><strong>Aligned weight distance:</strong> match neurons first, for example with the Hungarian algorithm on activation correlations, then measure ‖θ<sub>A</sub> − π(θ<sub>B</sub>)‖.</li>
+</ul>
+<p>The apple version of this point: <i>E</i> maps many genomes to one phenotype, and θ → <i>f</i> maps many weight sets to one behavior.</p>
+
+<h2 id="conjecture">6. The conjecture and its predictions</h2>
+<blockquote><strong>Recursive Object Reconstructability (RORC).</strong> For a domain with descriptor space <i>F</i>, encoder <i>E</i> and realizable set <i>V</i>: (i) <i>V</i> is a low-dimensional subset of <i>F</i>; (ii) the branching of <i>V</i> is determined by measurable couplings between descriptors; (iii) from a seed <i>x</i><sub>0</sub>, step-bounded reconstruction reaches exactly the ε-connected component of <i>V</i> containing <i>x</i><sub>0</sub>. For neural networks this becomes <strong>unique substrate, convergent character</strong>: independent training runs give distinct θ but converge to a small number of behaviors, and traits sit along low-dimensional directions that transfer between models sharing a seed.</blockquote>
+
+<p>Each prediction below says how it would be measured and what result would count against it.</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>#</th><th>Prediction</th><th>Measurement</th><th>Counts against it</th></tr></thead>
+  <tbody>
+    <tr><td>P1</td><td><i>V</i> is low-dimensional</td><td>Intrinsic-dimension estimate (TwoNN, or the random-subspace <i>d</i><sub>90</sub>)</td><td>Estimated dimension close to the full dimension of <i>F</i></td></tr>
+    <tr><td>P2</td><td>Branching follows couplings</td><td>Push one trait and record which others move (Jacobian of traits with respect to the intervention)</td><td>Traits move independently when couplings were predicted, or the reverse</td></tr>
+    <tr><td>P3</td><td>Unique substrate</td><td>Raw weight distance between models trained from different seeds</td><td>Different seeds give nearly the same θ without any alignment</td></tr>
+    <tr><td>P4</td><td>Convergent character</td><td>Function distance and CKA between the same models</td><td>Behavior differs as much as the weights do</td></tr>
+    <tr><td>P5</td><td>Alignment shrinks the gap</td><td>Interpolation loss barrier before and after neuron matching</td><td>No drop in the barrier after matching</td></tr>
+    <tr><td>P6</td><td>Traits transplant within a family</td><td>Add task vector τ from model A to sibling B, which shares base θ<sub>0</sub></td><td>No trait shift, or an accuracy cost as large as retraining</td></tr>
+    <tr><td>P7</td><td>Traits do not transplant across families</td><td>Add the same τ to a model trained from a different seed, without alignment</td><td>Transfer works just as well as within the family</td></tr>
+    <tr><td>P8</td><td>Unreachable islands exist</td><td>Search for trait combinations with a fixed step size and budget</td><td>Every target combination is reachable from every seed</td></tr>
+  </tbody>
+</table></div>
+<p>P3 and P4 together are the core claim. Neither is surprising alone. What makes it a conjecture is the quantitative gap between them, and the claim that the gap is explained by symmetry (P5) and low intrinsic dimension (P1).</p>
+
+<h2 id="experiment">7. Experiment plan on a small model</h2>
+<p>The whole plan runs in NumPy on small MLPs and a synthetic task, so it fits in Termux on a phone with no downloads. Each step tests named predictions.</p>
+<p><strong>Setup.</strong> Generate a 10-class dataset of 2,000 points in 20 dimensions, using Gaussian clusters with some overlap. Use an MLP of 20 → 64 → 64 → 10 with ReLU, which is about 6,000 parameters, trained with plain SGD. Fix the data and its order so the random seed is the only thing that changes.</p>
+<ol>
+  <li><strong>Grow a family.</strong> Train 10 models from seeds 0 to 9 until test accuracy levels off. Save each θ. <em>(P3, P4)</em></li>
+  <li><strong>Measure substrate against character.</strong> For every pair, record the raw distance ‖θ<sub>A</sub> − θ<sub>B</sub>‖, test-set disagreement rate, and linear CKA of each hidden layer. Expect large weight distances and small disagreement. <em>(P3, P4)</em></li>
+  <li><strong>Align and re-measure.</strong> For each hidden layer, correlate unit activations between A and B, then solve the matching with the Hungarian algorithm (<code>scipy.optimize.linear_sum_assignment</code>, or a short greedy match if SciPy isn't installed). Permute B and measure again. <em>(P5)</em></li>
+  <li><strong>Walk the line.</strong> Evaluate test loss at θ(<i>t</i>) = (1 − <i>t</i>)θ<sub>A</sub> + <i>t</i>θ<sub>B</sub> for 21 values of <i>t</i>, before and after alignment. The barrier is the peak loss minus the mean of the two endpoints. <em>(P5)</em></li>
+  <li><strong>Define two traits.</strong> <em>Confidence</em> is the mean of the top softmax probability. <em>Bias</em> is the share of predictions going to class 0. Fine-tune model 0 for a few epochs to raise each trait, adding a loss term that rewards it. Save τ<sub>conf</sub> and τ<sub>bias</sub>. <em>(P6)</em></li>
+  <li><strong>Transplant.</strong> Add ατ for α between 0 and 1.5 to three models: model 0 itself, a sibling fine-tuned from model 0 on the plain task, and model 5 both unaligned and aligned. Record the trait shift and accuracy cost. <em>(P6, P7)</em></li>
+  <li><strong>Measure intrinsic dimension.</strong> Freeze θ<sub>0</sub> and train only a random <i>d</i>-dimensional subspace, θ = θ<sub>0</sub> + <i>Pz</i>, for <i>d</i> = 10, 30, 100, 300 and 1,000. <i>d</i><sub>90</sub> is the smallest <i>d</i> that reaches 90% of full accuracy. <em>(P1)</em></li>
+  <li><strong>Hunt for islands.</strong> Choose target trait pairs such as high confidence with high bias, or low confidence with high accuracy. From each seed, take steps of fixed size ε for a budget of <i>K</i> steps and record which targets are reached. Repeat for three values of ε. <em>(P8)</em></li>
+  <li><strong>Probe couplings.</strong> For small pushes along τ<sub>conf</sub>, record the change in bias, accuracy and calibration. Fit a linear response matrix. Strong off-diagonal terms are couplings. <em>(P2)</em></li>
+</ol>
+<p><strong>What to report.</strong> A results table with one row per prediction (median and spread across seed pairs), the interpolation curves from step 4, and the transplant curves from step 6. Expect about one evening of compute on a recent phone. Scale the hidden layers up once the pipeline works.</p>
+<p><strong>Known risks.</strong> Very small models can be underparameterized, which makes alignment noisy, so widen the hidden layers if barriers stay high. Synthetic clusters may be too easy, with every model at 100% accuracy and function distances near zero; add label noise or overlap until accuracy sits around 85–95%.</p>
+
+<h2 id="human">8. The human personality parallel</h2>
+<p>The comparison holds at the level of trait spaces, and stops there. Human personality is already modelled as a point in a low-dimensional space. The Big Five (openness, conscientiousness, extraversion, agreeableness, neuroticism) came from factor analysis of thousands of trait words in everyday language, and HEXACO adds a sixth factor, honesty-humility. That is RORC's claim P1 applied to people: a huge space of possible behavior compresses to about five or six axes.</p>
+
+<figure>
+<svg viewBox="0 0 760 412" role="img" aria-label="Personality is measured in behavior, layers above the weights">
+  <defs>
+    <marker id="three-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path class="arrowhead" d="M0 0L10 5L0 10z"/>
+    </marker>
+  </defs>
+  <text class="ink" x="24" y="30" font-size="15" font-weight="600">Personality is measured in behavior, layers above the weights</text>
+  <text class="quiet" x="24" y="52" font-size="11.5">The same three spaces in fruit, models and people</text>
+  <rect class="band" x="538" y="86" width="184" height="258" rx="8"/>
+  <text class="quiet" x="250" y="108" text-anchor="middle" font-size="11.5" font-weight="600">SUBSTRATE</text>
+  <text class="quiet" x="440" y="108" text-anchor="middle" font-size="11.5" font-weight="600">REPRESENTATION</text>
+  <text class="quiet" x="630" y="108" text-anchor="middle" font-size="11.5" font-weight="600">BEHAVIOR</text>
+  <g class="edge">
+    <path d="M332 144H358" marker-end="url(#three-arrow)"/><path d="M522 144H548" marker-end="url(#three-arrow)"/>
+    <path d="M332 224H358" marker-end="url(#three-arrow)"/><path d="M522 224H548" marker-end="url(#three-arrow)"/>
+    <path d="M332 304H358" marker-end="url(#three-arrow)"/><path d="M522 304H548" marker-end="url(#three-arrow)"/>
+  </g>
+  <text class="ink" x="24" y="148" font-size="13" font-weight="600">Apple</text>
+  <text class="ink" x="24" y="228" font-size="13" font-weight="600">Neural network</text>
+  <text class="ink" x="24" y="308" font-size="13" font-weight="600">Human</text>
+  <!-- Apple row -->
+  <rect class="box" x="170" y="116" width="160" height="56" rx="8"/>
+  <text class="ink" x="250" y="140" text-anchor="middle" font-size="13" font-weight="600">Genome</text>
+  <text class="quiet" x="250" y="158" text-anchor="middle" font-size="11.5">alleles, e.g. MdMYB10</text>
+  <rect class="box" x="360" y="116" width="160" height="56" rx="8"/>
+  <text class="ink" x="440" y="140" text-anchor="middle" font-size="13" font-weight="600">Development</text>
+  <text class="quiet" x="440" y="158" text-anchor="middle" font-size="11.5">cells and pigment</text>
+  <rect class="box" x="550" y="116" width="160" height="56" rx="8"/>
+  <text class="ink" x="630" y="140" text-anchor="middle" font-size="13" font-weight="600">Phenotype</text>
+  <text class="quiet" x="630" y="158" text-anchor="middle" font-size="11.5">size, colour, taste</text>
+  <!-- Neural network row -->
+  <rect class="box" x="170" y="196" width="160" height="56" rx="8"/>
+  <text class="ink" x="250" y="220" text-anchor="middle" font-size="13" font-weight="600">Weights θ</text>
+  <text class="quiet" x="250" y="238" text-anchor="middle" font-size="11.5">fixed after training</text>
+  <rect class="box" x="360" y="196" width="160" height="56" rx="8"/>
+  <text class="ink" x="440" y="220" text-anchor="middle" font-size="13" font-weight="600">Activations h(x)</text>
+  <text class="quiet" x="440" y="238" text-anchor="middle" font-size="11.5">persona vectors here</text>
+  <rect class="box-main" x="550" y="196" width="160" height="56" rx="8"/>
+  <text class="ink" x="630" y="220" text-anchor="middle" font-size="13" font-weight="600">Outputs f(x)</text>
+  <text class="ink" x="630" y="238" text-anchor="middle" font-size="11.5">model personality</text>
+  <!-- Human row -->
+  <rect class="box" x="170" y="276" width="160" height="56" rx="8"/>
+  <text class="ink" x="250" y="300" text-anchor="middle" font-size="13" font-weight="600">Connectome</text>
+  <text class="quiet" x="250" y="318" text-anchor="middle" font-size="11.5">unique wiring</text>
+  <rect class="box" x="360" y="276" width="160" height="56" rx="8"/>
+  <text class="ink" x="440" y="300" text-anchor="middle" font-size="13" font-weight="600">Neural activity</text>
+  <text class="quiet" x="440" y="318" text-anchor="middle" font-size="11.5">state in a situation</text>
+  <rect class="box-main" x="550" y="276" width="160" height="56" rx="8"/>
+  <text class="ink" x="630" y="300" text-anchor="middle" font-size="13" font-weight="600">Behavior</text>
+  <text class="ink" x="630" y="318" text-anchor="middle" font-size="11.5">Big Five traits</text>
+  <text class="quiet" x="24" y="380" font-size="11.5">Each arrow is many-to-one: many genomes, weight sets or wirings can produce the same behavior.</text>
+</svg>
+<figcaption>Three spaces: apple, neural network, human.</figcaption>
+</figure>
+
+<p>In all three rows, personality is read from the right-hand column, never from the substrate. Every brain is wired uniquely, yet behavior clusters into a few traits, which is the same unique-substrate, convergent-character pattern predicted for models in P3 and P4.</p>
+<p><strong>Where the analogy breaks:</strong></p>
+<ul>
+  <li><strong>No access to human weights.</strong> A model's θ can be copied, edited and re-run. A connectome can only be partly mapped, and never edited or replayed.</li>
+  <li><strong>People keep learning.</strong> A deployed model's θ is fixed. A person's substrate changes with every experience, so a human is a moving point, not a fixed one.</li>
+  <li><strong>Traits are measured noisily.</strong> Questionnaire scores shift with mood, context and self-image. A model can be probed millions of times under identical conditions.</li>
+  <li><strong>Transplants are not possible.</strong> P6 and P7 have no ethical or practical human counterpart. The parallel generates hypotheses about models, not experiments on people.</li>
+</ul>
+<p>The safe statement is structural: both systems have a substrate, a representation and a behavior space, connected by many-to-one maps. The claim is not that minds are vectors in a Hilbert space.</p>
+
+<h2 id="philosophy">9. Philosophy versus testable claim</h2>
+<p>The infographic's phrases are worth keeping as framing, but only some have scientific counterparts.</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>Original phrase</th><th>Status</th><th>Testable version</th></tr></thead>
+  <tbody>
+    <tr><td>Pulling an apple out of an apple</td><td>Metaphor, now formalized</td><td>Encoder <i>E</i>, then edit coordinates, then decoder <i>R</i></td></tr>
+    <tr><td>Bijection of nature</td><td>False as stated</td><td><i>E</i> is many-to-one; measure the reconstruction gap Δ</td></tr>
+    <tr><td>Hilbert sphere / hypersphere of apples</td><td>Made precise</td><td><i>L</i><sup>2</sup>(<i>S</i><sup>2</sup>) for surfaces; Kendall shape sphere for shape without size</td></tr>
+    <tr><td>Branching from configuration boundaries</td><td>Testable</td><td>Couplings, P2; reachability, P8</td></tr>
+    <tr><td>Combinatorial ≠ realizable</td><td>Testable, and central</td><td><i>V</i> ⊂ <i>F</i> with low intrinsic dimension, P1</td></tr>
+    <tr><td>Each branch, a new world</td><td>Testable with bounded steps</td><td>Reach<sub><i>k</i></sub>(<i>x</i><sub>0</sub>, ε) and islands</td></tr>
+    <tr><td>From One, Many · From Many, One</td><td>Philosophy</td><td>Closest version: many θ map to one <i>f</i>, P3 and P4</td></tr>
+    <tr><td>Triadic systems are the inevitable expression of the manifold</td><td>Philosophy</td><td>None as stated. The three-space split is a modelling choice, not a law</td></tr>
+    <tr><td><i>E</i> = ⋃ <i>F</i><sub><i>n</i></sub></td><td>Notation, undefined</td><td>Define <i>F</i><sub><i>n</i></sub> as Reach<sub><i>n</i></sub>; then the union is the reachable component</td></tr>
+    <tr><td>Make correctness inevitable</td><td>Slogan</td><td>Out of scope</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="references">10. References</h2>
+<p class="note">Listed from memory without links. Check each one before citing it formally.</p>
+<ol class="refs">
+  <li>Raup, D. M. (1966). Geometric analysis of shell coiling: general problems. <i>Journal of Paleontology</i> 40(5).</li>
+  <li>Kendall, D. G. (1984). Shape manifolds, Procrustean metrics, and complex projective spaces. <i>Bulletin of the London Mathematical Society</i>.</li>
+  <li>Li, C., Farkhoor, H., Liu, R., Yosinski, J. (2018). Measuring the intrinsic dimension of objective landscapes. <i>ICLR</i>. arXiv:1804.08838.</li>
+  <li>Aghajanyan, A., Zettlemoyer, L., Gupta, S. (2021). Intrinsic dimensionality explains the effectiveness of language model fine-tuning. <i>ACL</i>. arXiv:2012.13255.</li>
+  <li>Hu, E. et al. (2021). LoRA: Low-rank adaptation of large language models. arXiv:2106.09685.</li>
+  <li>Garipov, T. et al. (2018). Loss surfaces, mode connectivity, and fast ensembling of DNNs. <i>NeurIPS</i>. arXiv:1802.10026.</li>
+  <li>Draxler, F. et al. (2018). Essentially no barriers in neural network energy landscape. <i>ICML</i>. arXiv:1803.00885.</li>
+  <li>Entezari, R. et al. (2022). The role of permutation invariance in linear mode connectivity of neural networks. <i>ICLR</i>. arXiv:2110.06296.</li>
+  <li>Ainsworth, S., Hayase, J., Srinivasa, S. (2023). Git Re-Basin: merging models modulo permutation symmetries. <i>ICLR</i>. arXiv:2209.04836.</li>
+  <li>Ilharco, G. et al. (2023). Editing models with task arithmetic. <i>ICLR</i>. arXiv:2212.04089.</li>
+  <li>Kornblith, S. et al. (2019). Similarity of neural network representations revisited. <i>ICML</i>. arXiv:1905.00414.</li>
+  <li>Chen, R. et al. (2025). Persona vectors: monitoring and controlling character traits in language models. Anthropic.</li>
+  <li>Facco, E. et al. (2017). Estimating the intrinsic dimension of datasets by a minimal neighborhood information. <i>Scientific Reports</i> 7.</li>
+  <li>Goldberg, L. R. (1990). An alternative "description of personality": the Big-Five factor structure. <i>Journal of Personality and Social Psychology</i> 59(6).</li>
+  <li>Ashton, M. C., Lee, K. (2007). Empirical, theoretical, and practical advantages of the HEXACO model of personality structure. <i>Personality and Social Psychology Review</i> 11(2).</li>
+</ol>
+
+</main>
+</body>
+</html>

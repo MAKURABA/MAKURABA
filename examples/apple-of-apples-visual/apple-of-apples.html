@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="author" content="MAKURABA">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>🍏 Apple of Apples — object, vector, sphere</title>
+<style>
+  :root { --bg:#0f0b26; --card:rgba(255,255,255,0.06); --line:rgba(255,255,255,0.12); --ink:#fff8e7; --quiet:#bfb6e2;
+          --gold:#ffd166; --good:#06d6a0; --bad:#ef476f; --blue:#7fb2ff; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html { overflow-x:hidden; }
+  body { margin:0; min-height:100vh; overflow-x:clip; }
+  body { color:var(--ink); font-family:"Trebuchet MS",system-ui,-apple-system,sans-serif;
+         background: radial-gradient(1000px 600px at 30% -10%, #34267c 0%, #1a1340 45%, var(--bg) 100%); background-color:var(--bg); }
+  .app { max-width:1180px; margin:0 auto; padding:10px 12px 28px; display:grid; gap:10px;
+         grid-template-columns:minmax(0,1fr); grid-template-areas:"head" "views" "say" "act" "jny" "idc" "panel" "fam"; }
+  .app > * { min-width:0; }
+  .family, .formula, .robot, .metrics, .bars, .tabs, .shapes { max-width:100%; }
+  @media (min-width:900px) {
+    .app { grid-template-columns:minmax(0,1fr) 380px; grid-template-areas:"head head" "views panel" "say panel" "act panel" "jny panel" "idc panel" "fam panel"; align-items:start; }
+    .panel { position:sticky; top:10px; max-height:calc(100vh - 20px); overflow:auto; }
+  }
+  header { grid-area:head; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  h1 { margin:0; font-size:1.45rem; background:linear-gradient(90deg,#9cff57,#ffd166,#ff5d73); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  header p { margin:0; color:var(--quiet); font-size:0.9rem; }
+
+  .views { grid-area:views; display:grid; grid-template-columns:1fr 1fr; gap:10px;
+           width:100%; max-width:calc((100vh - 260px) * 2 + 10px); justify-self:center; }
+  .view { position:relative; aspect-ratio:1/1; background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden; }
+  .view.focus { grid-column:1 / -1; }
+  .view canvas { position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:grab; }
+  .vlabel { position:absolute; left:10px; top:8px; font-size:0.78rem; color:var(--quiet); pointer-events:none; }
+  .vlabel b { color:var(--ink); }
+  .corner { position:absolute; right:8px; top:8px; font:11px ui-monospace,Menlo,monospace; color:var(--quiet); background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:6px; pointer-events:none; }
+  .zoom { position:absolute; right:8px; bottom:8px; border:1px solid var(--line); background:rgba(0,0,0,0.35); color:var(--ink); border-radius:8px; font-size:0.8rem; padding:3px 7px; cursor:pointer; }
+  .badge { position:absolute; left:50%; bottom:10px; transform:translateX(-50%); padding:5px 12px; border-radius:999px; font-weight:700; font-size:0.85rem; pointer-events:none; max-width:calc(100% - 16px); width:max-content; text-align:center; line-height:1.2; }
+  .badge.ok { background:var(--good); color:#03261c; } .badge.no { background:var(--bad); color:#fff; }
+
+  .say { grid-area:say; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px 12px; min-height:70px; }
+  .say .now { font-size:1.02rem; line-height:1.35; }
+  .say .then { color:var(--quiet); font-size:0.8rem; margin-top:4px; line-height:1.3; }
+  .act { grid-area:act; display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+  #auto { background:linear-gradient(135deg,#9fb8ff,#c79bff); } #auto.on { background:linear-gradient(135deg,#ffd166,#ff5d73); }
+  button.big { border:0; border-radius:14px; padding:12px 8px; font-size:1.05rem; font-weight:700; cursor:pointer; color:#1a1030; font-family:inherit; }
+  button.big:active { transform:scale(0.96); }
+  #grow { background:linear-gradient(135deg,#9cff57,#06d6a0); } #jump { background:linear-gradient(135deg,#ffd166,#ff8a5b); }
+
+  .fam { grid-area:fam; }
+  .jny { grid-area:jny; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px 12px; display:grid; gap:7px; }
+  .jny h2 { margin:0; font-size:0.95rem; } .jny h2 small { color:var(--quiet); font-weight:400; font-size:0.72rem; }
+  .jbtns { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .jbtns button { border:1px solid var(--line); background:transparent; color:var(--ink); border-radius:10px; padding:9px 2px; font-size:0.88rem; font-weight:700; cursor:pointer; font-family:inherit; }
+  .jbtns button.on { background:linear-gradient(135deg,#ffd166,#ff5d73); color:#1a1030; }
+  .scrub { display:grid; grid-template-columns:92px 1fr; gap:8px; align-items:center; font:0.75rem ui-monospace,Menlo,monospace; color:var(--quiet); }
+  .chips { display:flex; flex-wrap:wrap; gap:4px; }
+  .chip { font-size:0.68rem; padding:2px 7px; border-radius:999px; border:1px solid var(--line); color:var(--quiet); }
+  .chip.hit { border-color:var(--good); color:var(--ink); } .chip.now { background:var(--gold); color:#1a1030; border-color:var(--gold); }
+  .idc { grid-area:idc; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px 12px; display:grid; gap:6px; }
+  .idc h2 { margin:0; font-size:0.95rem; } .idc h2 small { color:var(--quiet); font-weight:400; font-size:0.72rem; }
+  .chain { font:0.74rem/1.5 ui-monospace,Menlo,Consolas,monospace; color:#7fe7ff; background:#06121f; border:1px solid #1f4a6b; border-radius:10px; padding:7px 9px; word-break:break-all; }
+  .chain i { font-style:normal; color:#bfb6e2; }
+  .idrow { display:grid; grid-template-columns:70px 1fr; gap:6px; align-items:center; font-size:0.78rem; color:var(--quiet); }
+  .idrow code { font:0.72rem ui-monospace,Menlo,monospace; color:var(--ink); word-break:break-all; }
+  .idbtns { display:flex; gap:6px; } .idbtns button { flex:1; border:1px solid var(--line); background:transparent; color:var(--ink); border-radius:10px; padding:8px; font-size:0.85rem; cursor:pointer; font-family:inherit; }
+  .slotHead { font-size:0.82rem; font-weight:700; margin-top:2px; } .slotHead small { color:var(--quiet); font-weight:400; font-size:0.7rem; }
+  .slots { display:grid; grid-template-columns:repeat(6,1fr); gap:5px; }
+  .slot { position:relative; aspect-ratio:1/1.25; border:1px dashed var(--line); border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; font-size:0.62rem; color:var(--quiet); overflow:hidden; background:rgba(0,0,0,0.15); }
+  .slot.full { border-style:solid; } .slot.sel { border:2px solid var(--gold); } .slot img { width:100%; aspect-ratio:1/1; object-fit:cover; }
+  .slot b { font-size:0.7rem; color:var(--ink); } .slot code { font-size:0.55rem; }
+  .idbtns button { font-size:0.78rem; padding:7px 2px; } .idbtns[hidden] { display:none; }
+  .cmp { font-size:0.82rem; line-height:1.45; border-top:1px solid var(--line); padding-top:6px; }
+  .cmp table { width:100%; border-collapse:collapse; font-size:0.76rem; margin:4px 0; }
+  .cmp td { padding:3px 4px; border-bottom:1px solid var(--line); } .cmp td:last-child { text-align:right; font-family:ui-monospace,Menlo,monospace; }
+  .yes { color:var(--good); font-weight:700; } .no2 { color:var(--bad); font-weight:700; }
+  .slotImg { position:absolute; left:50%; top:25%; width:50%; height:auto; pointer-events:none; }
+  .twinTag { position:absolute; top:66%; white-space:nowrap; font:600 0.66rem ui-monospace,Menlo,monospace; color:var(--ink); background:rgba(0,0,0,0.45); padding:2px 6px; border-radius:6px; pointer-events:none; transform:translateX(-50%); }
+  .fam h2 { font-size:0.95rem; margin:4px 0 6px; color:var(--quiet); font-weight:600; }
+  .family { display:flex; gap:6px; overflow-x:auto; padding:2px 2px 8px; align-items:center; }
+  .kid { flex:0 0 auto; text-align:center; cursor:pointer; }
+  .kid img { width:56px; height:56px; border-radius:10px; background:var(--card); display:block; }
+  .kid.cur img { outline:3px solid var(--gold); }
+  .kid small { color:var(--quiet); font-size:0.68rem; }
+  .arrow { color:var(--quiet); flex:0 0 auto; font-size:0.8rem; }
+
+  .panel { grid-area:panel; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:10px 12px; }
+  .tabs { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-bottom:10px; }
+  .tabs button { border:1px solid var(--line); background:transparent; color:var(--ink); border-radius:10px; padding:6px 0; font-size:0.66rem; line-height:1.2; cursor:pointer; font-family:inherit; }
+  .tabs button[aria-selected=true] { background:var(--ink); color:#1a1030; }
+  .tab { display:grid; gap:8px; }
+  .tab[hidden] { display:none; }
+  .s { display:grid; grid-template-columns:96px 1fr 36px; align-items:center; gap:8px; font-size:0.95rem; }
+  .s output { font:12px ui-monospace,Menlo,monospace; color:var(--quiet); text-align:right; }
+  input[type=range] { width:100%; accent-color:var(--gold); height:26px; margin:0; }
+  .shapes { display:grid; grid-template-columns:repeat(5,1fr); gap:5px; }
+  .shapes button { border:1px solid var(--line); background:transparent; color:var(--ink); border-radius:10px; padding:5px 0; font-size:0.72rem; cursor:pointer; font-family:inherit; }
+  .shapes button b { display:block; font-size:1.2rem; }
+  .chk { display:flex; gap:8px; align-items:center; color:var(--quiet); font-size:0.9rem; }
+
+  .bars { display:grid; gap:3px; }
+  .bar { display:grid; grid-template-columns:62px 1fr 44px; gap:6px; align-items:center; font-size:0.78rem; }
+  .bar .track { position:relative; height:10px; background:rgba(255,255,255,0.06); border-radius:5px; }
+  .bar .track::after { content:""; position:absolute; left:50%; top:-2px; bottom:-2px; width:1px; background:var(--quiet); opacity:0.6; }
+  .bar .fill { position:absolute; top:0; bottom:0; border-radius:5px; background:var(--blue); }
+  .bar output { font:11px ui-monospace,Menlo,monospace; color:var(--quiet); text-align:right; }
+  .metrics { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .m { border:1px solid var(--line); border-radius:10px; padding:6px 8px; font-size:0.75rem; color:var(--quiet); }
+  .m b { display:block; color:var(--ink); font:600 0.98rem ui-monospace,Menlo,monospace; }
+  .axes { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .axes label { font-size:0.75rem; color:var(--quiet); display:grid; gap:2px; }
+  select { background:#1d1640; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:5px; font-family:inherit; font-size:0.85rem; }
+  .explain { font-size:0.84rem; line-height:1.45; color:var(--quiet); }
+  .explain b { color:var(--ink); }
+  .formula { font-family:"Cambria Math",Georgia,serif; color:var(--ink); background:rgba(0,0,0,0.25); border-radius:8px; padding:6px 10px; white-space:nowrap; overflow-x:auto; font-size:0.95rem; }
+  .modes { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .modes button { border:1px solid var(--line); background:transparent; color:var(--ink); border-radius:10px; padding:8px 4px; font-size:0.82rem; cursor:pointer; font-family:inherit; }
+  .modes button.on { background:linear-gradient(135deg,#9fb8ff,#c79bff); color:#1a1030; font-weight:700; }
+  .presets { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; }
+  .presets button, .pats button { border:1px solid var(--line); background:transparent; color:var(--ink); border-radius:10px; padding:6px 2px; font-size:0.74rem; cursor:pointer; font-family:inherit; }
+  .presets button b { display:block; font-size:1.2rem; }
+  .pats { display:grid; grid-template-columns:repeat(6,1fr); gap:4px; }
+  .pats button.on { background:var(--ink); color:#1a1030; }
+  .qbtns { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; }
+  .qbtns button { border:1px solid var(--line); background:transparent; color:var(--ink); border-radius:10px; padding:7px 2px; font-size:0.78rem; cursor:pointer; font-family:inherit; }
+  .qbtns button.on { background:linear-gradient(135deg,#9fb8ff,#c79bff); color:#1a1030; font-weight:700; }
+  .lvl { border-collapse:collapse; width:100%; font-size:0.72rem; table-layout:fixed; } .lvl th:nth-child(1), .lvl td:nth-child(1) { width:30%; } .lvl th:nth-child(3), .lvl td:nth-child(3) { width:24%; }
+  .lvl th { text-align:left; color:var(--quiet); font-weight:600; padding:4px; border-bottom:1px solid var(--line); }
+  .lvl td { padding:5px 4px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .warnc { color:var(--gold); font-weight:700; }
+  .ledger { display:grid; gap:6px; } .ledger div { border:1px solid var(--line); border-radius:10px; padding:7px 9px; font-size:0.8rem; color:var(--quiet); line-height:1.4; } .ledger b { color:var(--ink); }
+  .cbig { text-align:center; font:700 1.05rem system-ui; padding:8px; border-radius:12px; }
+  .cbig.ok { background:rgba(6,214,160,0.18); color:var(--good); } .cbig.no { background:rgba(239,71,111,0.18); color:var(--bad); }
+  .closures { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; }
+  .cl { border:1px solid var(--line); border-radius:10px; padding:6px 7px; font-size:0.7rem; color:var(--quiet); display:grid; gap:2px; }
+  .cl b { color:var(--ink); font-size:0.74rem; } .cl.ok { border-color:var(--good); } .cl.no { border-color:var(--bad); background:rgba(239,71,111,0.08); }
+  .olog { font:0.72rem/1.45 ui-monospace,Menlo,monospace; background:#06121f; border:1px solid #1f4a6b; border-radius:10px; padding:7px 9px; color:#7fe7ff; min-height:60px; max-height:180px; overflow:auto; }
+  .olog div { border-bottom:1px solid rgba(127,231,255,0.12); padding:2px 0; }
+  .robot { background:#06121f; border:1px solid #1f4a6b; border-radius:12px; padding:10px; font:0.76rem/1.45 ui-monospace,Menlo,Consolas,monospace; color:#7fe7ff; white-space:pre-wrap; overflow-x:auto; }
+  .view.warn { box-shadow: inset 0 0 0 2px var(--bad), 0 0 22px rgba(239,71,111,0.45); }
+  .swapHint { display:none; }
+  @media (max-width:700px) {
+    .views { display:block; position:relative; width:min(100%, 54vh); max-width:none; }
+    .view.big { width:100%; }
+    .view.pip { position:absolute; top:8px; right:8px; width:34%; z-index:3; border-radius:14px; border:1.5px solid rgba(255,209,102,0.7); background:rgba(15,11,38,0.85); box-shadow:0 6px 18px rgba(0,0,0,0.45); }
+    .view.pip .vlabel, .view.pip .badge, .view.pip .corner, .view.pip .zoom { display:none; }
+    .view.pip .swapHint { display:block; position:absolute; left:0; right:0; bottom:3px; text-align:center; font-size:0.65rem; color:var(--gold); pointer-events:none; }
+    .zoom { display:none; }
+    .corner { top:auto; bottom:8px; right:8px; }
+    .vlabel span { display:none; }
+    .badge { font-size:0.8rem; bottom:34px; }
+    .say .then { display:none; }
+    .say .now { font-size:0.95rem; }
+    header p { font-size:0.8rem; }
+  }
+  .legend { display:flex; flex-wrap:wrap; gap:10px; font-size:0.74rem; color:var(--quiet); }
+  .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:4px; vertical-align:-1px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <a href="index.html" style="font:600 0.7rem system-ui,sans-serif;letter-spacing:0.12em;text-transform:uppercase;color:#f2cf6a;text-decoration:none;width:100%">◆ MAKURABA · project home</a>
+    <h1>🍏 Apple of Apples</h1>
+    <p>One apple → a list of numbers → a point on a sphere.</p>
+  </header>
+
+  <section class="views">
+    <div class="view" id="vApple">
+      <canvas id="cvApple" aria-label="Low-poly 3D apple"></canvas>
+      <div class="vlabel"><b>The object</b><span> · drag to spin</span></div>
+      <div class="corner" id="tris"></div>
+      <div class="badge ok" id="badge">✅ can grow</div>
+      <img class="slotImg" id="slotImg" alt="saved snapshot" hidden>
+      <div class="twinTag" id="tagA" hidden style="left:27%">A</div><div class="twinTag" id="tagB" hidden style="left:73%">A′</div>
+      <button class="zoom" data-v="vApple">⤢</button>
+      <div class="swapHint">⇄ tap to swap</div>
+    </div>
+    <div class="view" id="vSphere">
+      <canvas id="cvSphere" aria-label="Unit sphere showing the apple's direction"></canvas>
+      <div class="vlabel"><b>Its direction</b><span> · unit sphere</span></div>
+      <div class="corner" id="angleTag"></div>
+      <button class="zoom" data-v="vSphere">⤢</button>
+      <div class="swapHint">⇄ tap to swap</div>
+    </div>
+  </section>
+
+  <section class="say" aria-live="polite">
+    <div class="now" id="sayNow"></div>
+    <div class="then" id="sayThen"></div>
+  </section>
+
+  <section class="act">
+    <button class="big" id="grow">🌱 Grow</button>
+    <button class="big" id="auto">♾️ Auto</button>
+    <button class="big" id="jump">🎲 Jump</button>
+  </section>
+
+  <section class="jny">
+    <h2>🧭 Journey <small>explore every mutator · reverse along the path</small></h2>
+    <div class="jbtns"><button id="explore">🧭 Explore</button><button id="retrace">⏪ Retrace</button><button id="replay">⏩ Replay</button></div>
+    <label class="scrub"><span id="scrubLbl">step 0 / 0</span><input type="range" id="scrub" min="0" max="0" step="0.01" value="0"></label>
+    <div class="chips" id="mutChips"></div>
+    <div class="chips" id="patChips"></div>
+  </section>
+
+  <section class="idc">
+    <h2>🆔 Identity <small>state → Super ID → local instance</small></h2>
+    <div class="chain" id="chain"></div>
+    <div class="idrow"><span>Super ID</span><code id="superId"></code></div>
+    <div class="idrow"><span>Local ID</span><code id="localId"></code></div>
+    <div class="slotHead">💾 State slots <small>tap an empty slot to save · tap a saved one for options</small></div>
+    <div class="slots" id="slots"></div>
+    <div class="idbtns" id="slotActs" hidden><button id="sLoad">↩ Load</button><button id="sCmp">👯 Compare</button><button id="sSave">💾 Overwrite</button><button id="sClear">✖ Clear</button></div>
+    <div class="cmp" id="cmp" hidden></div>
+  </section>
+
+  <section class="fam">
+    <h2>🌳 Family · tap one to start from it</h2>
+    <div class="family" id="family"></div>
+  </section>
+
+  <aside class="panel">
+    <div class="tabs" role="tablist">
+      <button data-t="shape" aria-selected="true">🧱 Shape</button>
+      <button data-t="skin" aria-selected="false">🎨 Skin</button>
+      <button data-t="wave" aria-selected="false">🌊 Wave</button>
+      <button data-t="data" aria-selected="false">🌐 Sphere</button>
+      <button data-t="exo" aria-selected="false">🌌 Exotic</button>
+      <button data-t="quant" aria-selected="false">⚛️ Quantum</button>
+      <button data-t="casc" aria-selected="false">💥 Cascade</button>
+      <button data-t="obs" aria-selected="false">👁️ Observer</button>
+      <button data-t="tok" aria-selected="false">🧠 Token</button>
+      <button data-t="clo" aria-selected="false">🔒 Closure</button>
+      <button data-t="robot" aria-selected="false">🤖 Robot</button>
+    </div>
+
+    <div class="tab" data-t="shape">
+      <div class="shapes" id="shapes">
+        <button data-s="apple"><b>🍎</b>Apple</button><button data-s="ball"><b>⚪</b>Ball</button>
+        <button data-s="cube"><b>🧊</b>Cube</button><button data-s="cone"><b>🔺</b>Cone</button><button data-s="pear"><b>🍐</b>Pear</button>
+      </div>
+      <div id="shapeSliders"></div>
+      <label class="s">🔷 Sides <input type="range" id="sides" min="6" max="20" step="1" value="18"><output id="sidesOut"></output></label>
+      <label class="s">🔍 Lens <input type="range" id="lens" min="0" max="1" step="0.01" value="0.35"><output id="lensOut"></output></label>
+      <label class="chk"><input type="checkbox" id="bounds"> 📦 Show the bounding box</label>
+    </div>
+
+    <div class="tab" data-t="skin" hidden><div id="skinSliders"></div></div>
+
+    <div class="tab" data-t="data" hidden>
+      <div class="explain"><b>Step 1: the list.</b> <i>Level 1, qualitative dimensions:</i> each axis is one distinguishable quality (redness, roundness, sweetness…), a coordinate in a quality space. <i>Level 2, configurational state:</i> one apple is one point in that space. Level 3, phenomenal experience, is not represented here (see 👁️ Observer). Each quality is centred so the "average apple" (all 0.5) sits at zero:</div>
+      <div class="formula">x<sub>i</sub> = 2·(q<sub>i</sub> − 0.5) ∈ [−1, 1]</div>
+      <div class="bars" id="bars"></div>
+      <div class="explain"><b>Step 2: length and direction.</b> Length says how extreme the apple is. Direction says what kind of apple it is. Dividing by the length puts every apple on the unit sphere S⁸ inside ℝ⁹:</div>
+      <div class="formula">‖x‖ = √(Σ x<sub>i</sub>²) ,&ensp; û = x / ‖x‖ ,&ensp; θ(a,b) = arccos(û<sub>a</sub>·û<sub>b</sub>)</div>
+      <div class="metrics">
+        <div class="m">Length ‖x‖ (max 3)<b id="mNorm">–</b></div>
+        <div class="m">Angle to Apple I<b id="mSeed">–</b></div>
+        <div class="m">Angle to parent<b id="mParent">–</b></div>
+        <div class="m">Steps from Apple I<b id="mSteps">–</b></div>
+        <div class="m">Straight distance to Apple I<b id="mDist">–</b></div>
+        <div class="m">Share of 9-D direction shown<b id="mShown">–</b></div>
+      </div>
+      <div class="explain"><b>Step 3: the picture.</b> A screen shows 3 dimensions, not 9. Pick 3 qualities; the sphere view shows the direction <i>within</i> those 3, renormalised. Faint points have most of their direction in the other 6 qualities.</div>
+      <div class="axes">
+        <label>X axis<select id="axX"></select></label><label>Y axis<select id="axY"></select></label><label>Z axis<select id="axZ"></select></label>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:#5ee6a8"></i>lists inside V (near real apples)</span>
+        <span><i class="dot" style="background:#8a7fb0"></i>lists outside V</span>
+        <span><i class="dot" style="background:var(--gold)"></i>current apple</span>
+        <span>★ Apple I · lines = family steps</span>
+      </div>
+      <div class="explain"><b>Step 4: where "can grow" comes from.</b> Nobody picks the boundary by hand. Fit the average μ and covariance Σ of the reference apples below, then measure how far an apple is from that cloud in units of its natural spread (Mahalanobis distance). The 9 qualities, 6 wave genes and 7 exotic genes make 22 numbers; the cutoff 6.35 is where 99 % of a 22-dimensional bell-shaped cloud lies inside. Wave and exotic genes use stated priors (Wave and Exotic tabs).</div>
+      <div class="formula">d(q) = √( (q − μ)<sup>⊤</sup> Σ<sup>−1</sup> (q − μ) ) ≤ 6.35 = √χ²<sub>22</sub>(0.99)</div>
+      <div class="explain">Couplings come for free: Σ records which traits move together, so an unusual <i>combination</i> can be unrealistic even when each number alone is normal. Tap a row to load that apple.</div>
+      <div style="overflow-x:auto"><table id="refTable" style="border-collapse:collapse;font-size:0.72rem;width:100%;min-width:460px"></table></div>
+      <div class="explain"><b>Settings, stated openly:</b> shrinkage 0.3 on off-diagonal covariance and a noise floor σ₀ = 0.05 per quality, because 14 apples are few for 9 dimensions.</div>
+      <div class="explain"><b>Honest scope.</b> ℝ⁹ with the dot product is a Hilbert space, but only in the simplest finite way, and the sphere is its unit sphere. A full Hilbert-space model of an apple would describe its surface as a function (spherical harmonics). The reference values are <b>approximate typical figures</b> for each cultivar, assembled from general horticultural knowledge, not a measured dataset. Swap in real measurements (diameter, °Brix, height/diameter, colour scores) and the boundary updates automatically.</div>
+    </div>
+
+    <div class="tab" data-t="wave" hidden>
+      <div class="explain"><b>Every apple is a wave.</b> Read the apple's outline as one curve: its radius f(v) at each angle v from the stem (0°) to the bottom (180°). That curve is a single function, a point in the Hilbert space L², and functions can be measured against each other.</div>
+      <canvas id="cvWave" style="width:100%;aspect-ratio:2/1;display:block;border:1px solid var(--line);border-radius:10px"></canvas>
+      <div class="legend"><span><i class="dot" style="background:#ffd166"></i>this apple</span><span><i class="dot" style="background:#9fb8ff"></i>parent</span><span><i class="dot" style="background:#ffffff"></i>Apple I</span></div>
+      <div class="formula">⟨f, g⟩ = ∫₀^π f(v) g(v) sin v dv ,&ensp; θ = arccos( ⟨f, g⟩ / ‖f‖‖g‖ )</div>
+      <div class="metrics">
+        <div class="m">Wave angle to parent<b id="wParent">–</b></div>
+        <div class="m">Wave angle to Apple I<b id="wSeed">–</b></div>
+        <div class="m">L² distance to Apple I<b id="wDist">–</b></div>
+        <div class="m">Generations grown<b id="wGen">–</b></div>
+      </div>
+      <div class="explain"><b>Its coordinates.</b> Any such curve splits into Legendre waves P<sub>ℓ</sub>(cos v), the axially symmetric spherical harmonics. The bars are the amounts a<sub>ℓ</sub>: ℓ = 0 is overall size, 1 is lopsidedness top-to-bottom, 2 is tall versus flat, and higher ℓ is finer ripple.</div>
+      <div class="bars" id="spec"></div>
+      <div class="explain"><b>How growth works (it never stops):</b> 1) start from the parent's curve. 2) φ-mutation: each gene changes with probability 1/φ ≈ 0.618, and wave gene k steps with spread ∝ φ<sup>−(k−1)</sup>, so coarse shape drifts more than fine ripple. 3) If the child lands outside V, it is <b>projected</b> back to V's edge along the line toward the average real apple. 4) The result is always a real-looking apple, so the lineage can run forever (♾️ Auto).</div>
+      <div id="waveSliders"></div>
+    </div>
+
+    <div class="tab" data-t="exo" hidden>
+      <div class="modes"><button id="mReal" class="on">🍎 Real apples</button><button id="mTrans">🌌 Trans-dimensional</button></div>
+      <div class="explain" id="modeText"></div>
+      <div class="presets" id="exoPresets"></div>
+      <div class="explain"><b>Pattern</b></div>
+      <div class="pats" id="pats"></div>
+      <div id="exoSliders"></div>
+      <div class="explain"><b>The two spaces.</b> Everything here is <i>describable</i>: the combinatorial space. Only apples near the reference cloud are <i>realizable</i>. Exotic genes have prior 0 with spread 0.04 (fatness 0.08) because no real apple is metallic or glowing, so each one pushes the realism distance up. That is a stated assumption, and it is why a gem apple reads as far from any real apple.</div>
+    </div>
+
+    <div class="tab" data-t="quant" hidden>
+      <div class="explain"><b>A quantum apple (an analogy).</b> Use the 14 reference apples as basis states |i⟩. A quantum state is a blend of all of them at once, each with a complex amplitude c<sub>i</sub>: a size and a phase.</div>
+      <div class="formula">|ψ⟩ = Σ c<sub>i</sub> |i⟩ ,&ensp; Σ |c<sub>i</sub>|² = 1 ,&ensp; P(i) = |c<sub>i</sub>|²</div>
+      <canvas id="cvQ" style="width:100%;aspect-ratio:2/1;display:block;border:1px solid var(--line);border-radius:10px"></canvas>
+      <div class="legend"><span>bar height = probability |c<sub>i</sub>|²</span><span>bar colour = phase arg c<sub>i</sub></span></div>
+      <div class="qbtns"><button id="qSup">⚛️ Superpose</button><button id="qH">🔀 Hadamard</button><button id="qEvo">⏱ Evolve</button><button id="qRev">⏪ Un-evolve</button><button id="qMeas">📏 Measure</button></div>
+      <div class="metrics">
+        <div class="m">Entropy of P (bits)<b id="qEnt">–</b></div>
+        <div class="m">Most likely apple<b id="qTop" style="font-size:0.8rem">–</b></div>
+        <div class="m">Norm Σ|c|²<b id="qNorm">–</b></div>
+        <div class="m">Evolution time t<b id="qT">–</b></div>
+      </div>
+      <div class="explain"><b>What each button shows.</b> <b>Superpose</b> spreads the state over apples similar to the current one, with random phases. <b>Hadamard</b> mixes pairs of apples; press it twice and the original returns, because the amplitudes interfere and cancel. <b>Evolve</b> runs U(t) = e<sup>−iHt</sup>, where H links similar apples, so probability flows between neighbours (a quantum walk). <b>Un-evolve</b> runs time backwards: unitary evolution is exactly reversible. <b>Measure</b> picks one apple with probability |c<sub>i</sub>|² and collapses the state to it. That step cannot be undone.</div>
+      <div class="explain">While in superposition, the 3D view shows the <i>expected</i> qualities Σ P(i)·q<sub>i</sub>, an average you would never measure directly. The sphere marks each basis apple with a circle sized by its probability.</div>
+      <div class="explain"><b>Honest scope.</b> This is an analogy, not a claim that apples are quantum. Real apples lose quantum coherence almost instantly (decoherence), and the basis states here are simply assumed orthonormal. What carries over exactly: complex amplitudes, the Born rule, interference, reversible unitary evolution, and irreversible measurement.</div>
+    </div>
+
+    <div class="tab" data-t="casc" hidden>
+      <div class="explain"><b>Cascades in a vector medium.</b> Genes are coupled: push one and its neighbours move, then theirs. Write the state as a vector x and the couplings as a matrix A. Each step: </div>
+      <div class="formula">x<sub>t+1</sub> = A x<sub>t</sub> ,&ensp; A = ρ · C / ρ(C)</div>
+      <div class="explain">C holds the couplings (below), rescaled so that the <b>gain slider is exactly the spectral radius ρ(A)</b>, the size of A's largest eigenvalue. ρ &lt; 1: a ripple that dies out. ρ = 1: it persists. ρ &gt; 1: runaway growth until the genes hit their limits (saturation).</div>
+      <label class="s">💥 Gene <select id="cGene" style="width:100%"></select><span></span></label>
+      <label class="s">📈 Gain ρ <input type="range" id="cGain" min="0.5" max="1.4" step="0.01" value="0.85"><output id="cGainOut"></output></label>
+      <div class="qbtns" style="grid-template-columns:1fr 1fr"><button id="cKick">💥 Kick</button><button id="cReset">↩ Reset apple</button></div>
+      <canvas id="cvC" style="width:100%;aspect-ratio:3/2;display:block;border:1px solid var(--line);border-radius:10px"></canvas>
+      <div class="legend"><span>rows = 22 genes · columns = time steps · colour = deviation (blue −, orange +)</span></div>
+      <div class="metrics">
+        <div class="m">Regime<b id="cReg" style="font-size:0.85rem">–</b></div>
+        <div class="m">Size ‖x<sub>t</sub>‖ now<b id="cNorm">–</b></div>
+      </div>
+      <div class="explain"><b>Dominant mode.</b> Whatever gene you kick, a long cascade lines up with A's top eigenvector: the pattern the medium amplifies most. Its largest parts:</div>
+      <div class="bars" id="cMode"></div>
+      <div class="explain"><b>Where C comes from.</b> Among the 9 qualities: the correlations measured in the reference apples. Waves: each couples to its neighbour (0.35). Exotic genes and crossings: stated toy couplings (metal–glow 0.4, facets–metal 0.3, spikes–fatness 0.3, fatness–size 0.3, hue–red 0.25, texture–dots 0.2).</div>
+    </div>
+
+    <div class="tab" data-t="obs" hidden>
+      <div class="explain"><b>Conceptual space, state and qualia: four levels, kept distinct.</b></div>
+      <div style="overflow-x:auto"><table class="lvl">
+        <tr><th>Level</th><th>In this model</th><th>Status</th></tr>
+        <tr><td>1 · Qualitative dimensions</td><td>9 qualities, 6 wave genes, 7 exotic genes: the axes of the quality space</td><td class="yes">represented</td></tr>
+        <tr><td>2 · Configurational state</td><td>The state vector S, its Super ID, and each instance's Local ID</td><td class="yes">represented</td></tr>
+        <tr><td>3 · Phenomenal experience</td><td>What it is like to see this apple</td><td class="no2">not represented · open</td></tr>
+        <tr><td>4 · Observer relationship</td><td>Probed with the inverted-spectrum thought experiment below</td><td class="warnc">test case · open</td></tr>
+      </table></div>
+      <div class="explain"><b>The inverted-spectrum test.</b> Observers A and B meet the same state. Suppose B's colour experience is rotated half-way round the colour circle: where A has the experience A calls red, B has the one A calls cyan. Does anything in the structure reveal it?</div>
+      <div class="qbtns" style="grid-template-columns:1fr"><button id="obsBtn">👁️ Show A and B side by side</button></div>
+      <div class="metrics">
+        <div class="m">Same state vector<b id="oState">–</b></div>
+        <div class="m">Similarity rankings that match<b id="oRank">–</b></div>
+        <div class="m">Largest distance difference<b id="oDist">–</b></div>
+        <div class="m">Detectable from structure<b id="oDetect">–</b></div>
+      </div>
+      <div class="explain">B's colour coordinates are A's after an <i>isometry</i> (red ↦ 1 − red, hue ↦ hue + ½). Isometries preserve every distance, so A and B rank all 14 reference apples in exactly the same order of similarity, and every relational fact comes out identical. Structure alone cannot tell the two apart. That is the force of the thought experiment: whether such a difference is even coherent stays open.</div>
+      <div class="explain"><b>About the picture.</b> The right-hand apple is an <i>illustration of the hypothesis</i>, drawn with rotated colours. It is not B's experience; no model here can show what anything is like.</div>
+      <div class="ledger">
+        <div><b>Represents</b><br>Qualitative dimensions, configurational states, identity (Super ID) versus instance (Local ID), similarity structure.</div>
+        <div><b>Demonstrates</b><br>States can match exactly yet be two instances. Structurally equivalent codings are indistinguishable from relational data alone.</div>
+        <div><b>Remains unknown</b><br>Whether experience arises from the configuration, from the relationship with an observer, or from something neither accounts for.</div>
+      </div>
+      <div class="explain"><b>Research question.</b> Does subjective experience arise from the configuration of a system, its relationship with an observer, or something not yet accounted for by either? The three levels are separate categories of investigation, not proven stages of consciousness.</div>
+    </div>
+
+    <div class="tab" data-t="tok" hidden>
+      <div class="explain"><b>Capstone: every apple is a token.</b> A language model turns each token (a word, or part of one) into a vector, then updates those vectors layer by layer. The apples work the same way: the 14 reference apples are the <i>vocabulary</i>, the current lineage is the <i>context window</i>, and each apple's 22 genes are its <i>embedding</i>. One transformer step, live:</div>
+      <canvas id="cvT" style="width:100%;aspect-ratio:1/1;display:block;border:1px solid var(--line);border-radius:10px"></canvas>
+      <div class="legend"><span>top: context tokens and attention from the newest one (arc width = weight)</span><span>bottom: the residual stream at each stage (22 genes; orange +, blue −)</span></div>
+      <div class="formula">a = softmax(x·Xᵀ/√d) X ,&ensp; h = x + a ,&ensp; n = h / rms(h) ,&ensp; P(j) = softmax(n·e<sub>j</sub> / (√d·τ))</div>
+      <label class="s">🌡️ Temp τ <input type="range" id="tTemp" min="0.2" max="2" step="0.05" value="1"><output id="tTempOut"></output></label>
+      <label class="chk"><input type="checkbox" id="tPos"> 📍 Add positional encoding</label>
+      <div class="qbtns"><button id="tRun">▶ Run step</button><button id="tGen">✍️ Generate</button><button id="tAuto">🔁 Generate ×8</button></div>
+      <div class="metrics">
+        <div class="m">Predicted next apple<b id="tTop" style="font-size:0.8rem">–</b></div>
+        <div class="m">Norm ‖n‖ (√22 = 4.69)<b id="tNorm">–</b></div>
+        <div class="m">Attention entropy (bits)<b id="tEnt">–</b></div>
+        <div class="m">Identical tokens told apart<b id="tDup">–</b></div>
+      </div>
+      <div class="explain"><b>Next-token probabilities</b> over the 14-apple vocabulary:</div>
+      <div class="bars" id="tProbs"></div>
+      <div class="explain"><b>The mapping, honestly.</b></div>
+      <div style="overflow-x:auto"><table class="lvl">
+        <tr><th>Apple model</th><th>Language model</th><th>Fit</th></tr>
+        <tr><td>Quality axes</td><td>Embedding dimensions</td><td class="warnc">partial: LLM dimensions are learned, thousands of them, and rarely mean one thing each; concepts are directions, often overlapping (superposition)</td></tr>
+        <tr><td>Apple state vector</td><td>Token vector in the residual stream</td><td class="yes">close</td></tr>
+        <tr><td>Reference apples</td><td>Vocabulary</td><td class="yes">close</td></tr>
+        <tr><td>Lineage</td><td>Context window (the sequence so far)</td><td class="yes">close</td></tr>
+        <tr><td>Super ID / Local ID</td><td>Token ID / position in the sequence</td><td class="yes">close: tick 📍 and identical tokens get different vectors</td></tr>
+        <tr><td>Sphere tab (unit sphere)</td><td>RMSNorm / LayerNorm</td><td class="yes">exact: normalisation puts every vector on a sphere of radius √d</td></tr>
+        <tr><td>Cascade gain ρ</td><td>Exploding / vanishing signals in deep stacks</td><td class="yes">close: residual connections and normalisation keep ρ near 1</td></tr>
+        <tr><td>Exotic task presets</td><td>Steering vectors (adding a trait direction)</td><td class="yes">close</td></tr>
+        <tr><td>Quantum superposition</td><td>Softmax over the vocabulary</td><td class="no2">loose: probabilities, not amplitudes; no interference</td></tr>
+        <tr><td>Retrace</td><td>Generation</td><td class="no2">no: sampling discards the alternatives; only the recorded text can be replayed</td></tr>
+      </table></div>
+      <div class="explain"><b>Simplifications, stated.</b> One attention head with identity weights (W<sub>Q</sub> = W<sub>K</sub> = W<sub>V</sub> = I), no MLP block, one layer, and an untrained "model": the vocabulary embeddings are just the apples' own z-scored genes. It shows the operations a transformer performs, not anything a trained model has learned. A pathway of operations (a chain of such steps) is how a model moves a token's vector from "what this word is" toward "what comes next".</div>
+    </div>
+
+    <div class="tab" data-t="clo" hidden>
+      <div class="explain"><b>Conjunctive closure.</b> Can the apple system stay coherent while depending on things outside itself? Three conditions must hold <i>at once</i>:</div>
+      <div class="formula">𝒞(t) = ℐ(t) ∧ 𝒯(t) ∧ 𝒪(t)</div>
+      <div class="cbig" id="cBig">–</div>
+      <div class="closures">
+        <div class="cl" id="clI"><b>ℐ · Information</b><span id="cI1"></span><span id="cI2"></span></div>
+        <div class="cl" id="clT"><b>𝒯 · Thermodynamics</b><span id="cT1"></span><span id="cT2"></span></div>
+        <div class="cl" id="clO"><b>𝒪 · Ontology</b><span id="cO1"></span><span id="cO2"></span></div>
+      </div>
+      <label class="s">🧠 Memory <input type="range" id="cMem" min="20" max="200" step="5" value="120"><output id="cMemOut"></output></label>
+      <label class="s">🔥 Erasure <input type="range" id="cHeat" min="500" max="20000" step="500" value="6000"><output id="cHeatOut"></output></label>
+      <label class="chk"><input type="checkbox" id="cSelf"> 🔁 Self-anchoring: refit V from the apple's own lineage</label>
+      <label class="chk"><input type="checkbox" id="cAuto" checked> 🛟 Observer may act (reconcile automatically)</label>
+      <div class="qbtns"><button id="cAnchor">⚓ Re-anchor</button><button id="cEnergy">⚡ New energy</button><button id="cStress">🧪 Stress test</button></div>
+      <div class="explain"><b>Anchor drift:</b> total variance of V, trace Σ, over recent generations (dashed line = the reference value).</div>
+      <canvas id="cvTr" style="width:100%;aspect-ratio:4/1;display:block;border:1px solid var(--line);border-radius:10px"></canvas>
+      <div class="explain"><b>👁️ Boundary observation</b>: what failed, what was done, and the evidence. It watches all three layers but is not one of them.</div>
+      <div class="olog" id="oLog"></div>
+      <div class="explain"><b>🌍 Genesis matrix 𝒢 = (Ω, Φ, ℬ)</b>: the substrate this system runs on, outside its control.</div>
+      <div class="metrics" id="gen"></div>
+      <div class="explain"><b>How each layer is measured.</b> <b>ℐ</b>: one state is 22 genes × 8 bits + log₂6 for the pattern = 178.6 bits (exactly the S chain), well inside a 256-bit capacity; the history of retained states must fit the memory budget. <b>𝒯</b>: every <i>irreversible erasure</i> (an evicted record, an overwritten slot, a quantum measurement) costs at least k<sub>B</sub>T ln 2 per bit (Landauer); reversible steps (Retrace, unitary evolution) cost nothing. The erasure budget stands for energy drawn from 𝒢; ⚡ supplies more. <b>𝒪</b>: V's parameters (μ, Σ, cutoff) are A₀, fitted from external reference apples. If emergent behaviour rewrites them (self-anchoring), 𝒪 fails, and V drifts and collapses toward its own output.</div>
+      <div class="explain"><b>Two trade-offs worth watching.</b> Reversibility needs memory: Retrace works only back to the oldest retained record, so a small memory budget forces erasures, which cost energy and destroy the path. And a system that anchors its rules to its own output narrows itself, the same "model collapse" seen when generative AI trains on its own outputs.</div>
+    </div>
+
+    <div class="tab" data-t="robot" hidden><div class="robot" id="robot"></div></div>
+  </aside>
+</div>
+
+<script>
+(() => {
+  // ================= model =================
+  const Q = [
+    { k:'boxy',    e:'🟦', n:'Boxy',    g:'shape' }, { k:'cone',  e:'🔺', n:'Pointy', g:'shape' },
+    { k:'tall',    e:'↕️', n:'Tall',    g:'shape' }, { k:'waist', e:'⌛', n:'Waist',  g:'shape' },
+    { k:'size',    e:'📏', n:'Size',    g:'shape' }, { k:'red',   e:'🔴', n:'Red',    g:'skin'  },
+    { k:'stripes', e:'🦓', n:'Stripes', g:'skin'  }, { k:'dots',  e:'✨', n:'Dots',   g:'skin'  },
+    { k:'sweet',   e:'🍬', n:'Sweet',   g:'skin'  },
+  ];
+  const keys = Q.map(q => q.k), name = Object.fromEntries(Q.map(q => [q.k, q.n]));
+  const CRAB = { boxy:0.05, cone:0.55, tall:0.40, waist:0.03, size:0.125, red:0.20, stripes:0.20, dots:0.50, sweet:0.30, w1:0.03, w2:-0.02, w3:0.015, w4:0, w5:0, w6:0, hue:0, metal:0, glow:0, fat:0, facet:0, spike:0, tex:0, pat:0 };
+  const SHAPES = {
+    apple:{ boxy:0.08, cone:0.62, tall:0.45, waist:0.05 }, ball:{ boxy:0, cone:0.5, tall:0.5, waist:0 },
+    cube:{ boxy:1, cone:0.5, tall:0.5, waist:0 }, cone:{ boxy:0, cone:0.02, tall:0.65, waist:0 },
+    pear:{ boxy:0.05, cone:0.3, tall:0.7, waist:0.85 },
+  };
+  // ---------- V from reference data: Mahalanobis distance to the cloud of real apples ----------
+  // Approximate typical values per cultivar, in slider units. Meaning of each unit:
+  //   size = (diameter mm − 20)/80 · sweet = (°Brix − 8)/10 · tall = (height/diameter − 0.7)/0.5
+  //   cone = taper (0.5 = straight sides, higher = wider shoulders) · boxy = ribbing/angularity
+  //   waist = pinch · red = blush share · stripes = striping share · dots = lenticel prominence
+  const REF = [
+    ['Wild crab apple',       30, 11.0, 0.90, 0.55, 0.05, 0.03, 0.20, 0.20, 0.50],
+    ['Red crab apple',        35, 12.0, 0.95, 0.55, 0.04, 0.04, 0.85, 0.10, 0.30],
+    ['Granny Smith',          75, 11.5, 0.90, 0.60, 0.05, 0.02, 0.02, 0.00, 0.60],
+    ['Gala',                  68, 13.5, 0.90, 0.62, 0.05, 0.03, 0.70, 0.70, 0.30],
+    ['Fuji',                  78, 15.0, 0.88, 0.58, 0.06, 0.03, 0.65, 0.60, 0.50],
+    ['Honeycrisp',            82, 14.0, 0.85, 0.60, 0.08, 0.03, 0.70, 0.50, 0.40],
+    ['Red Delicious',         78, 12.0, 1.00, 0.78, 0.18, 0.05, 0.95, 0.20, 0.30],
+    ['Golden Delicious',      72, 13.5, 0.95, 0.66, 0.07, 0.04, 0.05, 0.00, 0.70],
+    ['Braeburn',              72, 13.0, 0.90, 0.60, 0.05, 0.03, 0.70, 0.60, 0.50],
+    ['Pink Lady',             68, 14.5, 0.95, 0.60, 0.04, 0.03, 0.60, 0.10, 0.40],
+    ['Bramley',               92, 10.5, 0.80, 0.55, 0.10, 0.02, 0.15, 0.30, 0.40],
+    ['McIntosh',              70, 12.0, 0.88, 0.56, 0.04, 0.03, 0.75, 0.30, 0.20],
+    ['Cox\'s Orange Pippin',  62, 14.0, 0.85, 0.58, 0.05, 0.03, 0.50, 0.60, 0.50],
+    ['Jonagold',              80, 14.0, 0.90, 0.60, 0.06, 0.03, 0.55, 0.50, 0.40],
+  ].map(([nm, D, B, LD, cone, boxy, waist, red, stripes, dots]) =>
+    ({ name: nm, a: { boxy, cone, tall: (LD - 0.7) / 0.5, waist, size: (D - 20) / 80, red, stripes, dots, sweet: (B - 8) / 10, w1:0, w2:0, w3:0, w4:0, w5:0, w6:0 } }));
+  const SHRINK = 0.3, SIGMA0 = 0.05;                       // shrinkage, noise floor
+  // Wave genes: the profile curve is multiplied by (1 + Σ c_k cos(k·v)), k = 1..6.
+  // Prior spread of gene k: σ_k = 0.08·φ^−(k−1): coarse waves vary more than fine ripples (an assumption, stated).
+  const PHI = (1 + Math.sqrt(5)) / 2, NW = 6, WK = Array.from({ length: NW }, (_, i) => 'w' + (i + 1));
+  const WSIG = WK.map((_, i) => 0.08 * Math.pow(PHI, -i));
+  // Exotic genes (trans-dimensional): no real apple has them, so their prior sits at 0 with a tight spread (stated assumption).
+  const EX = ['hue', 'metal', 'glow', 'fat', 'facet', 'spike', 'tex'];
+  const EXN = { hue:'Hue', metal:'Metallic', glow:'Glow', fat:'Fatness', facet:'Facets', spike:'Spikes', tex:'Texture' };
+  const ESIG = { hue:0.04, metal:0.04, glow:0.04, fat:0.08, facet:0.04, spike:0.04, tex:0.04 };
+  const PATS = ['Skin', 'Melon', 'Gem', 'Yarn', 'Stone', 'Plasma'];
+  const exDev = (a, k) => k === 'hue' ? Math.min(a.hue || 0, 1 - (a.hue || 0)) : k === 'tex' ? ((a.pat || 0) > 0 ? (a.tex || 0) : 0) : (a[k] || 0);
+  const CHI2_99 = 40.29, THR = Math.sqrt(CHI2_99);          // χ² with 9 + 6 + 7 = 22 dof, 99th percentile
+  let trans = false;
+  const inv = M => { const n = M.length, A = M.map((r, i) => [...r, ...r.map((_, j) => +(i === j))]);
+    for (let c = 0; c < n; c++) { let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(A[r][c]) > Math.abs(A[p][c])) p = r;
+      [A[c], A[p]] = [A[p], A[c]]; const d = A[c][c]; for (let j = 0; j < 2 * n; j++) A[c][j] /= d;
+      for (let r = 0; r < n; r++) if (r !== c) { const f = A[r][c]; for (let j = 0; j < 2 * n; j++) A[r][j] -= f * A[c][j]; } }
+    return A.map(r => r.slice(n)); };
+  // A₀: the foundational parameters of V, fitted from external reference data. fitV can be re-run (anchoring test).
+  let MU, COV, ICOV, SD;
+  function fitV(apples) {
+    MU = keys.map(k => apples.reduce((t, a) => t + a[k], 0) / apples.length);
+    COV = keys.map((ki, i) => keys.map((kj, j) => {
+      let c = 0; for (const a of apples) c += (a[ki] - MU[i]) * (a[kj] - MU[j]); c /= apples.length - 1;
+      return i === j ? c + SIGMA0 * SIGMA0 : c * (1 - SHRINK); }));
+    ICOV = inv(COV); SD = keys.map((_, i) => Math.sqrt(COV[i][i]));
+  }
+  fitV(REF.map(r => r.a));
+  function assess(a) {
+    const x = keys.map((k, i) => a[k] - MU[i]), y = ICOV.map(r => r.reduce((t, v, j) => t + v * x[j], 0));
+    const xw = WK.map(k => a[k] || 0), xe = EX.map(k => exDev(a, k));
+    const contrib = [...x.map((v, i) => v * y[i]), ...xw.map((v, i) => (v / WSIG[i]) ** 2), ...xe.map((v, i) => (v / ESIG[EX[i]]) ** 2)];
+    const d2 = contrib.reduce((t, v) => t + v, 0);
+    let wi = 0; contrib.forEach((v, i) => { if (v > contrib[wi]) wi = i; });
+    let near = null, nd = 1e9; for (const r of REF) { const e = Math.hypot(...keys.map((k, i) => (a[k] - r.a[k]) / SD[i])); if (e < nd) { nd = e; near = r.name; } }
+    return { d: Math.sqrt(Math.max(0, d2)), ok: d2 <= CHI2_99, worst: wi < 9 ? Q[wi].n : wi < 15 ? 'Wave ' + (wi - 8) : (wi === 21 ? PATS[a.pat || 0] + ' texture' : EXN[EX[wi - 15]]), high: wi < 9 ? x[wi] > 0 : wi < 15 ? xw[wi - 9] > 0 : true, near, x, xw };
+  }
+  const why = a => { const r = assess(a); return r.ok ? null : `${r.worst} too ${r.high ? 'high' : 'low'} for any real apple`; };
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const gaussR = () => Math.sqrt(-2 * Math.log(1 - Math.random())) * Math.cos(2 * Math.PI * Math.random());
+  const vec = a => keys.map(k => 2 * (a[k] - 0.5));
+  const norm = v => Math.hypot(...v);
+  const unit = v => { const n = norm(v); return n < 1e-9 ? null : v.map(x => x / n); };
+  const angleDeg = (a, b) => { const ua = unit(vec(a)), ub = unit(vec(b)); if (!ua || !ub) return null; let d = 0; for (let i = 0; i < ua.length; i++) d += ua[i] * ub[i]; return Math.acos(Math.max(-1, Math.min(1, d))) * 180 / Math.PI; };
+  const dist = (a, b) => Math.hypot(...keys.map(k => a[k] - b[k]));
+
+  let cur = { ...CRAB };
+  const fam = [];          // { a, label, parent, img, depth }
+  let curIdx = 0;
+  const $ = id => document.getElementById(id);
+
+  // ================= language: narrator =================
+  const log = [];
+  const say = msg => { log.unshift(msg); $('sayNow').innerHTML = log[0]; $('sayThen').innerHTML = log.slice(1, 3).join('<br>'); };
+  const fmtA = x => x == null ? '—' : x.toFixed(1) + '°';
+  const status = a => { const r = assess(a); return r.ok ? `✅ Inside V (distance ${r.d.toFixed(1)} ≤ ${THR.toFixed(2)}; closest real apple: ${r.near}).` : `❌ Outside V: distance ${r.d.toFixed(1)} > ${THR.toFixed(2)}, mostly because <b>${r.worst}</b> is too ${r.high ? 'high' : 'low'}. Closest real apple: ${r.near}.`; };
+
+  // ================= UI: sliders =================
+  for (const q of Q) {
+    const host = $(q.g === 'shape' ? 'shapeSliders' : 'skinSliders');
+    const l = document.createElement('label'); l.className = 's';
+    l.innerHTML = `${q.e} ${q.n} <input type="range" id="${q.k}" min="0" max="1" step="0.01"><output id="${q.k}Out"></output>`;
+    host.appendChild(l);
+  }
+  let sliderTimer = null;
+  for (const q of Q) $(q.k).addEventListener('input', e => {
+    const before = cur[q.k]; cur[q.k] = +e.target.value; dirty = true; refresh();
+    clearTimeout(sliderTimer);
+    sliderTimer = setTimeout(() => {
+      const dir = cur[q.k] > before ? 'up' : 'down';
+      say(`🎛️ You moved <b>${q.n}</b> ${dir} to ${cur[q.k].toFixed(2)}. One number changed, so the point moved along one direction: ${fmtA(angleDeg(cur, fam[0].a))} from Apple I. ${status(cur)}`);
+    }, 250);
+  });
+  document.querySelectorAll('#shapes button').forEach(b => b.onclick = () => {
+    Object.assign(cur, SHAPES[b.dataset.s]); pop = 1.12; dirty = true; refresh();
+    say(`${b.querySelector('b').textContent} Shape set to <b>${b.textContent.slice(2)}</b>. Four shape numbers changed at once. ${status(cur)}${why(cur) ? ' You can describe it, but it can\'t exist.' : ''}`);
+  });
+  $('sides').addEventListener('input', () => { dirty = true; $('sidesOut').textContent = $('sides').value; });
+  $('bounds').addEventListener('input', () => { dirty = true; });
+  function setLens() { const x = +$('lens').value; $('lensOut').textContent = x.toFixed(2);
+    const gl_ = cur.glow || 0, hue = ((100 - 100 * cur.red) + (cur.hue || 0) * 360 + 360) % 360;
+    const bloom = gl_ > 0.02 ? ` drop-shadow(0 0 ${(6 + 26 * gl_).toFixed(0)}px hsla(${hue.toFixed(0)},95%,62%,${(0.25 + 0.6 * gl_).toFixed(2)}))` : '';
+    $('cvApple').style.filter = `blur(${(x * 1.6).toFixed(2)}px) saturate(${1 + x * 0.15}) contrast(${1 - x * 0.06})${bloom}`;
+    $('vApple').style.boxShadow = `inset 0 0 ${Math.round(40 + x * 80)}px rgba(0,0,0,${0.25 + x * 0.35})`; }
+  $('lens').addEventListener('input', setLens); setLens();
+  document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+    document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
+    document.querySelectorAll('.tab').forEach(t => t.hidden = t.dataset.t !== b.dataset.t);
+  });
+  document.querySelectorAll('.zoom').forEach(b => b.onclick = () => {
+    const v = $(b.dataset.v), on = !v.classList.contains('focus');
+    document.querySelectorAll('.view').forEach(x => x.classList.remove('focus')); if (on) v.classList.add('focus');
+    document.querySelectorAll('.view').forEach(x => x.style.display = on && x !== v ? 'none' : '');
+    b.textContent = on ? '⤡' : '⤢'; setTimeout(resize, 30);
+  });
+
+  // ================= wave space: f(v) = mean radius of the outline at polar angle v =================
+  const NS = 72, VS = Array.from({ length: NS }, (_, i) => (i + 0.5) / NS * Math.PI), DV = Math.PI / NS;
+  function profile(a) { const f = new Float64Array(NS);
+    for (let i = 0; i < NS; i++) { let t = 0; for (const u of [0, Math.PI / 4, Math.PI / 2, 3 * Math.PI / 4]) { const p = surface(a, u, VS[i]); t += Math.hypot(p[0], p[1], p[2]); } f[i] = t / 4; }
+    return f; }
+  const ipL2 = (f, g) => { let t = 0; for (let i = 0; i < NS; i++) t += f[i] * g[i] * Math.sin(VS[i]) * DV; return t; };
+  const l2Angle = (f, g) => Math.acos(Math.max(-1, Math.min(1, ipL2(f, g) / Math.sqrt(ipL2(f, f) * ipL2(g, g))))) * 180 / Math.PI;
+  const l2Dist = (f, g) => { const d = f.map((x, i) => x - g[i]); return Math.sqrt(ipL2(d, d)); };
+  const legendre = (l, x) => { if (l === 0) return 1; let p0 = 1, p1 = x; for (let n = 2; n <= l; n++) { const p2 = ((2 * n - 1) * x * p1 - (n - 1) * p0) / n; p0 = p1; p1 = p2; } return p1; };
+  const coeffs = f => Array.from({ length: 9 }, (_, l) => { let t = 0; for (let i = 0; i < NS; i++) t += f[i] * legendre(l, Math.cos(VS[i])) * Math.sin(VS[i]) * DV; return (2 * l + 1) / 2 * t; });
+  $('spec').innerHTML = Array.from({ length: 9 }, (_, l) => `<div class="bar"><span>a<sub>${l}</sub></span><div class="track"><div class="fill" id="sp${l}"></div></div><output id="spv${l}"></output></div>`).join('');
+  for (let i = 0; i < NW; i++) { const l = document.createElement('label'); l.className = 's';
+    l.innerHTML = `🌊 Wave ${i + 1} <input type="range" id="${WK[i]}" min="-0.3" max="0.3" step="0.005"><output id="${WK[i]}Out"></output>`; $('waveSliders').appendChild(l);
+    $(WK[i]).addEventListener('input', e => { cur[WK[i]] = +e.target.value; dirty = true; refresh(); }); }
+  const cvW = $('cvWave'), gW = cvW.getContext('2d');
+  function drawWave() {
+    if (cvW.offsetParent === null) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1), W = Math.round(cvW.clientWidth * dpr), H = Math.round(W / 2);
+    if (cvW.width !== W) { cvW.width = W; cvW.height = H; }
+    const f = profile(cur), par = fam[curIdx] && fam[curIdx].parent != null && fam[fam[curIdx].parent].a ? profile(fam[fam[curIdx].parent].a) : null, f0 = profile(fam[0] ? fam[0].a : CRAB);
+    const all = [...f, ...f0, ...(par || [])], lo = Math.min(...all) * 0.9, hi = Math.max(...all) * 1.05;
+    const X = i => 30 * dpr + (W - 40 * dpr) * i / (NS - 1), Y = v => H - 18 * dpr - (H - 30 * dpr) * (v - lo) / (hi - lo);
+    gW.clearRect(0, 0, W, H); gW.font = `${10 * dpr}px system-ui`; gW.fillStyle = '#bfb6e2'; gW.textAlign = 'center';
+    [0, 45, 90, 135, 180].forEach(d => { const x = X(d / 180 * (NS - 1)); gW.fillText(d + '°', x, H - 4 * dpr); gW.strokeStyle = 'rgba(255,255,255,0.08)'; gW.beginPath(); gW.moveTo(x, 8 * dpr); gW.lineTo(x, H - 18 * dpr); gW.stroke(); });
+    gW.save(); gW.translate(10 * dpr, H / 2); gW.rotate(-Math.PI / 2); gW.fillText('radius f(v)', 0, 0); gW.restore();
+    const line = (g, col, w, dash) => { gW.strokeStyle = col; gW.lineWidth = w * dpr; gW.setLineDash(dash.map(x => x * dpr)); gW.beginPath(); g.forEach((v, i) => i ? gW.lineTo(X(i), Y(v)) : gW.moveTo(X(i), Y(v))); gW.stroke(); gW.setLineDash([]); };
+    line(f0, 'rgba(255,255,255,0.7)', 1.2, [4, 4]); if (par) line(par, '#9fb8ff', 1.5, []); line(f, '#ffd166', 2.4, []);
+    const c = coeffs(f), mx = Math.max(...c.map(Math.abs)) || 1;
+    c.forEach((v, l) => { const el = $('sp' + l), x = v / mx; el.style.left = (x >= 0 ? 50 : 50 + x * 50) + '%'; el.style.width = Math.abs(x) * 50 + '%'; el.style.background = x >= 0 ? 'var(--blue)' : '#ff8fa3'; $('spv' + l).textContent = v.toFixed(3); });
+    $('wParent').textContent = par ? l2Angle(f, par).toFixed(2) + '°' : '—';
+    $('wSeed').textContent = l2Angle(f, f0).toFixed(2) + '°';
+    $('wDist').textContent = l2Dist(f, f0).toFixed(3);
+    $('wGen').textContent = fam[curIdx] ? fam[curIdx].depth : 0;
+  }
+  document.querySelector('button[data-t=wave]').addEventListener('click', () => setTimeout(drawWave, 20));
+  // ================= exotic tab =================
+  const EXO_PRESETS = [
+    ['🍎', 'Real', { hue:0, metal:0, glow:0, fat:0, facet:0, spike:0, tex:0, pat:0 }],
+    ['🍉', 'Melon', { pat:1, tex:1, hue:0, metal:0, glow:0, facet:0, spike:0 }],
+    ['💙', 'Blue', { hue:0.55, metal:0.25, glow:0.2, pat:0, tex:0, facet:0, spike:0 }],
+    ['💎', 'Gem', { pat:2, tex:1, facet:1, metal:0.45, glow:0.25, spike:0 }],
+    ['🧶', 'Yarn', { pat:3, tex:1, fat:0.3, metal:0, glow:0, facet:0, spike:0 }],
+    ['🪨', 'Stone', { pat:4, tex:1, facet:0.35, metal:0, glow:0, spike:0 }],
+    ['⚡', 'Plasma', { pat:5, tex:1, glow:0.7, metal:0.1, facet:0, spike:0 }],
+    ['🦠', 'Arcane', { spike:0.85, hue:0.82, glow:0.35, pat:0, tex:0, metal:0.2, facet:0 }],
+    ['🥇', 'Gold', { metal:1, hue:0.85, glow:0.1, red:0 }],
+  ];
+  $('exoPresets').innerHTML = EXO_PRESETS.map((p, i) => `<button data-i="${i}"><b>${p[0]}</b>${p[1]}</button>`).join('');
+  $('exoPresets').querySelectorAll('button').forEach(b => b.onclick = () => { const p = EXO_PRESETS[+b.dataset.i]; Object.assign(cur, EXO_PRESETS[0][2], p[2]); pop = 1.12; dirty = true; refresh();
+    say(`${p[0]} <b>${p[1]} apple</b>. Realism distance ${assess(cur).d.toFixed(1)} (real apples ≤ ${THR.toFixed(2)}). ${trans ? 'In 🌌 mode it breeds as it is.' : 'In 🍎 mode its children are projected back toward real apples; switch to 🌌 to let it breed as it is.'}`); });
+  $('pats').innerHTML = PATS.map((n, i) => `<button data-p="${i}">${n}</button>`).join('');
+  $('pats').querySelectorAll('button').forEach(b => b.onclick = () => { cur.pat = +b.dataset.p; if (cur.pat && !(cur.tex > 0)) cur.tex = 1; dirty = true; refresh(); });
+  [['hue', '🌈 Hue'], ['metal', '🪙 Metallic'], ['glow', '✨ Glow'], ['fat', '🍔 Fatness'], ['facet', '💠 Facets'], ['spike', '🦔 Spikes'], ['tex', '🧵 Texture']].forEach(([k, n]) => {
+    const l = document.createElement('label'); l.className = 's'; l.innerHTML = `${n} <input type="range" id="ex_${k}" min="0" max="1" step="0.01"><output id="ex_${k}Out"></output>`; $('exoSliders').appendChild(l);
+    $('ex_' + k).addEventListener('input', e => { cur[k] = +e.target.value; dirty = true; refresh(); }); });
+  const setMode = t => { trans = t; $('mReal').classList.toggle('on', !t); $('mTrans').classList.toggle('on', t);
+    $('modeText').innerHTML = t ? '<b>🌌 Trans-dimensional:</b> growth roams the whole describable space. All 23 genes mutate, the pattern can jump, and nothing is projected back. The badge still measures how far each apple is from any real one.'
+                                : '<b>🍎 Real apples:</b> growth stays realizable. Children that overshoot are projected back onto V, so exotic traits fade toward zero.'; };
+  $('mReal').onclick = () => { setMode(false); say('🍎 Real mode: growth is projected back into V, toward apples that could exist.'); };
+  $('mTrans').onclick = () => { setMode(true); say('🌌 Trans-dimensional mode: growth now wanders the combinatorial space. Watch the realism distance climb.'); };
+  setMode(false);
+  // ================= linear algebra helpers =================
+  function jacobiEig(Min) {                      // symmetric eigen-decomposition: returns { val, vec (columns) }
+    const n = Min.length, A = Min.map(r => r.slice()), V = A.map((_, i) => A.map((_, j) => +(i === j)));
+    for (let sweep = 0; sweep < 60; sweep++) {
+      let off = 0; for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) off += A[i][j] * A[i][j];
+      if (off < 1e-18) break;
+      for (let p = 0; p < n; p++) for (let q = p + 1; q < n; q++) {
+        if (Math.abs(A[p][q]) < 1e-14) continue;
+        const th = (A[q][q] - A[p][p]) / (2 * A[p][q]), t = Math.sign(th || 1) / (Math.abs(th) + Math.sqrt(th * th + 1)), c = 1 / Math.sqrt(t * t + 1), sn = t * c;
+        for (let k = 0; k < n; k++) { const akp = A[k][p], akq = A[k][q]; A[k][p] = c * akp - sn * akq; A[k][q] = sn * akp + c * akq; }
+        for (let k = 0; k < n; k++) { const apk = A[p][k], aqk = A[q][k]; A[p][k] = c * apk - sn * aqk; A[q][k] = sn * apk + c * aqk; }
+        for (let k = 0; k < n; k++) { const vkp = V[k][p], vkq = V[k][q]; V[k][p] = c * vkp - sn * vkq; V[k][q] = sn * vkp + c * vkq; }
+      }
+    }
+    return { val: A.map((r, i) => r[i]), vec: V };
+  }
+
+  // ================= ⚛️ quantum layer: amplitudes over the 14 reference apples =================
+  const NQ = REF.length, QRE = new Float64Array(NQ), QIM = new Float64Array(NQ);
+  let qActive = false, qT = 0, qEvo = 0, qSaved = null;
+  const stdDist = (a, b) => Math.hypot(...keys.map((k, i) => (a[k] - b[k]) / SD[i]));
+  const HQ = REF.map(r => REF.map(s => r === s ? 0 : Math.exp(-(stdDist(r.a, s.a) ** 2) / 8)));   // H links similar apples
+  const EQ = jacobiEig(HQ);
+  const qProbs = () => Array.from(QRE, (x, i) => x * x + QIM[i] * QIM[i]);
+  function qNormalize() { let n = 0; for (let i = 0; i < NQ; i++) n += QRE[i] ** 2 + QIM[i] ** 2; n = Math.sqrt(n) || 1; for (let i = 0; i < NQ; i++) { QRE[i] /= n; QIM[i] /= n; } }
+  function qShowExpectation() { const P = qProbs(), e = { ...cur }; keys.forEach(k => e[k] = REF.reduce((t, r, i) => t + P[i] * r.a[k], 0)); WK.forEach(k => e[k] = 0); EX.forEach(k => e[k] = 0); e.pat = 0; cur = e; dirty = true; refresh(); }
+  function qEvolve(dt) {                          // c ← V e^{−iΛ dt} Vᵀ c   (exactly unitary)
+    const V = EQ.vec, L = EQ.val, pr = new Float64Array(NQ), pi = new Float64Array(NQ);
+    for (let k = 0; k < NQ; k++) { let r = 0, m = 0; for (let i = 0; i < NQ; i++) { r += V[i][k] * QRE[i]; m += V[i][k] * QIM[i]; }
+      const c = Math.cos(-L[k] * dt), sn = Math.sin(-L[k] * dt); pr[k] = r * c - m * sn; pi[k] = r * sn + m * c; }
+    for (let i = 0; i < NQ; i++) { let r = 0, m = 0; for (let k = 0; k < NQ; k++) { r += V[i][k] * pr[k]; m += V[i][k] * pi[k]; } QRE[i] = r; QIM[i] = m; }
+    qT += dt;
+  }
+  const cvQ = $('cvQ'), gQ = cvQ.getContext('2d');
+  function drawQ() {
+    if (cvQ.offsetParent === null) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1), W = Math.round(cvQ.clientWidth * dpr), H = Math.round(W / 2);
+    if (cvQ.width !== W) { cvQ.width = W; cvQ.height = H; }
+    gQ.clearRect(0, 0, W, H); const P = qProbs(), bw = (W - 16 * dpr) / NQ, base = H - 30 * dpr;
+    for (let i = 0; i < NQ; i++) { const ph = Math.atan2(QIM[i], QRE[i]), hue = ((ph / (2 * Math.PI)) * 360 + 360) % 360, h = (base - 8 * dpr) * Math.sqrt(P[i]);
+      gQ.fillStyle = qActive ? `hsl(${hue.toFixed(0)},80%,60%)` : 'rgba(255,255,255,0.15)'; gQ.fillRect(8 * dpr + i * bw + 2 * dpr, base - h, bw - 4 * dpr, h);
+      gQ.save(); gQ.translate(8 * dpr + i * bw + bw / 2, base + 6 * dpr); gQ.rotate(-0.9); gQ.fillStyle = '#bfb6e2'; gQ.font = `${8.5 * dpr}px system-ui`; gQ.textAlign = 'right';
+      gQ.fillText(REF[i].name.split(' ')[0].slice(0, 9), 0, 4 * dpr); gQ.restore(); }
+    gQ.fillStyle = '#bfb6e2'; gQ.font = `${9 * dpr}px system-ui`; gQ.textAlign = 'left'; gQ.fillText('height ∝ √P so small amplitudes stay visible', 8 * dpr, 12 * dpr);
+    const ent = -P.reduce((t, p) => t + (p > 1e-12 ? p * Math.log2(p) : 0), 0); let top = 0; P.forEach((p, i) => { if (p > P[top]) top = i; });
+    $('qEnt').textContent = qActive ? ent.toFixed(2) : '–'; $('qTop').textContent = qActive ? `${REF[top].name} (${(P[top] * 100).toFixed(0)} %)` : '–';
+    $('qNorm').textContent = qActive ? P.reduce((t, p) => t + p, 0).toFixed(6) : '–'; $('qT').textContent = qActive ? qT.toFixed(2) : '–';
+  }
+  const qStopEvo = () => { qEvo = 0; $('qEvo').classList.remove('on'); $('qRev').classList.remove('on'); };
+  $('qSup').onclick = () => { stopAll(); retr = null; qSaved = qSaved || { ...cur };
+    const base = qSaved; REF.forEach((r, i) => { const amp = Math.exp(-(stdDist(base, r.a) ** 2) / 6), ph = Math.random() * 2 * Math.PI; QRE[i] = amp * Math.cos(ph); QIM[i] = amp * Math.sin(ph); });
+    qNormalize(); qActive = true; qT = 0; qShowExpectation(); drawQ();
+    say(`⚛️ Superposition: the apple is now a blend of all ${NQ} reference apples at once, weighted toward ones like the current apple, each with a random phase. The 3D view shows the average qualities, which no single measurement would ever return.`); };
+  $('qH').onclick = () => { if (!qActive) { say('⚛️ Superpose first.'); return; }
+    for (let i = 0; i + 1 < NQ; i += 2) { const ar = QRE[i], ai = QIM[i], br = QRE[i + 1], bi = QIM[i + 1], s2 = Math.SQRT1_2;
+      QRE[i] = (ar + br) * s2; QIM[i] = (ai + bi) * s2; QRE[i + 1] = (ar - br) * s2; QIM[i + 1] = (ai - bi) * s2; }
+    qShowExpectation(); drawQ(); say('🔀 Hadamard on each pair of apples: amplitudes added and subtracted. Press again: they interfere and the original probabilities return exactly (H·H = identity).'); };
+  $('qEvo').onclick = () => { if (!qActive) { say('⚛️ Superpose first.'); return; } if (qEvo > 0) { qStopEvo(); return; } qEvo = 1; $('qEvo').classList.add('on'); $('qRev').classList.remove('on');
+    say('⏱ Evolving under U(t) = e^{−iHt}: probability flows between similar apples like a wave (a quantum walk). The norm stays exactly 1.'); };
+  $('qRev').onclick = () => { if (!qActive) { say('⚛️ Superpose first.'); return; } if (qEvo < 0) { qStopEvo(); return; } qEvo = -1; $('qRev').classList.add('on'); $('qEvo').classList.remove('on');
+    say('⏪ Time reversed: U(−t) undoes the evolution step for step. Run it back to t = 0 and the starting amplitudes return.'); };
+  $('qMeas').onclick = () => { if (!qActive) { say('⚛️ Superpose first.'); return; } qStopEvo();
+    const P = qProbs(); let r = Math.random(), i = 0; while (i < NQ - 1 && (r -= P[i]) > 0) i++;
+    QRE.fill(0); QIM.fill(0); QRE[i] = 1; qActive = false; qSaved = null;
+    closureErase(-P.reduce((t, p) => t + (p > 1e-12 ? p * Math.log2(p) : 0), 0), 'measurement collapse (superposition discarded)');
+    cur = { ...cur, ...REF[i].a }; WK.forEach(k => cur[k] = 0); EX.forEach(k => cur[k] = 0); cur.pat = 0;
+    gen++; pop = 1.15; addToFamily(cur, '⚛️ ' + REF[i].name.split(' ')[0], curIdx); dirty = true; refresh(); drawQ();
+    say(`📏 Measured: <b>${REF[i].name}</b>, which had probability ${(P[i] * 100).toFixed(1)} %. The superposition collapsed to this one apple. Unlike evolution, this cannot be run backwards: the other possibilities are gone.`); };
+  function stepQuantum(dtSec) { if (!qActive || !qEvo) return; let dq = qEvo * dtSec * 1.2; if (qEvo < 0) dq = Math.max(dq, -qT); qEvolve(dq); if (qEvo < 0 && qT <= 1e-9) { qT = 0; qStopEvo(); say('⏪ Back at t = 0: the original amplitudes are restored exactly. Unitary evolution is reversible.'); } qShowExpectation(); drawQ(); }
+  document.querySelector('button[data-t=quant]').addEventListener('click', () => setTimeout(drawQ, 20));
+
+  // ================= 💥 cascades: x_{t+1} = A x_t over 22 coupled genes =================
+  const CG = [...keys, ...WK, 'hue', 'metal', 'glow', 'fat', 'facet', 'spike', 'tex'];
+  const CGN = CG.map(k => Q.find(q => q.k === k)?.n || (k[0] === 'w' ? 'Wave ' + k.slice(1) : EXN[k]));
+  const CN = CG.length, CI = Object.fromEntries(CG.map((k, i) => [k, i]));
+  const CM = CG.map(() => new Array(CN).fill(0));
+  for (let i = 0; i < 9; i++) for (let j = 0; j < 9; j++) if (i !== j) CM[i][j] = COV[i][j] / (SD[i] * SD[j]);
+  for (let k = 1; k < NW; k++) { CM[CI['w' + k]][CI['w' + (k + 1)]] = CM[CI['w' + (k + 1)]][CI['w' + k]] = 0.35; }
+  [['metal', 'glow', 0.4], ['facet', 'metal', 0.3], ['spike', 'fat', 0.3], ['fat', 'size', 0.3], ['hue', 'red', 0.25], ['tex', 'dots', 0.2]].forEach(([a, b, v]) => { CM[CI[a]][CI[b]] = CM[CI[b]][CI[a]] = v; });
+  const CE = jacobiEig(CM); let topK = 0; CE.val.forEach((v, k) => { if (Math.abs(v) > Math.abs(CE.val[topK])) topK = k; });
+  const RHO_C = Math.abs(CE.val[topK]), TOPVEC = CG.map((_, i) => CE.vec[i][topK]);
+  $('cGene').innerHTML = CGN.map((n, i) => `<option value="${i}">${n}</option>`).join('');
+  $('cMode').innerHTML = TOPVEC.map((v, i) => [Math.abs(v), i]).sort((a, b) => b[0] - a[0]).slice(0, 6)
+    .map(([a, i]) => `<div class="bar"><span>${CGN[i]}</span><div class="track"><div class="fill" style="left:${TOPVEC[i] >= 0 ? 50 : 50 - Math.abs(TOPVEC[i]) * 50}%;width:${Math.abs(TOPVEC[i]) * 50}%;background:${TOPVEC[i] >= 0 ? 'var(--blue)' : '#ff8fa3'}"></div></div><output>${TOPVEC[i].toFixed(2)}</output></div>`).join('');
+  let casc = null; const cHist = [];
+  const regime = g => g < 0.97 ? '🟢 damped ripple' : g <= 1.03 ? '🟡 persistent wave' : '🔴 runaway';
+  const showGain = () => { const g = +$('cGain').value; $('cGainOut').textContent = g.toFixed(2); $('cReg').textContent = regime(g) + (CE.val[topK] < 0 ? ' · ringing' : ''); };
+  $('cGain').addEventListener('input', showGain); showGain();
+  function applyCascade(x) { const a = { ...casc.base }; CG.forEach((k, i) => {
+      const scale = i < 9 ? SD[i] * 2.2 : k[0] === 'w' ? 0.08 : 0.35, v = (casc.base[k] || 0) + x[i] * scale;
+      if (k === 'hue') a.hue = ((v % 1) + 1) % 1; else if (k[0] === 'w') a[k] = Math.max(-0.3, Math.min(0.3, v)); else a[k] = clamp(v); });
+    if (a.tex > 0 && !a.pat) a.pat = 1; return a; }
+  $('cKick').onclick = () => { stopAll(); retr = null; qActive = false; qStopEvo();
+    const gi = +$('cGene').value, g = +$('cGain').value, x = new Float64Array(CN); x[gi] = 1;
+    casc = { base: casc ? casc.base : { ...cur }, x, g, step: 0, acc: 0, sat: false }; cHist.length = 0; cHist.push(Array.from(x));
+    say(`💥 Kicked <b>${CGN[gi]}</b> with gain ρ = ${g.toFixed(2)} (${regime(g)}). Watch the ripple spread to coupled genes: in the heat map, on the apple, and in the size readout.`); };
+  $('cReset').onclick = () => { if (casc) { cur = { ...casc.base }; casc = null; cHist.length = 0; dirty = true; refresh(); drawC(); say('↩ Apple reset to its state before the cascade.'); } };
+  function stepCascade(dtSec) {
+    if (!casc || casc.step >= 40) return; casc.acc += dtSec; if (casc.acc < 0.12) return; casc.acc = 0;
+    const A = CM, f = casc.g / RHO_C, y = new Float64Array(CN);
+    for (let i = 0; i < CN; i++) { let t = 0; for (let j = 0; j < CN; j++) t += A[i][j] * casc.x[j]; y[i] = f * t; }
+    for (let i = 0; i < CN; i++) { if (Math.abs(y[i]) > 4) { y[i] = Math.sign(y[i]) * 4; casc.sat = true; } }
+    casc.x = y; casc.step++; cHist.push(Array.from(y)); cur = applyCascade(y); dirty = true; refresh(); drawC();
+    const nrm = Math.hypot(...y); $('cNorm').textContent = nrm.toFixed(3);
+    if (casc.step === 40) say(casc.g < 0.97 ? `🟢 The ripple died out: ‖x‖ fell to ${nrm.toFixed(3)} after 40 steps, because every mode shrinks by a factor ≤ ${casc.g.toFixed(2)} per step.`
+      : casc.g <= 1.03 ? `🟡 The wave persisted at ‖x‖ ≈ ${nrm.toFixed(2)}: with ρ = 1 the dominant mode neither grows nor shrinks.`
+      : `🔴 Runaway: the cascade grew by ≈ ${casc.g.toFixed(2)}× per step${casc.sat ? ' until genes saturated at their limits' : ''}. It locked onto the dominant mode, whichever gene you kicked.`);
+  }
+  const cvC = $('cvC'), gC = cvC.getContext('2d');
+  function drawC() {
+    if (cvC.offsetParent === null) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1), W = Math.round(cvC.clientWidth * dpr), H = Math.round(W * 2 / 3);
+    if (cvC.width !== W) { cvC.width = W; cvC.height = H; }
+    gC.clearRect(0, 0, W, H); const lx = 58 * dpr, cw = (W - lx - 6 * dpr) / 41, ch = (H - 8 * dpr) / CN;
+    gC.font = `${Math.min(9, ch / dpr * 0.85) * dpr}px system-ui`; gC.fillStyle = '#bfb6e2'; gC.textAlign = 'right';
+    CGN.forEach((n, i) => gC.fillText(n, lx - 4 * dpr, 4 * dpr + i * ch + ch * 0.75));
+    const mx = Math.max(1e-6, ...cHist.flat().map(Math.abs));
+    cHist.forEach((col, t) => col.forEach((v, i) => { const a = Math.min(1, Math.abs(v) / mx);
+      gC.fillStyle = v >= 0 ? `rgba(255,160,70,${a})` : `rgba(110,170,255,${a})`; gC.fillRect(lx + t * cw, 4 * dpr + i * ch, cw - 0.5, ch - 0.5); }));
+  }
+  document.querySelector('button[data-t=casc]').addEventListener('click', () => setTimeout(drawC, 20));
+
+  // ================= 👁️ observer relationship: inverted spectrum =================
+  let obsOn = false;
+  const invert = a => ({ ...a, red: 1 - a.red, hue: (((a.hue || 0) + 0.5) % 1 + 1) % 1 });      // an isometry of colour coordinates
+  const colourVec = a => [a.red, Math.cos(2 * Math.PI * (a.hue || 0)) / (2 * Math.PI), Math.sin(2 * Math.PI * (a.hue || 0)) / (2 * Math.PI)];
+  function obsCheck() {
+    const A = cur, B = invert(cur), dA = [], dB = [];
+    REF.forEach(r => { const rA = { ...r.a, hue: 0 }, rB = invert(rA);
+      const fa = colourVec(A), fb = colourVec(B), ga = colourVec(rA), gb = colourVec(rB);
+      const rest = keys.filter(k => k !== 'red').reduce((t, k) => t + (A[k] - r.a[k]) ** 2, 0);
+      dA.push(Math.sqrt(rest + fa.reduce((t, v, i) => t + (v - ga[i]) ** 2, 0)));
+      dB.push(Math.sqrt(rest + fb.reduce((t, v, i) => t + (v - gb[i]) ** 2, 0))); });
+    const ordA = dA.map((d, i) => [d, i]).sort((x, y) => x[0] - y[0]).map(x => x[1]), ordB = dB.map((d, i) => [d, i]).sort((x, y) => x[0] - y[0]).map(x => x[1]);
+    const same = ordA.filter((v, i) => v === ordB[i]).length, maxd = Math.max(...dA.map((d, i) => Math.abs(d - dB[i])));
+    $('oState').textContent = 'yes'; $('oRank').textContent = `${same} / ${REF.length}`; $('oDist').textContent = maxd < 1e-12 ? '0 (to rounding)' : maxd.toExponential(1); $('oDetect').textContent = maxd < 1e-9 && same === REF.length ? 'no' : 'yes';
+  }
+  $('obsBtn').onclick = () => { obsOn = !obsOn; $('obsBtn').textContent = obsOn ? '✖ Back to one view' : '👁️ Show A and B side by side'; $('obsBtn').classList.toggle('on', obsOn); dirty = true; obsCheck(); showIdentity();
+    if (obsOn) say('👁️ One state, two observers. Left: A. Right: an <i>illustration</i> of B\'s hypothetical rotated colours. Every distance and ranking matches exactly, so nothing in the structure reveals the difference. Whether the difference could exist at all is the open question.'); };
+  document.querySelector('button[data-t=obs]').addEventListener('click', () => setTimeout(obsCheck, 20));
+
+  // ================= 🧠 token capstone: one transformer step over apples =================
+  const DT = CG.length;
+  const embed = a => CG.map((k, i) => { let z = i < 9 ? (a[k] - MU[i]) / SD[i] : k[0] === 'w' ? (a[k] || 0) / WSIG[+k.slice(1) - 1] : exDev(a, k) / ESIG[k];
+    return Math.max(-3, Math.min(3, z)); });
+  const VOCAB = REF.map(r => embed(r.a));
+  const posEnc = pos => CG.map((_, d) => 0.8 * (d % 2 ? Math.cos : Math.sin)(pos / Math.pow(100, (2 * Math.floor(d / 2)) / DT)));
+  let tokState = null, tokAuto = null;
+  function tokenStep() {
+    const ids = lineage(curIdx).slice(-6), usePos = $('tPos').checked;
+    const X = ids.map((id, p) => { const e = embed(fam[id].a); if (usePos) { const pe = posEnc(p); return e.map((v, d) => v + pe[d]); } return e; });
+    const x = X[X.length - 1], sq = Math.sqrt(DT);
+    const sc = X.map(xi => xi.reduce((t, v, d) => t + v * x[d], 0) / sq), mx = Math.max(...sc), ex = sc.map(v => Math.exp(v - mx)), Z = ex.reduce((t, v) => t + v, 0), w = ex.map(v => v / Z);
+    const att = CG.map((_, d) => X.reduce((t, xi, i) => t + w[i] * xi[d], 0));
+    const h = x.map((v, d) => v + att[d]), rms = Math.sqrt(h.reduce((t, v) => t + v * v, 0) / DT) || 1, n = h.map(v => v / rms);
+    const tau = +$('tTemp').value, lg = VOCAB.map(e => e.reduce((t, v, d) => t + v * n[d], 0) / (sq * tau)), lm = Math.max(...lg), le = lg.map(v => Math.exp(v - lm)), LZ = le.reduce((t, v) => t + v, 0), P = le.map(v => v / LZ);
+    // identical tokens in context: same state, are their vectors still equal?
+    let dupPairs = 0, apart = 0; for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) if (superId(fam[ids[i]].a) === superId(fam[ids[j]].a)) { dupPairs++; if (Math.hypot(...X[i].map((v, d) => v - X[j][d])) > 1e-9) apart++; }
+    tokState = { ids, X, w, x, att, h, n, P, dupPairs, apart };
+    let top = 0; P.forEach((p, i) => { if (p > P[top]) top = i; });
+    $('tTop').textContent = `${REF[top].name} (${(P[top] * 100).toFixed(0)} %)`;
+    $('tNorm').textContent = Math.hypot(...n).toFixed(3);
+    $('tEnt').textContent = (-w.reduce((t, p) => t + (p > 1e-12 ? p * Math.log2(p) : 0), 0)).toFixed(2);
+    $('tDup').textContent = dupPairs ? `${apart} of ${dupPairs} pair${dupPairs > 1 ? 's' : ''}` : 'no duplicates';
+    $('tProbs').innerHTML = P.map((p, i) => [p, i]).sort((a, b) => b[0] - a[0]).map(([p, i]) => `<div class="bar"><span style="font-size:0.7rem">${REF[i].name.split(' ').slice(0, 2).join(' ')}</span><div class="track"><div class="fill" style="left:0;width:${(p * 100).toFixed(1)}%"></div></div><output>${(p * 100).toFixed(1)}%</output></div>`).join('');
+    drawT(); return tokState;
+  }
+  const cvT = $('cvT'), gT = cvT.getContext('2d');
+  function drawT() {
+    if (cvT.offsetParent === null || !tokState) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1), W = Math.round(cvT.clientWidth * dpr); if (cvT.width !== W) { cvT.width = cvT.height = W; }
+    const T = tokState, n = T.ids.length; gT.clearRect(0, 0, W, W);
+    const cx = i => W * (0.1 + 0.8 * (n === 1 ? 0.5 : i / (n - 1))), cyT = W * 0.3;
+    for (let i = 0; i < n; i++) { const a = cx(n - 1), b = cx(i), mid = (a + b) / 2, hgt = W * 0.05 + Math.abs(a - b) * 0.35;
+      gT.strokeStyle = `rgba(255,209,102,${0.25 + 0.75 * T.w[i]})`; gT.lineWidth = Math.max(1, T.w[i] * 14 * dpr);
+      gT.beginPath(); gT.moveTo(a, cyT - 14 * dpr); gT.quadraticCurveTo(mid, cyT - 14 * dpr - hgt, b, cyT - 14 * dpr); gT.stroke(); }
+    gT.textAlign = 'center';
+    T.ids.forEach((id, i) => { gT.fillStyle = i === n - 1 ? '#ffd166' : '#9fb8ff'; gT.beginPath(); gT.arc(cx(i), cyT, 11 * dpr, 0, 7); gT.fill();
+      gT.fillStyle = '#fff8e7'; gT.font = `${8.5 * dpr}px system-ui`; gT.fillText(fam[id].label.replace('Apple ', '#').slice(0, 9), cx(i), cyT + 24 * dpr);
+      gT.fillStyle = '#bfb6e2'; gT.fillText((T.w[i] * 100).toFixed(0) + '%', cx(i), cyT + 36 * dpr); });
+    const rows = [['x  (token)', T.x], ['a  (attention)', T.att], ['h = x + a', T.h], ['n = h / rms(h)', T.n]];
+    const lx = W * 0.27, top = W * 0.5, rh = (W * 0.46) / rows.length, cw = (W - lx - 6 * dpr) / DT;
+    rows.forEach(([lab, v], r) => { gT.fillStyle = '#bfb6e2'; gT.font = `${9 * dpr}px ui-monospace,monospace`; gT.textAlign = 'right'; gT.fillText(lab, lx - 6 * dpr, top + r * rh + rh * 0.6);
+      v.forEach((val, d) => { const al = Math.min(1, Math.abs(val) / 3); gT.fillStyle = val >= 0 ? `rgba(255,160,70,${al})` : `rgba(110,170,255,${al})`; gT.fillRect(lx + d * cw, top + r * rh + 2, cw - 1, rh - 4); }); });
+  }
+  $('tTemp').addEventListener('input', () => { $('tTempOut').textContent = (+$('tTemp').value).toFixed(2); tokenStep(); }); $('tTempOut').textContent = '1.00';
+  $('tPos').addEventListener('input', () => { tokenStep(); say($('tPos').checked ? '📍 Positional encoding on: each token gets a position-dependent vector added. Identical apples at different places in the context are no longer identical vectors, just as Local IDs differ while Super IDs match.' : '📍 Positional encoding off: identical apples in the context have identical vectors.'); });
+  $('tRun').onclick = () => { const T = tokenStep(); let ti = 0; T.w.forEach((v, i) => { if (v > T.w[ti]) ti = i; });
+    say(`▶ One transformer step over ${T.ids.length} context tokens. The newest apple attended most to <b>${fam[T.ids[ti]].label}</b> (${(T.w[ti] * 100).toFixed(0)} %), added that to its own vector, was normalised onto the sphere of radius √22, and scored against all 14 vocabulary apples.`); };
+  function tokGenerate() { const T = tokenStep(); let r = Math.random(), j = 0; while (j < NQ - 1 && (r -= T.P[j]) > 0) j++;
+    const a = { ...cur, ...REF[j].a }; WK.forEach(k => a[k] = 0); EX.forEach(k => a[k] = 0); a.pat = 0;
+    cur = a; gen++; pop = 1.1; addToFamily(cur, '🧠' + REF[j].name.split(' ')[0], curIdx); dirty = true; refresh(); tokenStep();
+    say(`✍️ Generated <b>${REF[j].name}</b> (probability ${(T.P[j] * 100).toFixed(1)} %) and appended it to the context, exactly like a language model writing one token, then reading its own output to choose the next.${T.P[j] > 0.85 && +$('tTemp').value < 0.6 ? ' At this low temperature one apple dominates, so generation falls into a repetition loop, the same failure real language models show when sampling too greedily.' : ''}`); }
+  $('tGen').onclick = () => { stopAll(); tokGenerate(); };
+  $('tAuto').onclick = () => { stopAll(); if (tokAuto) return; let k = 0; tokAuto = setInterval(() => { tokGenerate(); if (++k >= 8) { clearInterval(tokAuto); tokAuto = null; } }, 600); };
+  document.querySelector('button[data-t=tok]').addEventListener('click', () => setTimeout(tokenStep, 20));
+
+  // ================= 🔒 conjunctive closure engine =================
+  const STATE_BITS = 22 * 8 + Math.log2(PATS.length), CAP_BITS = 256, KB = 1.380649e-23, TEMP = 300, LANDAUER = KB * TEMP * Math.LN2;
+  const anchorHash = () => fnvA(JSON.stringify([MU.map(v => v.toFixed(6)), COV.map(r => r.map(v => v.toFixed(6))), THR.toFixed(4)]));
+  const fnvA = str => { let h = 0x811c9dc5; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, '0'); };
+  const A0_HASH = anchorHash(), MU0 = MU.slice(), TR0 = COV.reduce((t, r, i) => t + r[i], 0);
+  let erasedBits = 0, erasures = 0, trHist = [TR0], prevC = { I: true, T: true, O: true }, fpsE = 60;
+  const olog = msg => { const d = new Date(); const el = document.createElement('div'); el.textContent = `${d.toTimeString().slice(0, 8)}  ${msg}`; $('oLog').prepend(el); while ($('oLog').children.length > 30) $('oLog').lastChild.remove(); };
+  const fmtJ = j => j.toExponential(2) + ' J';
+  function closureErase(bits, why_) { if (!(bits > 0)) return; erasedBits += bits; erasures++;
+    olog(`𝒯 erase ${bits.toFixed(1)} bits: ${why_} · ≥ ${fmtJ(bits * LANDAUER)}`); closureCheck(); }
+  function closureAfterAdd() {
+    if ($('cSelf').checked) { const L = lineage(curIdx).slice(-14).map(i => fam[i].a); if (L.length >= 4) { fitV(L); } }
+    trHist.push(COV.reduce((t, r, i) => t + r[i], 0)); if (trHist.length > 80) trHist.shift();
+    const budget = +$('cMem').value;
+    if ($('cAuto').checked) { let kept = fam.filter(f => f.a).length;
+      for (let i = 1; kept > budget && i < fam.length - 1; i++) if (fam[i].a) { fam[i].a = null; fam[i].img = null; kept--; closureErase(STATE_BITS, `record #${i} evicted to fit memory (compression)`); }
+      renderFamily(); }
+    closureCheck();
+  }
+  function closureCheck() {
+    if (!$('cBig')) return;
+    const kept = fam.filter(f => f.a).length, budget = +$('cMem').value, heat = +$('cHeat').value;
+    const I = STATE_BITS <= CAP_BITS && kept <= budget, T = erasedBits <= heat, O = anchorHash() === A0_HASH;
+    const drift = Math.hypot(...MU.map((v, i) => v - MU0[i]));
+    $('cI1').textContent = `state ${STATE_BITS.toFixed(1)} / ${CAP_BITS} bits`; $('cI2').textContent = `history ${kept} / ${budget} records`;
+    $('cT1').textContent = `erased ${Math.round(erasedBits)} / ${heat} bits`; $('cT2').textContent = `≥ ${fmtJ(erasedBits * LANDAUER)} at 300 K`;
+    $('cO1').textContent = O ? 'A₀ intact' : 'A₀ rewritten'; $('cO2').textContent = `μ drift ${drift.toFixed(3)}`;
+    [['clI', I], ['clT', T], ['clO', O]].forEach(([id, ok]) => $(id).className = 'cl ' + (ok ? 'ok' : 'no'));
+    const C = I && T && O; $('cBig').className = 'cbig ' + (C ? 'ok' : 'no');
+    $('cBig').textContent = C ? '𝒞(t) = 1 · conjunctive closure holds' : `𝒞(t) = 0 · failed: ${[!I && 'ℐ', !T && '𝒯', !O && '𝒪'].filter(Boolean).join(', ')}`;
+    // boundary observation: edge-triggered, with evidence; acts only if permitted
+    const act = $('cAuto').checked;
+    if (prevC.I && !I) olog(`ℐ violated: ${kept} records > budget ${budget}. ${act ? 'Compressing on next step.' : 'Observed only (observer not permitted to act).'}`);
+    if (prevC.T && !T) { olog(`𝒯 violated: ${Math.round(erasedBits)} bits erased > budget ${heat}. ${act ? 'Degradation: auto-growth and exploration suspended.' : 'Observed only.'}`); if (act && typeof stopAll === 'function') stopAll(); }
+    if (prevC.O && !O) { olog(`𝒪 violated: anchor ${A0_HASH} → ${anchorHash()} (V refitted from emergent states). ${act && !$('cSelf').checked ? 'Restoring A₀.' : 'Observed: self-anchoring is on.'}`); if (act && !$('cSelf').checked) reanchor(true); }
+    if (!prevC.I && I) olog('ℐ restored.'); if (!prevC.T && T) olog('𝒯 restored.'); if (!prevC.O && O) olog('𝒪 restored: A₀ intact.');
+    prevC = { I, T, O }; drawTr();
+  }
+  function reanchor(quiet) { fitV(REF.map(r => r.a)); trHist.push(TR0); if (!quiet) say('⚓ Re-anchored: V refitted from the external reference apples. A₀ is intact again.'); dirty = true; refresh(); closureCheck(); }
+  const cvTr = $('cvTr'), gTr = cvTr.getContext('2d');
+  function drawTr() {
+    if (cvTr.offsetParent === null) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1), W = Math.round(cvTr.clientWidth * dpr), H = Math.round(W / 4); if (cvTr.width !== W) { cvTr.width = W; cvTr.height = H; }
+    gTr.clearRect(0, 0, W, H); const mx = Math.max(TR0 * 1.2, ...trHist), Y = v => H - 6 * dpr - (H - 14 * dpr) * v / mx, X = i => 6 * dpr + (W - 12 * dpr) * i / Math.max(1, trHist.length - 1);
+    gTr.setLineDash([4 * dpr, 4 * dpr]); gTr.strokeStyle = 'rgba(255,255,255,0.5)'; gTr.beginPath(); gTr.moveTo(0, Y(TR0)); gTr.lineTo(W, Y(TR0)); gTr.stroke(); gTr.setLineDash([]);
+    gTr.strokeStyle = '#ffd166'; gTr.lineWidth = 2 * dpr; gTr.beginPath(); trHist.forEach((v, i) => i ? gTr.lineTo(X(i), Y(v)) : gTr.moveTo(X(i), Y(v))); gTr.stroke();
+    gTr.fillStyle = '#bfb6e2'; gTr.font = `${9 * dpr}px system-ui`; gTr.fillText(`trace Σ = ${trHist[trHist.length - 1].toFixed(3)} (reference ${TR0.toFixed(3)})`, 8 * dpr, 12 * dpr);
+  }
+  function drawGenesis() {
+    const ua = navigator.userAgent, br = /Chrome\//.test(ua) ? 'Chrome' : /Firefox/.test(ua) ? 'Firefox' : /Safari/.test(ua) ? 'Safari' : 'browser';
+    $('gen').innerHTML = [['Ω substrate', `${br} · ${/Android/.test(ua) ? 'Android' : /iPhone|iPad/.test(ua) ? 'iOS' : 'desktop'}`],
+      ['Renderer', GLR ? 'WebGL (full)' : '2D fallback (degraded)'], ['ℬ screen', `${screen.width}×${screen.height} @${(window.devicePixelRatio || 1).toFixed(1)}×`],
+      ['Φ CPU cores', navigator.hardwareConcurrency || '?'], ['Φ device memory', navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'not reported'], ['Φ frame rate', fpsE.toFixed(0) + ' fps']]
+      .map(([k, v]) => `<div class="m">${k}<b style="font-size:0.82rem">${v}</b></div>`).join('');
+  }
+  ['cMem', 'cHeat'].forEach(id => $(id).addEventListener('input', () => { $(id + 'Out').textContent = $(id).value; closureCheck(); }));
+  $('cMemOut').textContent = $('cMem').value; $('cHeatOut').textContent = $('cHeat').value;
+  $('cSelf').addEventListener('input', () => { if ($('cSelf').checked) say('🔁 Self-anchoring on: from now on V is refitted from the apple\'s own recent lineage. Emergent behaviour is rewriting the foundational parameters. Grow or explore and watch trace Σ.'); else say('🔁 Self-anchoring off. Press ⚓ to restore A₀.'); closureCheck(); });
+  $('cAuto').addEventListener('input', closureCheck);
+  $('cAnchor').onclick = () => reanchor(false);
+  $('cEnergy').onclick = () => { olog(`𝒯 energy drawn from 𝒢: erasure ledger reset (was ${Math.round(erasedBits)} bits).`); erasedBits = 0; closureCheck(); say('⚡ New energy from the substrate: the erasure budget is refilled. Organisation inside is paid for by entropy exported outside.'); };
+  $('cStress').onclick = () => { stopAll(); $('cSelf').checked = true; say('🧪 Stress test: self-anchoring on, 40 growth steps. Watch 𝒪 fail, V narrow, and memory and erasure pressure build.');
+    let k = 0; const iv = setInterval(() => { growOnce(true); if (++k >= 40) { clearInterval(iv); say(`🧪 Done. trace Σ went from ${TR0.toFixed(3)} to ${trHist[trHist.length - 1].toFixed(3)}: the system anchored to its own output and narrowed. ⚓ restores A₀.`); } }, 120); };
+  document.querySelector('button[data-t=clo]').addEventListener('click', () => setTimeout(() => { drawGenesis(); closureCheck(); }, 20));
+
+  // ================= journey: explore tour, lineage, reversible retrace =================
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  const nudge = (a, k, amt, lo = 0, hi = 1) => { const v = a[k] || 0, dir = v > lo + 0.7 * (hi - lo) ? -1 : v < lo + 0.3 * (hi - lo) ? 1 : (Math.random() < 0.5 ? -1 : 1);
+    a[k] = Math.max(lo, Math.min(hi, v + dir * amt * (0.6 + 0.8 * Math.random()))); };
+  const MUTATORS = [
+    ['🧱', 'Shape',   a => { const k = pick(['boxy', 'cone', 'tall', 'waist']); nudge(a, k, 0.15); return Q.find(q => q.k === k).n; }],
+    ['📏', 'Size',    a => { nudge(a, 'size', 0.2); }],
+    ['🔴', 'Colour',  a => { nudge(a, 'red', 0.3); }],
+    ['🦓', 'Marks',   a => { const k = pick(['stripes', 'dots']); nudge(a, k, 0.3); return Q.find(q => q.k === k).n; }],
+    ['🍬', 'Taste',   a => { nudge(a, 'sweet', 0.25); }],
+    ['🌊', 'Wave',    a => { const i = Math.floor(Math.random() * NW); nudge(a, WK[i], 0.12 * Math.pow(PHI, -i), -0.3, 0.3); return 'wave ' + (i + 1); }],
+    ['🌈', 'Hue',     a => { a.hue = (((a.hue || 0) + 0.12 + Math.random() * 0.2) % 1 + 1) % 1; }],
+    ['🪙', 'Metal',   a => { nudge(a, 'metal', 0.35); }],
+    ['✨', 'Glow',    a => { nudge(a, 'glow', 0.35); }],
+    ['🍔', 'Fatness', a => { nudge(a, 'fat', 0.3); }],
+    ['💠', 'Facets',  a => { nudge(a, 'facet', 0.4); }],
+    ['🦔', 'Spikes',  a => { nudge(a, 'spike', 0.35); }],
+    ['🧵', 'Pattern', a => { const unseen = PATS.map((_, i) => i).filter(i => !patSeen.has(i) && i !== (a.pat || 0)); a.pat = unseen.length ? pick(unseen) : pick(PATS.map((_, i) => i).filter(i => i !== (a.pat || 0))); a.tex = 0.6 + 0.4 * Math.random(); return PATS[a.pat]; }],
+    ['🎲', 'Combo',   a => { const r = mutate(a); Object.assign(a, r.kid); return r.changed.length + ' genes'; }],
+  ];
+  const mutCount = MUTATORS.map(() => 0), patSeen = new Set([0]);
+  let tour = null, tourStep = 0, nowMut = -1;
+  function drawChips() {
+    $('mutChips').innerHTML = MUTATORS.map((m, i) => `<span class="chip${mutCount[i] ? ' hit' : ''}${i === nowMut ? ' now' : ''}">${m[0]} ${m[1]}${mutCount[i] ? ' ×' + mutCount[i] : ''}</span>`).join('');
+    $('patChips').innerHTML = PATS.map((n, i) => `<span class="chip${patSeen.has(i) ? ' hit' : ''}">${patSeen.has(i) ? '✓' : '○'} ${n}</span>`).join('') + `<span class="chip">${patSeen.size}/${PATS.length} patterns · ${mutCount.filter(Boolean).length}/${MUTATORS.length} mutators</span>`;
+  }
+  function tourTick() {
+    const i = tourStep % MUTATORS.length, m = MUTATORS[i], kid = { ...cur }, detail = m[2](kid);
+    mutCount[i]++; nowMut = i; if ((kid.pat || 0) > 0 && (kid.tex || 0) > 0) patSeen.add(kid.pat);
+    const parent = { ...cur }; cur = kid; gen++; pop = 1.06; addToFamily(cur, 'Apple ' + gen, curIdx); dirty = true; refresh(); drawChips();
+    say(`🧭 Step ${tourStep + 1} · mutator <b>${m[0]} ${m[1]}</b>${detail ? ' (' + detail + ')' : ''}. Wave angle to parent ${l2Angle(profile(cur), profile(parent)).toFixed(2)}°, realism distance ${assess(cur).d.toFixed(1)}. ${patSeen.size}/${PATS.length} patterns and ${mutCount.filter(Boolean).length}/${MUTATORS.length} mutators explored.`);
+    tourStep++;
+  }
+  function stopAll() { if (tour) { clearInterval(tour); tour = null; $('explore').classList.remove('on'); $('explore').textContent = '🧭 Explore'; }
+    if (auto) { clearInterval(auto); auto = null; $('auto').textContent = '♾️ Auto'; $('auto').classList.remove('on'); } }
+  $('explore').onclick = () => {
+    if (tour) { stopAll(); nowMut = -1; drawChips(); say('⏸️ Exploration paused. Retrace or replay the path, or resume.'); return; }
+    stopAll(); retr = null;
+    cur = { ...fam[0].a }; curIdx = 0; renderFamily(); setMode(true); tourStep = 0;
+    say('🧭 Exploration begins at <b>Apple I</b>, the plain crab apple. Each step applies the next mutator in the cycle, so every kind of change gets used and every pattern gets visited.');
+    refresh(); tour = setInterval(tourTick, 850); $('explore').classList.add('on'); $('explore').textContent = '⏸️ Pause';
+  };
+
+  // lineage = parent chain from the root to the current apple; interpolation makes it a continuous, reversible path
+  const lineage = idx => { const L = []; let i = idx; while (i != null && i >= 0 && fam[i] && fam[i].a) { L.unshift(i); i = fam[i].parent; } return L; };
+  function interp(a, b, t) {
+    const o = { ...a };
+    [...keys, ...WK, ...EX].forEach(k => { const x = a[k] || 0, y = b[k] || 0;
+      if (k === 'hue') { let d = y - x; if (d > 0.5) d -= 1; if (d < -0.5) d += 1; o.hue = ((x + d * t) % 1 + 1) % 1; } else o[k] = x + (y - x) * t; });
+    if ((a.pat || 0) !== (b.pat || 0)) { if (t < 0.5) { o.pat = a.pat || 0; o.tex = (a.tex || 0) * (1 - 2 * t); } else { o.pat = b.pat || 0; o.tex = (b.tex || 0) * (2 * t - 1); } }
+    return o;
+  }
+  let LINE = [0], scrubbing = false, retr = null, pathTip = 0;     // pathTip: the far end of the remembered trajectory
+  function syncScrub() { if (scrubbing || retr) return;
+    LINE = lineage(pathTip); let k = LINE.indexOf(curIdx); if (k < 0) { pathTip = curIdx; LINE = lineage(pathTip); k = LINE.length - 1; }
+    const n = LINE.length - 1; $('scrub').max = Math.max(n, 0); $('scrub').value = k; $('scrubLbl').textContent = `step ${k} / ${n}`; }
+  function setAlong(x) { const n = LINE.length - 1; x = Math.max(0, Math.min(n, x)); const i = Math.min(Math.floor(x), Math.max(n - 1, 0)), t = n ? x - i : 0;
+    cur = n ? interp(fam[LINE[i]].a, fam[LINE[i + 1]].a, t) : { ...fam[LINE[0]].a }; $('scrub').value = x; $('scrubLbl').textContent = `step ${x.toFixed(1)} / ${n}`; dirty = true; refresh(); }
+  $('scrub').addEventListener('input', e => { stopAll(); retr = null; scrubbing = true; setAlong(+e.target.value); });
+  $('scrub').addEventListener('change', e => { const k = Math.round(+e.target.value); setAlong(k); curIdx = LINE[k]; scrubbing = false; renderFamily();
+    say(`🎚️ Stopped at step ${k} of the path (${fam[curIdx].label}). Growing from here starts a new branch; the old future is kept in the family.`); });
+  const runPath = dir => { stopAll(); LINE = lineage(pathTip); const n = LINE.length - 1;
+    if (n < 1) { say('Nothing to retrace yet: grow or explore first.'); return; }
+    let x0 = +$('scrub').value; if (dir > 0 && x0 >= n) x0 = 0; if (dir < 0 && x0 <= 0) x0 = n;
+    retr = { x: x0, dir, n, last: performance.now() };
+    say(dir < 0 ? `⏪ Retracing ${n} steps back along the same curved path…` : `⏩ Replaying the path forward from ${fam[LINE[0]].label}…`); };
+  $('retrace').onclick = () => runPath(-1);
+  $('replay').onclick = () => runPath(1);
+  function stepRetrace(now) {
+    if (!retr) return; const dt = Math.min(0.1, (now - retr.last) / 1000); retr.last = now;
+    retr.x += retr.dir * dt * Math.max(2.5, retr.n / 6);
+    const done = retr.dir < 0 ? retr.x <= 0 : retr.x >= retr.n;
+    setAlong(Math.max(0, Math.min(retr.n, retr.x)));
+    if (done) { const n = retr.n, dir = retr.dir; retr = null; curIdx = LINE[dir < 0 ? 0 : n]; renderFamily(); setAlong(dir < 0 ? 0 : n);
+      say(dir < 0 ? `⏪ Back at <b>${fam[curIdx].label}</b> after ${n} steps. Every state on the way was recovered exactly: each child stores its parent, so the random walk can be run backwards along the same path. ⏩ Replay runs it forward again.`
+                  : `⏩ Arrived back at <b>${fam[curIdx].label}</b>, the tip of the path. Forward and backward trace the same curve.`); }
+  }
+
+  // ================= identity: state chain, Super ID (content address), local instance =================
+  const hex2 = x => Math.round(Math.max(0, Math.min(1, x)) * 255).toString(16).padStart(2, '0');
+  const stateChain = a => `S[${keys.map(k => hex2(a[k])).join('.')} | ${WK.map(k => hex2((a[k] || 0) + 0.5)).join('.')} | ${EX.map(k => hex2(a[k] || 0)).join('.')} | ${a.pat || 0}]`;
+  const fnv = (str, seed) => { let h = (0x811c9dc5 ^ seed) >>> 0; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, '0'); };
+  const superId = a => { const c = stateChain(a), h = [1, 2, 3, 4].map(k => fnv(c, k * 0x9e3779b9)).join(''); return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20, 32)}`; };
+  const T0 = performance.now();
+  let twin = null, inst = { x: 0, y: 0, z: 0, t: 0 }, lastChain = '';
+  const localId = (sid, p) => `${sid.slice(0, 8)}@(${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} | t=${p.t.toFixed(2)} s)`;
+  const stateDist = (a, b) => Math.sqrt([...keys, ...WK, ...EX].reduce((t, k) => t + ((a[k] || 0) - (b[k] || 0)) ** 2, 0) + ((a.pat || 0) === (b.pat || 0) ? 0 : 1));
+  function showIdentity() {
+    const c = stateChain(cur);
+    if (c !== lastChain) { inst.t = (performance.now() - T0) / 1000; inst.abs = Date.now(); lastChain = c; }
+    inst.x = twin ? -0.54 : 0;
+    $('chain').innerHTML = c.replace(' | ', ' <i>|</i> ').replace(' | ', ' <i>|</i> ').replace(' | ', ' <i>|</i> ');
+    const sid = superId(cur); $('superId').textContent = sid; $('localId').textContent = localId(sid, inst);
+    $('tagA').hidden = $('tagB').hidden = !(twin || obsOn); $('cmp').hidden = !twin;
+    const si = $('slotImg'); si.hidden = !twin || obsOn; if (twin && SLOTS[twin.slot]) si.src = SLOTS[twin.slot].img;
+    if (obsOn) { $('tagA').textContent = '👁️ Observer A'; $('tagB').textContent = '👁️ B (illustration)'; }
+    if (!twin || obsOn) return;
+    const sidB = superId(twin.a), sameS = sid === sidB, dS = stateDist(cur, twin.a);
+    const dx = twin.p.x - inst.x, dt = Math.abs(((twin.p.abs || 0) - (inst.abs || 0)) / 1000);
+    $('tagA').textContent = 'live · ' + sid.slice(0, 8); $('tagB').textContent = 'S' + (twin.slot + 1) + ' · ' + sidB.slice(0, 8);
+    $('cmp').innerHTML = `<table>
+      <tr><td>Same state chain S</td><td class="${sameS ? 'yes' : 'no2'}">${sameS ? 'yes' : 'no'}</td></tr>
+      <tr><td>Same Super ID (position in state space)</td><td class="${sameS ? 'yes' : 'no2'}">${sameS ? 'yes' : 'no'}</td></tr>
+      <tr><td>State-space distance</td><td>${dS.toFixed(3)}</td></tr>
+      <tr><td>Same Local ID (position in space-time)</td><td class="no2">no</td></tr>
+      <tr><td>Spatial separation Δx</td><td>${Math.abs(dx).toFixed(2)} units</td></tr>
+      <tr><td>Time separation Δt</td><td>${dt < 120 ? dt.toFixed(2) + ' s' : (dt / 60).toFixed(1) + ' min'}</td></tr></table>
+      ${sameS ? '<b>Identical in kind, distinct as objects.</b> Every property matches, so they share one Super ID: one point in the state space. They are still two apples, because each occupies its own place and moment. Two equal copies of one state are two tokens of one type.'
+              : `<b>Different in kind.</b> The live apple and S${twin.slot + 1} hold different states, so their Super IDs differ. The slot is frozen: whatever the live apple does, S${twin.slot + 1} keeps its state.`}
+      <br><span style="color:var(--quiet);font-size:0.74rem">Scope: this models classical objects, where position tells copies apart. Quantum particles of one kind are treated by physics as truly indistinguishable, so they don't carry individual labels like these.</span>`;
+  }
+  // ---- six state slots: frozen copies you can load (reconstruct from) or compare (identity demo) ----
+  let SLOTS = Array(6).fill(null), selSlot = -1;
+  try { const sv = JSON.parse(localStorage.getItem('aoa_slots') || 'null'); if (Array.isArray(sv) && sv.length === 6) SLOTS = sv; } catch (e) {}
+  const saveSlots = () => { try { localStorage.setItem('aoa_slots', JSON.stringify(SLOTS)); } catch (e) {} };
+  function drawSlots() {
+    $('slots').innerHTML = SLOTS.map((sl, i) => sl
+      ? `<div class="slot full${i === selSlot ? ' sel' : ''}" data-i="${i}"><img src="${sl.img}" alt="slot ${i + 1}"><b>S${i + 1}</b><code>${superId(sl.a).slice(0, 6)}</code></div>`
+      : `<div class="slot" data-i="${i}">＋<br>S${i + 1}</div>`).join('');
+    $('slotActs').hidden = selSlot < 0 || !SLOTS[selSlot];
+    if (selSlot >= 0 && SLOTS[selSlot]) $('sCmp').textContent = twin && twin.slot === selSlot ? '✖ Uncompare' : '👯 Compare';
+    $('slots').querySelectorAll('.slot').forEach(el => el.onclick = () => { const i = +el.dataset.i;
+      if (!SLOTS[i]) { saveTo(i); return; } selSlot = selSlot === i ? -1 : i; drawSlots(); });
+  }
+  function saveTo(i) { if (SLOTS[i]) closureErase(STATE_BITS, `slot S${i + 1} overwritten`); SLOTS[i] = { a: JSON.parse(JSON.stringify(cur)), img: snapshot(cur, 360), t: (performance.now() - T0) / 1000, abs: Date.now(), label: fam[curIdx] ? fam[curIdx].label : '' };
+    selSlot = i; saveSlots(); drawSlots(); dirty = true;
+    say(`💾 Saved to <b>S${i + 1}</b>: the full state (Super ID ${superId(cur).slice(0, 8)}…) plus an exact image of the view as it looked. Nothing you do next can change either.`); }
+  $('sSave').onclick = () => { if (selSlot >= 0) saveTo(selSlot); };
+  $('sClear').onclick = () => { if (selSlot < 0) return; if (twin && twin.slot === selSlot) twin = null; closureErase(STATE_BITS, `slot S${selSlot + 1} cleared`); SLOTS[selSlot] = null; say(`✖ Slot S${selSlot + 1} cleared.`); selSlot = -1; saveSlots(); drawSlots(); dirty = true; showIdentity(); };
+  $('sLoad').onclick = () => { const sl = SLOTS[selSlot]; if (!sl) return; stopAll(); retr = null; if (typeof qActive !== 'undefined') qActive = false; casc = null;
+    cur = JSON.parse(JSON.stringify(sl.a)); gen++; pop = 1.12; addToFamily(cur, '💾 S' + (selSlot + 1), null); dirty = true; refresh();
+    say(`↩ Loaded <b>S${selSlot + 1}</b>. Reconstruction starts here: it is the root of a new lineage, so Grow, Explore and Retrace all work from this point, and the slot itself stays untouched.`); };
+  $('sCmp').onclick = () => { const sl = SLOTS[selSlot]; if (!sl) return;
+    if (twin && twin.slot === selSlot) { twin = null; say('👯 Comparison closed.'); }
+    else { twin = { a: sl.a, slot: selSlot, p: { x: 0.54, y: 0, z: 0, t: sl.t, abs: sl.abs || Date.now() } };
+      say(superId(cur) === superId(sl.a)
+        ? `👯 Comparing the live apple with <b>S${selSlot + 1}</b>'s frozen image: same state chain, same Super ID, so they are one point in the state space. Their Local IDs differ in place and time: identical in kind, two objects.`
+        : `👯 Comparing with <b>S${selSlot + 1}</b>: different states, so different Super IDs. Load S${selSlot + 1} and compare again to see two identical apples that are still two.`); }
+    dirty = true; drawSlots(); showIdentity(); };
+  // reference table
+  { const t = $('refTable'), th = 'style="text-align:left;padding:3px 4px;border-bottom:1px solid var(--line);color:var(--quiet)"', td = 'style="padding:3px 4px;border-bottom:1px solid var(--line)"';
+    t.innerHTML = `<tr><th ${th}>Apple</th><th ${th}>mm</th><th ${th}>°Brix</th><th ${th}>H/D</th><th ${th}>red</th><th ${th}>stripes</th><th ${th}>d</th></tr>` +
+      REF.map((r, i) => `<tr data-i="${i}" style="cursor:pointer"><td ${td}>${r.name}</td><td ${td}>${Math.round(20 + 80 * r.a.size)}</td><td ${td}>${(8 + 10 * r.a.sweet).toFixed(1)}</td><td ${td}>${(0.7 + 0.5 * r.a.tall).toFixed(2)}</td><td ${td}>${r.a.red.toFixed(2)}</td><td ${td}>${r.a.stripes.toFixed(2)}</td><td ${td}>${assess(r.a).d.toFixed(1)}</td></tr>`).join('');
+    t.querySelectorAll('tr[data-i]').forEach(tr => tr.onclick = () => { const r = REF[+tr.dataset.i]; cur = { ...r.a }; pop = 1.1; dirty = true; refresh();
+      say(`📋 Loaded <b>${r.name}</b> from the reference table. ${status(cur)}`); }); }
+  // bars
+  $('bars').innerHTML = Q.map(q => `<div class="bar"><span>${q.e} ${q.n}</span><div class="track"><div class="fill" id="bar_${q.k}"></div></div><output id="bv_${q.k}"></output></div>`).join('');
+  // axis selects
+  for (const id of ['axX', 'axY', 'axZ']) $(id).innerHTML = Q.map((q, i) => `<option value="${i}">${q.e} ${q.n}</option>`).join('');
+  $('axX').value = 4; $('axY').value = 8; $('axZ').value = 0;   // size, sweet, boxy
+  ['axX', 'axY', 'axZ'].forEach(id => $(id).addEventListener('input', () => { projectSamples(); dirty = true; refresh(); }));
+
+  function refresh() {
+    for (const q of Q) { $(q.k).value = cur[q.k]; $(q.k + 'Out').textContent = cur[q.k].toFixed(2); }
+    $('sidesOut').textContent = $('sides').value;
+    WK.forEach(k => { if ($(k)) { $(k).value = cur[k] || 0; $(k + 'Out').textContent = (cur[k] || 0).toFixed(3); } });
+    if (typeof drawWave === 'function') drawWave();
+    EX.forEach(k => { const el = $('ex_' + k); if (el) { el.value = cur[k] || 0; $('ex_' + k + 'Out').textContent = (cur[k] || 0).toFixed(2); } });
+    document.querySelectorAll('#pats button').forEach(b => b.classList.toggle('on', +b.dataset.p === (cur.pat || 0)));
+    if (typeof setLens === 'function') setLens();
+    if (typeof showIdentity === 'function') showIdentity();
+    if (typeof obsCheck === 'function' && !$('oRank').closest('.tab').hidden) obsCheck();
+    const w = why(cur), b = $('badge');
+    const as = assess(cur); b.className = 'badge ' + (w ? 'no' : 'ok'); b.textContent = w ? `❌ ${as.worst} too ${as.high ? 'high' : 'low'} · d ${as.d.toFixed(1)}` : `✅ like ${as.near} · d ${as.d.toFixed(1)}`;
+    $('vApple').classList.toggle('warn', !!w);
+    const v = vec(cur);
+    Q.forEach((q, i) => {
+      const f = $('bar_' + q.k), x = v[i];
+      f.style.left = (x >= 0 ? 50 : 50 + x * 50) + '%'; f.style.width = Math.abs(x) * 50 + '%';
+      f.style.background = x >= 0 ? 'var(--blue)' : '#ff8fa3';
+      $('bv_' + q.k).textContent = (x >= 0 ? '+' : '') + x.toFixed(2);
+    });
+    const seed = fam[0] ? fam[0].a : CRAB, parent = fam[curIdx] && fam[curIdx].parent != null ? fam[fam[curIdx].parent].a : null;
+    $('mNorm').textContent = norm(v).toFixed(2);
+    $('mSeed').textContent = fmtA(angleDeg(cur, seed));
+    $('mParent').textContent = parent ? fmtA(angleDeg(cur, parent)) : '—';
+    $('mSteps').textContent = fam[curIdx] ? fam[curIdx].depth : 0;
+    $('mDist').textContent = dist(cur, seed).toFixed(2);
+    const ax = axes(), n = norm(v), sub = Math.hypot(v[ax[0]], v[ax[1]], v[ax[2]]);
+    $('mShown').textContent = n < 1e-9 ? '—' : Math.round(100 * (sub / n) ** 2) + ' %';
+    $('angleTag').textContent = `θ to Apple I: ${fmtA(angleDeg(cur, seed))}`;
+    const vs = v.map(x => (x >= 0 ? ' ' : '') + x.toFixed(2)).join(',');
+    $('robot').textContent =
+`q  = [${keys.map(k => cur[k].toFixed(2)).join(', ')}]      # raw qualities, 0..1
+x  = 2(q − 0.5) = [${vs}]
+‖x‖ = ${norm(v).toFixed(3)}
+û  = x/‖x‖  ∈ S⁸ ⊂ ℝ⁹
+
+order: ${keys.join(', ')}
+waves c = [${WK.map(k => (cur[k] || 0).toFixed(3)).join(', ')}]   # profile × (1 + Σ c_k cos kv)
+exotic  = {${EX.map(k => k + ':' + (cur[k] || 0).toFixed(2)).join(', ')}, pattern:${PATS[cur.pat || 0]}}
+mode    = ${trans ? 'trans-dimensional (no projection)' : 'real (P_V projection)'}
+
+state   = ${stateChain(cur)}
+super_id = H(state) = ${superId(cur)}      # same state ⇒ same super_id
+local_id = super_id @ (x, y, z | t)        # distinct instances differ here
+
+d(q) = √((q−μ)ᵀ Σ⁻¹ (q−μ)) = ${assess(cur).d.toFixed(2)}     # μ, Σ fitted to ${REF.length} reference apples
+inside_V(q)  = d(q) ≤ ${THR.toFixed(2)}  →  ${w ? 'false   # ' + w : 'true'}
+θ(q, apple_I) = ${fmtA(angleDeg(cur, seed))}
+baby(q)      = P_V( q + δ ),  each gene mutates w.p. 1/φ,  σ_wave_k ∝ φ^−(k−1)
+P_V          = radial projection onto V  →  growth never stops
+wild_jump()  = q ~ Uniform([0,1]⁹)    # P(inside_V) = ${pctV()}
+family       = tree of baby() steps from apple_I (indefinite)`;
+  }
+
+  // ================= apple geometry (≤ 522 tris) =================
+  const sp = (x, e) => Math.sign(x) * Math.pow(Math.abs(x), e);
+  function surface(a, u, v) {
+    const e = 1 - a.boxy * 0.85, stretch = 0.7 + a.tall * 0.7, yn = sp(Math.cos(v), e);
+    let h = sp(Math.sin(v), e);
+    h *= 1 + (a.cone - 0.5) * 1.9 * yn;
+    h *= 1 - a.waist * 0.55 * Math.exp(-(((yn - 0.3) / 0.38) ** 2));
+    h = Math.max(0, h);
+    let y = yn * stretch; const round = 1 - a.boxy;
+    y -= round * 0.26 * Math.exp(-((v / 0.45) ** 2));
+    y += round * 0.16 * Math.exp(-(((Math.PI - v) / 0.45) ** 2));
+    let wv = 0; for (let k = 1; k <= NW; k++) wv += (a['w' + k] || 0) * Math.cos(k * v);
+    const fat = a.fat || 0, spk = a.spike || 0;
+    h *= 1 + fat * 0.55; y *= 1 - fat * 0.12;                  // fatness: wider and a little squatter
+    let m = Math.max(0.3, 1 + wv);                            // the wave rides on the base curve
+    if (spk > 0) m *= 1 + 0.85 * spk * Math.pow(Math.max(0, Math.sin(5 * u + 0.4) * Math.sin(4 * v)), 3);
+    return [h * sp(Math.cos(u), e) * m, y * m, h * sp(Math.sin(u), e) * m];
+  }
+  let meshKey = '', mesh = null;
+  function getMesh(a, NU, NV) {
+    const key = NU + '|' + [...keys, ...WK, 'fat', 'spike'].map(k => (a[k] || 0).toFixed(4)).join(',');
+    if (key === meshKey) return mesh;
+    const P = []; const mn = [1e9, 1e9, 1e9], mx = [-1e9, -1e9, -1e9];
+    for (let j = 0; j <= NV; j++) { const row = []; for (let i = 0; i <= NU; i++) {
+      const p = surface(a, i / NU * 2 * Math.PI + (j % 2) * Math.PI / NU * 0.5, j / NV * Math.PI);
+      row.push(p); for (let k = 0; k < 3; k++) { mn[k] = Math.min(mn[k], p[k]); mx[k] = Math.max(mx[k], p[k]); } } P.push(row); }
+    const yTop = P[0][0][1], tip = [0.08, yTop + 0.56, 0]; mx[1] = Math.max(mx[1], tip[1]);
+    const c = mn.map((x, k) => (x + mx[k]) / 2), sh = p => [p[0] - c[0], p[1] - c[1], p[2] - c[2]];
+    let R = 0; for (const row of P) for (let i = 0; i < row.length; i++) { row[i] = sh(row[i]); R = Math.max(R, Math.hypot(...row[i])); }
+    const box = [mn.map((x, k) => x - c[k]), mx.map((x, k) => x - c[k])];
+    R = Math.max(R, Math.hypot(...sh(tip)), Math.hypot(...box[1]) * 0.9, Math.hypot(...box[0]) * 0.9);
+    // faces + colours computed once per shape
+    const faces = [];
+    const hash = (i, j) => { const s = Math.sin(i * 127.1 + j * 311.7) * 43758.5453; return s - Math.floor(s); };
+    const mix = (p, q, t) => p.map((x, k) => x + (q[k] - x) * t);
+    for (let j = 0; j < NV; j++) for (let i = 0; i < NU; i++) {
+      const idx = j === 0 ? [[0, i], [1, i + 1], [1, i]] : j === NV - 1 ? [[j, i], [j, i + 1], [j + 1, i]] : [[j, i], [j, i + 1], [j + 1, i + 1], [j + 1, i]];
+      const u = (i + 0.5) / NU * 2 * Math.PI, v = (j + 0.5) / NV * Math.PI;
+      let col = mix([112, 206, 64], [214, 38, 42], a.red);
+      if (Math.sin(2 * u + 1.3) * Math.sin(3 * v + 0.4) > 0.45) col = mix(col, [244, 214, 84], 0.4 * (1 - a.red * 0.6));
+      if (i % 3 === 0) col = mix(col, [158, 20, 34], a.stripes * 0.8);
+      faces.push({ idx, col, dot: hash(i, j) < a.dots * 0.55, t1: 0.3 + 0.4 * hash(j, i), t2: 0.3 + 0.4 * hash(i + 7, j + 3) });
+    }
+    meshKey = key; mesh = { P, R, box, faces, stem:[sh([0, yTop, 0]), sh(tip)], tris: 2 * NU * (NV - 2) + 2 * NU + 2 };
+    return mesh;
+  }
+
+  const LIGHT = (() => { const v = [-0.5, 0.65, -0.6], n = Math.hypot(...v); return v.map(x => x / n); })();
+  function drawApple(g, W, a, ay, ax, popMul, ghost, sides, showBox) {
+    const NU = sides, NV = Math.max(4, Math.round(sides * 0.7)), m = getMesh(a, NU, NV);
+    const cx = W / 2, cy = W / 2, f = 0.6 + 0.4 * a.size;
+    const scale = W * 0.36 / m.R * f * Math.min(popMul, 1 / f);
+    const cA = Math.cos(ay), sA = Math.sin(ay), cX = Math.cos(ax), sX = Math.sin(ax);
+    const rot = p => { const x1 = p[0] * cA + p[2] * sA, z1 = -p[0] * sA + p[2] * cA; return [x1, p[1] * cX - z1 * sX, p[1] * sX + z1 * cX]; };
+    const proj = p => { const k = 1 / (1 + p[2] / m.R * 0.08); return [cx + p[0] * scale * k, cy - p[1] * scale * k]; };
+    if (!ghost) { g.fillStyle = 'rgba(0,0,0,0.28)'; g.beginPath(); g.ellipse(cx, cy + m.R * scale * 0.9, m.R * scale * 0.7, m.R * scale * 0.12, 0, 0, 7); g.fill(); }
+    const RP = m.P.map(r => r.map(rot)), list = [];
+    for (const fc of m.faces) {
+      const pts = fc.idx.map(([j, i]) => RP[j][i]), a0 = pts[0], a1 = pts[1], a2 = pts[pts.length - 1];
+      const e1 = [a1[0] - a0[0], a1[1] - a0[1], a1[2] - a0[2]], e2 = [a2[0] - a0[0], a2[1] - a0[1], a2[2] - a0[2]];
+      let n = [e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]];
+      const len = Math.hypot(...n); if (len < 1e-9) continue; n = n.map(x => x / len);
+      let c0 = 0, c1 = 0, c2 = 0; for (const p of pts) { c0 += p[0]; c1 += p[1]; c2 += p[2]; }
+      if (n[0] * c0 + n[1] * c1 + n[2] * c2 < 0) n = n.map(x => -x);
+      if (!ghost && n[2] > 0.05) continue;
+      list.push({ pts, n, z: c2 / pts.length, fc });
+    }
+    list.sort((A, B) => B.z - A.z);
+    const hv = [LIGHT[0], LIGHT[1], LIGHT[2] - 1], hm = Math.hypot(...hv);
+    for (const F of list) {
+      const s = F.pts.map(proj);
+      g.beginPath(); g.moveTo(s[0][0], s[0][1]); for (let k = 1; k < s.length; k++) g.lineTo(s[k][0], s[k][1]); g.closePath();
+      if (ghost) { g.fillStyle = 'rgba(160,130,255,0.10)'; g.fill(); g.strokeStyle = 'rgba(255,190,220,0.75)'; g.lineWidth = 1.4; g.stroke(); continue; }
+      const n = F.n, lam = Math.max(0, n[0] * LIGHT[0] + n[1] * LIGHT[1] + n[2] * LIGHT[2]);
+      const spec = Math.pow(Math.max(0, (n[0] * hv[0] + n[1] * hv[1] + n[2] * hv[2]) / hm), 24) * 0.45, sh = 0.38 + 0.75 * lam;
+      const c = F.fc.col;
+      g.fillStyle = `rgb(${Math.min(255, c[0] * sh + 255 * spec) | 0},${Math.min(255, c[1] * sh + 255 * spec) | 0},${Math.min(255, c[2] * sh + 255 * spec) | 0})`;
+      g.fill(); g.strokeStyle = 'rgba(0,0,0,0.12)'; g.lineWidth = 1; g.stroke();
+      if (F.fc.dot) {
+        g.save(); g.clip();
+        const L = s.length - 1, px = s[0][0] + (s[1][0] - s[0][0]) * F.fc.t1 + (s[L][0] - s[0][0]) * F.fc.t2 * 0.6, py = s[0][1] + (s[1][1] - s[0][1]) * F.fc.t1 + (s[L][1] - s[0][1]) * F.fc.t2 * 0.6;
+        g.fillStyle = 'rgba(250,240,190,0.9)'; g.beginPath(); g.arc(px, py, Math.max(1.2, scale * 0.025), 0, 7); g.fill(); g.restore();
+      }
+    }
+    const st = m.stem.map(rot).map(proj);
+    g.lineCap = 'round'; g.strokeStyle = ghost ? 'rgba(200,190,240,0.6)' : '#5b3a1e'; g.lineWidth = Math.max(2, scale * 0.05);
+    g.beginPath(); g.moveTo(st[0][0], st[0][1]); g.lineTo(st[1][0], st[1][1]); g.stroke();
+    const yT = m.stem[0][1], leaf = [[0.03, yT + 0.24, 0], [0.32, yT + 0.42, -0.12], [0.62, yT + 0.4, -0.05], [0.3, yT + 0.22, 0.05]].map(rot).map(proj);
+    g.beginPath(); g.moveTo(leaf[0][0], leaf[0][1]); for (let k = 1; k < 4; k++) g.lineTo(leaf[k][0], leaf[k][1]); g.closePath();
+    if (ghost) { g.strokeStyle = 'rgba(200,190,240,0.6)'; g.lineWidth = 1.2; g.stroke(); } else { g.fillStyle = '#4fbf48'; g.fill(); g.strokeStyle = '#2b7a2c'; g.lineWidth = 1; g.stroke(); }
+    if (showBox) {
+      const [lo, hi] = m.box, C = [];
+      for (const x of [lo[0], hi[0]]) for (const y of [lo[1], hi[1]]) for (const z of [lo[2], hi[2]]) C.push(proj(rot([x, y, z])));
+      g.save(); g.setLineDash([6, 5]); g.strokeStyle = 'rgba(255,209,102,0.85)'; g.lineWidth = 1.5;
+      for (const [p, q] of [[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,4],[1,5],[2,6],[3,7]]) { g.beginPath(); g.moveTo(C[p][0], C[p][1]); g.lineTo(C[q][0], C[q][1]); g.stroke(); }
+      g.restore();
+    }
+    return m.tris;
+  }
+
+  // ================= WebGL renderer: smooth normals, per-pixel skin, depth buffer (no face culling) =================
+  function makeGL(canvas, opts) {
+    const gl = canvas.getContext('webgl', { antialias:true, alpha:true, premultipliedAlpha:false, preserveDrawingBuffer:!!(opts && opts.preserve) });
+    if (!gl) return null;
+    const VS = `attribute vec3 aPos; attribute vec3 aNor; attribute vec2 aUV;
+      uniform mat4 uM, uVP; uniform mat3 uN; varying vec3 vN, vW, vO; varying vec2 vUV;
+      void main(){ vec4 w = uM * vec4(aPos,1.0); vW = w.xyz; vO = aPos; vN = uN * aNor; vUV = aUV; gl_Position = uVP * w; }`;
+    const DER = gl.getExtension('OES_standard_derivatives');
+    const FS = (DER ? '#extension GL_OES_standard_derivatives : enable\n#define HAS_DERIV 1\n' : '') + `precision mediump float;
+      varying vec3 vN, vW, vO; varying vec2 vUV;
+      uniform float uRed, uStripes, uDots, uMode, uAlpha, uWarn;
+      uniform float uHue, uMetal, uGlow, uFacet, uTex, uPat, uTime; uniform vec3 uCam, uTint;
+      float hash3(vec3 p){ p = fract(p * 0.3183099 + 0.1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }
+      float noise3(vec3 x){ vec3 i = floor(x), f = fract(x); f = f * f * (3.0 - 2.0 * f);
+        return mix(mix(mix(hash3(i), hash3(i + vec3(1,0,0)), f.x), mix(hash3(i + vec3(0,1,0)), hash3(i + vec3(1,1,0)), f.x), f.y),
+                   mix(mix(hash3(i + vec3(0,0,1)), hash3(i + vec3(1,0,1)), f.x), mix(hash3(i + vec3(0,1,1)), hash3(i + vec3(1,1,1)), f.x), f.y), f.z); }
+      vec3 hueShift(vec3 c, float a){ vec3 k = vec3(0.57735); float ca = cos(a), sa = sin(a); return c * ca + cross(k, c) * sa + k * dot(k, c) * (1.0 - ca); }
+      void main(){
+        if (uMode > 3.5) { gl_FragColor = vec4(uTint, uAlpha); return; }                 // lines
+        if (uMode > 2.5) { float r = length(vUV * 2.0 - 1.0); gl_FragColor = vec4(0.0,0.0,0.0, (1.0 - smoothstep(0.2, 1.0, r)) * 0.38); return; } // shadow
+        vec3 c;
+        float u = vUV.x * 6.2831853, v = vUV.y * 3.1415927;
+        if (uMode < 0.5) {
+          c = mix(vec3(0.44,0.80,0.24), vec3(0.83,0.13,0.15), uRed);
+          float patch = sin(2.0*u + 1.3) * sin(3.0*v + 0.4);
+          c = mix(c, vec3(0.95,0.83,0.32), 0.42 * smoothstep(0.15, 0.85, patch) * (1.0 - uRed*0.6));
+          float band = 0.5 + 0.5 * sin(9.0*u + 0.6*sin(3.0*v));
+          c = mix(c, vec3(0.60,0.07,0.12), uStripes * 0.8 * smoothstep(0.4, 0.9, band));
+          vec2 g = vec2(vUV.x * 34.0, vUV.y * 17.0); vec2 id = floor(g); vec2 f = fract(g) - 0.5;
+          float h = fract(sin(dot(id, vec2(127.1,311.7))) * 43758.5453);
+          vec2 off = (vec2(fract(h*13.7), fract(h*7.3)) - 0.5) * 0.5;
+          float d = length((f - off) * vec2(max(sin(v), 0.15), 1.0));
+          float dm = step(h, uDots * 0.6) * (1.0 - smoothstep(0.09, 0.15, d)) * smoothstep(0.1, 0.35, sin(v));
+          c = mix(c, vec3(0.98,0.94,0.76), dm * 0.85);
+        } else if (uMode < 1.5) { c = vec3(0.36,0.23,0.12);
+        } else {
+          float w = 0.46 * sin(3.1415927 * vUV.x);
+          if (abs(vUV.y - 0.5) > w) discard;
+          c = mix(vec3(0.20,0.55,0.20), vec3(0.50,0.82,0.33), vUV.x);
+          c *= 1.0 - 0.35 * (1.0 - smoothstep(0.0, 0.04, abs(vUV.y - 0.5)));
+        }
+        vec3 N = normalize(vN); if (!gl_FrontFacing && uMode > 0.5) N = -N;
+        vec3 L = normalize(vec3(-0.5, 0.65, 0.6)), V = normalize(uCam - vW), H;
+        float body = uMode < 0.5 ? 1.0 : 0.0;
+        float facet = uFacet * body, metal = uMetal * body, rough = 0.0; vec3 emis = vec3(0.0);
+        if (body > 0.5) {
+          float t = uTex;
+          if (uPat > 0.5 && uPat < 1.5) {                        // melon
+            float b = smoothstep(-0.25, 0.25, sin(14.0 * u + 0.9 * sin(5.0 * v)));
+            c = mix(c, mix(vec3(0.06,0.28,0.07), vec3(0.38,0.78,0.28), b), t);
+          } else if (uPat < 2.5 && uPat > 1.5) {                 // gem
+            facet = max(facet, t); metal = max(metal, 0.45 * t);
+          } else if (uPat < 3.5 && uPat > 2.5) {                 // yarn
+            float id = floor(vUV.y * 9.0), dir = mod(id, 2.0) < 1.0 ? 1.0 : -1.0;
+            float strand = 0.6 + 0.4 * abs(sin(48.0 * (vUV.x * dir) * 6.2831 / 6.0 + vUV.y * 40.0));
+            vec3 pal = 0.55 + 0.45 * cos(6.2831 * (vec3(0.0, 0.33, 0.67) + id * 0.27));
+            c = mix(c, pal * strand, t); rough = max(rough, t);
+          } else if (uPat < 4.5 && uPat > 3.5) {                 // stone
+            float n = noise3(vO * 6.0) * 0.6 + noise3(vO * 15.0) * 0.3 + noise3(vO * 38.0) * 0.1;
+            vec3 sc = mix(vec3(0.33,0.30,0.26), vec3(0.80,0.74,0.62), n) * (0.55 + 0.45 * smoothstep(0.25, 0.5, n));
+            c = mix(c, sc, t); rough = max(rough, t);
+          } else if (uPat > 4.5) {                               // plasma
+            float n = noise3(vO * 3.5 + vec3(0.0, uTime * 0.35, 0.0)) + 0.5 * noise3(vO * 8.0 - vec3(uTime * 0.2));
+            float vein = pow(1.0 - abs(2.0 * fract(n * 2.5) - 1.0), 10.0);
+            c = mix(c, vec3(0.10,0.03,0.26), t); emis += t * vein * vec3(0.65, 0.45, 1.0) * 1.8;
+          }
+          c = hueShift(c, uHue * 6.2831853);
+          emis = hueShift(emis, uHue * 6.2831853);
+        }
+        #ifdef HAS_DERIV
+          vec3 Nf = normalize(cross(dFdx(vW), dFdy(vW))); if (dot(Nf, V) < 0.0) Nf = -Nf;
+          N = normalize(mix(N, Nf, facet));
+        #endif
+        if (body > 0.5 && uPat > 1.5 && uPat < 2.5) c = mix(c, 0.55 + 0.45 * cos(6.2831 * (vec3(0.0,0.33,0.67) + dot(N, vec3(0.6,0.3,0.8)) * 1.6 + vO.y)), uTex * 0.75);
+        H = normalize(L + V);
+        float wrap = max(0.0, (dot(N, L) + 0.35) / 1.35);
+        vec3 amb = mix(vec3(0.10,0.08,0.20), vec3(0.32,0.33,0.48), N.y * 0.5 + 0.5);
+        float shin = mix(mix(60.0, 6.0, rough), 120.0, max(metal, facet * 0.5));
+        float spec = pow(max(dot(N, H), 0.0), uMode < 0.5 ? shin : 20.0) * (uMode < 0.5 ? 0.6 * (1.0 - 0.8 * rough) + facet * 0.6 : 0.2);
+        float fres = pow(1.0 - max(dot(N, V), 0.0), 3.0);
+        vec3 Rv = reflect(-V, N);
+        vec3 env = mix(vec3(0.05,0.03,0.12), vec3(0.85,0.78,1.0), smoothstep(-0.25, 0.8, Rv.y)) + vec3(1.0,0.85,0.5) * pow(max(dot(Rv, L), 0.0), 30.0) * 2.0;
+        vec3 diff = c * (amb + wrap * vec3(1.0,0.96,0.88)) + spec;
+        vec3 met = c * env * 1.35 + spec * (c + 0.3);
+        vec3 col = mix(diff, met, metal) + fres * vec3(0.30,0.36,0.70) * 0.55 * (1.0 - metal * 0.6);
+        col += emis + body * uGlow * (c * 0.75 + fres * (c + 0.4) * 1.6);
+        col = pow(max(col, 0.0), vec3(0.92));
+        col = mix(col, vec3(1.0, 0.22, 0.32), uWarn * 0.85 * pow(1.0 - max(dot(N, V), 0.0), 2.2));
+        gl_FragColor = vec4(col, 1.0);
+      }`;
+    const sh = (t, src) => { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s); return s; };
+    const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr); gl.useProgram(pr);
+    const A = { pos: gl.getAttribLocation(pr, 'aPos'), nor: gl.getAttribLocation(pr, 'aNor'), uv: gl.getAttribLocation(pr, 'aUV') };
+    const U = {}; for (const n of ['uM','uVP','uN','uRed','uStripes','uDots','uMode','uAlpha','uCam','uTint','uWarn','uHue','uMetal','uGlow','uFacet','uTex','uPat','uTime']) U[n] = gl.getUniformLocation(pr, n);
+    const mk = (pos, nor, uv, idx, lines) => {
+      const b = { n: idx.length, lines };
+      b.p = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b.p); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(pos), gl.STATIC_DRAW);
+      b.nr = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b.nr); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(nor), gl.STATIC_DRAW);
+      b.t = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b.t); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uv), gl.STATIC_DRAW);
+      b.i = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, b.i); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idx), gl.STATIC_DRAW);
+      return b; };
+    const del = b => { if (!b) return; [b.p, b.nr, b.t].forEach(x => gl.deleteBuffer(x)); gl.deleteBuffer(b.i); };
+    const bind = b => {
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.p); gl.enableVertexAttribArray(A.pos); gl.vertexAttribPointer(A.pos, 3, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.nr); gl.enableVertexAttribArray(A.nor); gl.vertexAttribPointer(A.nor, 3, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, b.t); gl.enableVertexAttribArray(A.uv); gl.vertexAttribPointer(A.uv, 2, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, b.i); };
+    const sub = (a, b) => [a[0]-b[0], a[1]-b[1], a[2]-b[2]], cross = (a, b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+    const nrm = a => { const l = Math.hypot(...a) || 1; return a.map(x => x / l); };
+
+    let key = '', G = null;
+    function build(a, NU, NV) {
+      const k = NU + '|' + [...keys, ...WK, 'fat', 'spike'].map(q => (a[q] || 0).toFixed(4)).join(',');
+      if (k === key) return G;
+      const m = getMesh(a, NU, NV); meshKey = '';                    // shared geometry (centred, bounded)
+      const P = m.P, W = NU + 1;
+      const id = (j, i) => j * W + i;
+      // body: smooth normals
+      const acc = P.flat().map(() => [0, 0, 0]), idx = [];
+      let sign = 1; { const j = NV >> 1, p = P[j][0], f = cross(sub(P[j][1], p), sub(P[j + 1][0], p)); if (f[0]*p[0] + f[1]*p[1] + f[2]*p[2] < 0) sign = -1; }
+      const tri = (x, y, z) => { const pa = P[x[0]][x[1]], pb = P[y[0]][y[1]], pc = P[z[0]][z[1]];
+        let f = cross(sub(pb, pa), sub(pc, pa)); f = f.map(v => v * sign);
+        for (const q of [x, y, z]) { const o = acc[id(...q)]; o[0] += f[0]; o[1] += f[1]; o[2] += f[2]; }
+        idx.push(id(...x), id(...y), id(...z)); };
+      for (let j = 0; j < NV; j++) for (let i = 0; i < NU; i++) {
+        const a0 = [j, i], b0 = [j, i + 1], c0 = [j + 1, i + 1], d0 = [j + 1, i];
+        if (j > 0) tri(a0, b0, c0);
+        if (j < NV - 1) tri(a0, c0, d0);
+      }
+      for (let j = 0; j <= NV; j++) { const s = acc[id(j, 0)].map((v, q) => v + acc[id(j, NU)][q]); acc[id(j, 0)] = s; acc[id(j, NU)] = s.slice(); }
+      for (const j of [0, NV]) { const s = [0, 0, 0]; for (let i = 0; i <= NU; i++) { const o = acc[id(j, i)]; s[0] += o[0]; s[1] += o[1]; s[2] += o[2]; } for (let i = 0; i <= NU; i++) acc[id(j, i)] = s.slice(); }
+      const pos = [], nor = [], uv = [];
+      for (let j = 0; j <= NV; j++) for (let i = 0; i <= NU; i++) { pos.push(...P[j][i]); nor.push(...nrm(acc[id(j, i)])); uv.push(i / NU, j / NV); }
+      const lines = []; for (let j = 0; j <= NV; j++) for (let i = 0; i < NU; i++) { if (j > 0 && j < NV) lines.push(id(j, i), id(j, i + 1)); if (j < NV) lines.push(id(j, i), id(j + 1, i)); }
+      // stem: 8-sided tube along a gentle curve
+      const s0 = m.stem[0], s1 = m.stem[1], sp_ = [], sn = [], su = [], si = []; const SEG = 3, SID = 8, rad = 0.04;
+      for (let t = 0; t <= SEG; t++) { const f = t / SEG, c = [s0[0] + (s1[0] - s0[0]) * f * f, s0[1] + (s1[1] - s0[1]) * f, s0[2]];
+        for (let q = 0; q < SID; q++) { const an = q / SID * 2 * Math.PI, n = [Math.cos(an), 0, Math.sin(an)]; sp_.push(c[0] + n[0] * rad, c[1], c[2] + n[2] * rad); sn.push(...n); su.push(q / SID, f); } }
+      for (let t = 0; t < SEG; t++) for (let q = 0; q < SID; q++) { const a1 = t * SID + q, b1 = t * SID + (q + 1) % SID, c1 = a1 + SID, d1 = b1 + SID; si.push(a1, b1, d1, a1, d1, c1); }
+      // leaf: 5x3 bent quad grid, shape cut in the shader
+      const lp = [], ln = [], lu = [], li = [], base = [s0[0] + 0.05, s0[1] + 0.40, s0[2]];
+      for (let y = 0; y <= 2; y++) for (let x = 0; x <= 4; x++) { const fx = x / 4, fy = y / 2;
+        const p = [base[0] + fx * 0.6, base[1] + fx * 0.16 + Math.sin(fx * Math.PI) * 0.07 - (fy - 0.5) * (fy - 0.5) * 0.1 + (fy - 0.5) * 0.17, base[2] + (fy - 0.5) * 0.29 + fx * 0.1];
+        lp.push(...p); ln.push(-0.23, 0.85, -0.5); lu.push(fx, fy); }
+      for (let y = 0; y < 2; y++) for (let x = 0; x < 4; x++) { const a1 = y * 5 + x; li.push(a1, a1 + 1, a1 + 6, a1, a1 + 6, a1 + 5); }
+      // bounding box + shadow quad
+      const [lo, hi] = m.box, bp = []; for (const x of [lo[0], hi[0]]) for (const y of [lo[1], hi[1]]) for (const z of [lo[2], hi[2]]) bp.push(x, y, z);
+      const bi = [0,1,2,3,4,5,6,7,0,2,1,3,4,6,5,7,0,4,1,5,2,6,3,7];
+      const yb = lo[1] - 0.02, sq = m.R * 0.85;
+      if (G) [G.body, G.wire, G.stem, G.leaf, G.box, G.shadow].forEach(del);
+      G = { cw: sign < 0, R: m.R, tris: idx.length / 3 + si.length / 3 + li.length / 3,
+        body: mk(pos, nor, uv, idx), wire: mk(pos, nor, uv, lines, true),
+        stem: mk(sp_, sn, su, si), leaf: mk(lp, ln, lu, li),
+        box: mk(bp, new Array(24).fill(0), new Array(16).fill(0), bi, true),
+        shadow: mk([-sq, yb, -sq, sq, yb, -sq, sq, yb, sq, -sq, yb, sq], new Array(12).fill(0), [0,0, 1,0, 1,1, 0,1], [0,1,2,0,2,3]) };
+      key = k; return G;
+    }
+    const mul = (a, b) => { const o = new Array(16).fill(0); for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) for (let k = 0; k < 4; k++) o[c*4+r] += a[k*4+r] * b[c*4+k]; return o; };
+    function draw(a, ay, ax, popMul, ghost, sides, showBox, tm, opt) {
+      const dx = (opt && opt.dx) || 0, sc = (opt && opt.sc) || 1;
+      const NU = sides, NV = Math.max(4, Math.round(sides * 0.7)), g = build(a, NU, NV);
+      const Wd = canvas.width, Ht = canvas.height; gl.viewport(0, 0, Wd, Ht);
+      if (!(opt && opt.noClear)) { gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); } else gl.clear(gl.DEPTH_BUFFER_BIT);
+      gl.enable(gl.DEPTH_TEST); gl.disable(gl.CULL_FACE); gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      const f = 0.6 + 0.4 * a.size, s = 0.86 * f * Math.min(popMul, 1 / f) / g.R * sc;
+      const cy = Math.cos(ay), sy = Math.sin(ay), cx = Math.cos(ax), sx = Math.sin(ax);
+      const Ry = [cy,0,-sy,0, 0,1,0,0, sy,0,cy,0, 0,0,0,1], Rx = [1,0,0,0, 0,cx,sx,0, 0,-sx,cx,0, 0,0,0,1];
+      const R = mul(Rx, Ry), M = R.map((v, i) => (i % 4 < 3 && i < 12) ? v * s : v); M[12] = dx;
+      const dist = 6, fov = 22 * Math.PI / 180, t = 1 / Math.tan(fov / 2), n = 0.1, fa = 50;
+      const Pm = [t,0,0,0, 0,t,0,0, 0,0,(fa+n)/(n-fa),-1, 0,0,2*fa*n/(n-fa),0], Vm = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,-dist,1];
+      gl.uniformMatrix4fv(U.uVP, false, new Float32Array(mul(Pm, Vm)));
+      gl.uniformMatrix4fv(U.uM, false, new Float32Array(M));
+      gl.uniformMatrix3fv(U.uN, false, new Float32Array([R[0],R[1],R[2], R[4],R[5],R[6], R[8],R[9],R[10]]));
+      gl.uniform1f(U.uWarn, ghost ? 1 : 0);
+      gl.uniform1f(U.uHue, a.hue || 0); gl.uniform1f(U.uMetal, a.metal || 0); gl.uniform1f(U.uGlow, a.glow || 0); gl.uniform1f(U.uFacet, a.facet || 0);
+      gl.uniform1f(U.uTex, (a.pat || 0) > 0 ? (a.tex || 0) : 0); gl.uniform1f(U.uPat, a.pat || 0); gl.uniform1f(U.uTime, tm || 0); gl.uniform3f(U.uCam, 0, 0, dist); gl.uniform1f(U.uRed, a.red); gl.uniform1f(U.uStripes, a.stripes); gl.uniform1f(U.uDots, a.dots);
+      const run = (b, mode, tint, alpha) => { bind(b); gl.uniform1f(U.uMode, mode); if (tint) gl.uniform3f(U.uTint, ...tint); gl.uniform1f(U.uAlpha, alpha || 1);
+        gl.drawElements(b.lines ? gl.LINES : gl.TRIANGLES, b.n, gl.UNSIGNED_SHORT, 0); };
+      gl.uniformMatrix4fv(U.uM, false, new Float32Array([s,0,0,0, 0,s,0,0, 0,0,s,0, dx,0,0,1]));   // flat shadow
+      gl.depthMask(false); run(g.shadow, 3); gl.depthMask(true);
+      gl.uniformMatrix4fv(U.uM, false, new Float32Array(M));
+      run(g.body, 0); run(g.stem, 1); run(g.leaf, 2);              // always solid, always skinned
+      if (showBox) { gl.disable(gl.DEPTH_TEST); run(g.box, 4, [1.0, 0.82, 0.40], 0.9); }
+      return g.tris;
+    }
+    return { draw };
+  }
+
+  // ================= sphere view =================
+  const axes = () => [+$('axX').value, +$('axY').value, +$('axZ').value];
+  const CH = (() => { const n = keys.length, Lm = keys.map(() => new Array(n).fill(0));            // Cholesky of COV
+    for (let i = 0; i < n; i++) for (let j = 0; j <= i; j++) { let t = COV[i][j]; for (let k = 0; k < j; k++) t -= Lm[i][k] * Lm[j][k];
+      Lm[i][j] = i === j ? Math.sqrt(Math.max(t, 1e-12)) : t / Lm[j][j]; } return Lm; })();
+  const gauss = () => Math.sqrt(-2 * Math.log(1 - Math.random())) * Math.cos(2 * Math.PI * Math.random());
+  const realistic = () => { const z = keys.map(gauss), a = {}; keys.forEach((k, i) => a[k] = Math.max(0, Math.min(1, MU[i] + CH[i].reduce((t, v, j) => t + v * z[j], 0)))); return a; };
+  const SAMPLES = [
+    ...Array.from({ length: 700 }, () => { const a = realistic(); return { a, ok: assess(a).ok }; }),
+    ...Array.from({ length: 900 }, () => { const a = {}; for (const k of keys) a[k] = Math.random(); return { a, ok: assess(a).ok }; }),
+  ];
+  const pV = (() => { let ok = 0; const N = 20000; for (let t = 0; t < N; t++) { const a = {}; for (const k of keys) a[k] = Math.random(); if (assess(a).ok) ok++; } return ok / N; })();
+  const pctV = () => pV < 0.001 ? 'less than 0.1 %' : (pV * 100).toFixed(1) + ' %';
+  const dir3 = a => { const v = vec(a), ax = axes(), p = [v[ax[0]], v[ax[1]], v[ax[2]]], n = norm(v), s = Math.hypot(...p);
+                      return s < 1e-9 ? null : { p: p.map(x => x / s), w: n < 1e-9 ? 0 : s / n }; };
+  let projected = [];
+  function projectSamples() { projected = SAMPLES.map(s => ({ d: dir3(s.a), ok: s.ok })); }
+  const slerp = (a, b, t) => { let d = a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; d = Math.max(-1, Math.min(1, d)); const om = Math.acos(d); if (om < 1e-4) return a; const s = Math.sin(om);
+                               return [0, 1, 2].map(i => (Math.sin((1 - t) * om) * a[i] + Math.sin(t * om) * b[i]) / s); };
+
+  function drawSphere(g, W, sy, sx) {
+    const cx = W / 2, cy = W / 2 + W * 0.02, r = W * 0.36, cA = Math.cos(sy), sA = Math.sin(sy), cX = Math.cos(sx), sX = Math.sin(sx);
+    const rot = p => { const x1 = p[0] * cA + p[2] * sA, z1 = -p[0] * sA + p[2] * cA; return [x1, p[1] * cX - z1 * sX, p[1] * sX + z1 * cX]; };
+    const P = q => [cx + q[0] * r, cy - q[1] * r, q[2]];
+    // body glow
+    const grd = g.createRadialGradient(cx - r * 0.3, cy - r * 0.35, r * 0.1, cx, cy, r);
+    grd.addColorStop(0, 'rgba(127,178,255,0.16)'); grd.addColorStop(1, 'rgba(127,178,255,0.03)');
+    g.fillStyle = grd; g.beginPath(); g.arc(cx, cy, r, 0, 7); g.fill();
+    // grid: 6 meridians, 5 parallels
+    g.lineWidth = 1;
+    const circle = (fn) => { let prev = null; for (let t = 0; t <= 48; t++) { const q = P(rot(fn(t / 48 * 2 * Math.PI))); if (prev) { g.strokeStyle = `rgba(200,190,240,${q[2] < 0 ? 0.28 : 0.09})`; g.beginPath(); g.moveTo(prev[0], prev[1]); g.lineTo(q[0], q[1]); g.stroke(); } prev = q; } };
+    for (let k = 0; k < 6; k++) { const ph = k / 6 * Math.PI; circle(t => [Math.cos(t) * Math.cos(ph), Math.sin(t), Math.cos(t) * Math.sin(ph)]); }
+    for (const lat of [-60, -30, 0, 30, 60]) { const c = Math.cos(lat * Math.PI / 180), y = Math.sin(lat * Math.PI / 180); circle(t => [c * Math.cos(t), y, c * Math.sin(t)]); }
+    g.strokeStyle = 'rgba(200,190,240,0.4)'; g.beginPath(); g.arc(cx, cy, r, 0, 7); g.stroke();
+    // samples
+    for (const s of projected) { if (!s.d) continue; const q = P(rot(s.d.p)), front = q[2] < 0;
+      g.globalAlpha = (front ? 0.75 : 0.22) * (0.25 + 0.75 * s.d.w); g.fillStyle = s.ok ? '#5ee6a8' : '#8a7fb0';
+      g.fillRect(q[0] - 1.3, q[1] - 1.3, 2.6, 2.6); }
+    g.globalAlpha = 1;
+    // axes
+    const ax = axes(), cols = ['#ff7b7b', '#7bff9b', '#7bb5ff'], lab = ax.map(i => Q[i].n);
+    [[1, 0, 0], [0, 1, 0], [0, 0, 1]].forEach((e, i) => {
+      const a = P(rot(e.map(x => -x * 1.12))), b = P(rot(e.map(x => x * 1.12)));
+      g.strokeStyle = cols[i]; g.globalAlpha = 0.7; g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke(); g.globalAlpha = 1;
+      g.fillStyle = cols[i]; g.font = `600 ${Math.max(10, W * 0.03)}px system-ui`; g.textAlign = 'center';
+      g.fillText('+' + lab[i], b[0], b[1] - 4);
+    });
+    // family arcs
+    g.lineWidth = Math.max(1.5, W * 0.005);
+    fam.forEach((f, fi) => { if (f.parent == null || fi < fam.length - 80 || !f.a || !fam[f.parent].a) return; const A = dir3(fam[f.parent].a), B = dir3(f.a); if (!A || !B) return;
+      g.strokeStyle = 'rgba(255,209,102,0.7)'; g.beginPath();
+      for (let t = 0; t <= 16; t++) { const q = P(rot(slerp(A.p, B.p, t / 16))); t ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); } g.stroke(); });
+    // quantum: basis apples sized by probability
+    if (typeof qActive !== 'undefined' && qActive) { const PQ = qProbs(); REF.forEach((r, i) => { const d = dir3(r.a); if (!d) return; const q = P(rot(d.p));
+      g.strokeStyle = 'rgba(199,155,255,0.95)'; g.lineWidth = Math.max(1.5, W * 0.004); g.beginPath(); g.arc(q[0], q[1], 3 + Math.sqrt(PQ[i]) * W * 0.07, 0, 7); g.stroke(); }); }
+    // the current lineage, drawn bright: the path Retrace walks back along
+    if (typeof LINE !== 'undefined' && LINE.length > 1) { g.lineWidth = Math.max(2.5, W * 0.008); g.strokeStyle = 'rgba(127,231,255,0.95)';
+      for (let k = 1; k < LINE.length; k++) { const A = dir3(fam[LINE[k - 1]].a), B = dir3(fam[LINE[k]].a); if (!A || !B) continue; g.beginPath();
+        for (let t = 0; t <= 12; t++) { const q = P(rot(slerp(A.p, B.p, t / 12))); t ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); } g.stroke(); } }
+    // seed star + family dots
+    fam.forEach((f, i) => { if ((i && i < fam.length - 80) || !f.a) return; const d = dir3(f.a); if (!d) return; const q = P(rot(d.p));
+      g.globalAlpha = q[2] < 0 ? 1 : 0.4;
+      if (i === 0) { g.fillStyle = '#fff'; g.font = `${Math.max(14, W * 0.05)}px system-ui`; g.textAlign = 'center'; g.fillText('★', q[0], q[1] + W * 0.017); }
+      else { g.fillStyle = 'rgba(255,209,102,0.9)'; g.beginPath(); g.arc(q[0], q[1], Math.max(2.5, W * 0.008), 0, 7); g.fill(); } });
+    g.globalAlpha = 1;
+    // current
+    const d = dir3(cur);
+    if (d) { const q = P(rot(d.p)), bad = !!why(cur), rad = Math.max(6, W * 0.018);
+      g.fillStyle = bad ? '#ef476f' : '#ffd166'; g.globalAlpha = q[2] < 0 ? 1 : 0.55;
+      g.beginPath(); g.arc(q[0], q[1], rad, 0, 7); g.fill(); g.lineWidth = 2; g.strokeStyle = '#fff'; g.stroke();
+      g.globalAlpha = 1; g.strokeStyle = bad ? 'rgba(239,71,111,0.6)' : 'rgba(255,209,102,0.5)'; g.setLineDash([3, 4]);
+      g.beginPath(); g.moveTo(cx, cy); g.lineTo(q[0], q[1]); g.stroke(); g.setLineDash([]); }
+    else { g.fillStyle = '#ffd166'; g.font = `${W * 0.035}px system-ui`; g.textAlign = 'center'; g.fillText('average apple: no direction', cx, cy); }
+  }
+
+  // ================= canvases: crisp + sized to their boxes =================
+  const cvA = $('cvApple'), cvS = $('cvSphere'), gS = cvS.getContext('2d');
+  let GLR = null; try { GLR = makeGL(cvA); } catch (e) { console.warn(e); GLR = null; }
+  const gA = GLR ? null : cvA.getContext('2d');
+  function resize() { const dpr = Math.min(2, window.devicePixelRatio || 1);
+    for (const c of [cvA, cvS]) { const w = Math.round(c.clientWidth * dpr); if (w && c.width !== w) { c.width = c.height = w; } } dirty = true; }
+  const ro = new ResizeObserver(resize); ['vApple', 'vSphere'].forEach(id => ro.observe($(id)));
+  const mq = matchMedia('(max-width:700px)');
+  let bigIs = 'vApple';
+  function layout() {
+    const other = bigIs === 'vApple' ? 'vSphere' : 'vApple';
+    if (mq.matches) { $(bigIs).className = 'view big'; $(other).className = 'view pip'; $(bigIs).style.display = $(other).style.display = ''; }
+    else { $('vApple').className = 'view'; $('vSphere').className = 'view'; }
+    setTimeout(resize, 20);
+  }
+  mq.addEventListener('change', layout);
+  const swap = () => { bigIs = bigIs === 'vApple' ? 'vSphere' : 'vApple'; layout(); };
+
+  const dragOn = (cv, get, set) => { let d = null;
+    cv.addEventListener('pointerdown', e => { d = { x: e.clientX, y: e.clientY, s: get(), moved: false }; cv.setPointerCapture(e.pointerId); });
+    cv.addEventListener('pointermove', e => { if (!d) return; if (Math.abs(e.clientX - d.x) + Math.abs(e.clientY - d.y) > 6) d.moved = true;
+      set(d.s[0] + (e.clientX - d.x) * 0.01, Math.max(-1.3, Math.min(1.3, d.s[1] + (e.clientY - d.y) * 0.01))); dirty = true; });
+    cv.addEventListener('pointerup', () => { if (d && !d.moved && cv.parentElement.classList.contains('pip')) swap(); d = null; }); };
+  let ay = 0.6, ax = -0.3, sy = 0.7, sx = -0.35, pop = 1, dirty = true, draggingAny = false;
+  dragOn(cvA, () => [ay, ax], (a, b) => { ay = a; ax = b; });
+  dragOn(cvS, () => [sy, sx], (a, b) => { sy = a; sx = b; });
+
+  // ================= family =================
+  // Snapshots are pixels, not re-renders: draw the state once in the visible view (same angle, detail, time),
+  // then copy the canvas with the view's own lens/glow filter applied. The image is exactly what the view showed.
+  let lastT = 0;
+  function snapshot(a, size) {
+    const out = document.createElement('canvas'); out.width = out.height = size; const g = out.getContext('2d');
+    if (GLR && cvA.width) {
+      GLR.draw(a, ay, ax, 1, !!why(a), +$('sides').value, false, lastT / 1000);
+      try { g.filter = cvA.style.filter || 'none'; } catch (e) {}
+      g.drawImage(cvA, 0, 0, size, size); dirty = true;
+    } else { const s2 = document.createElement('canvas'); s2.width = s2.height = size; drawApple(s2.getContext('2d'), size, a, ay, ax, 1, false, +$('sides').value, false); meshKey = ''; g.drawImage(s2, 0, 0); }
+    return out.toDataURL('image/png');
+  }
+  const thumb = a => snapshot(a, 128);
+  function addToFamily(a, label, parent) { fam.push({ a: { ...a }, label, parent, depth: parent == null ? 0 : fam[parent].depth + 1, img: thumb(a) }); curIdx = fam.length - 1; if (typeof pathTip !== 'undefined') pathTip = curIdx;
+    if (fam.length > 61) fam[fam.length - 61].img = null; renderFamily();
+    if (typeof closureAfterAdd === 'function') closureAfterAdd(); }
+  function renderFamily() {
+    const box = $('family'); box.innerHTML = '';
+    const start = Math.max(1, fam.length - 30);
+    fam.forEach((f, i) => {
+      if (i > 0 && i < start) return;
+      if (i === start && start > 1) { const gap = document.createElement('span'); gap.className = 'arrow'; gap.textContent = `… ${start - 1} more …`; box.appendChild(gap); }
+      if (!f.img) return;
+      if (i) { const ar = document.createElement('span'); ar.className = 'arrow'; ar.textContent = f.parent == null ? '┃' : f.parent === i - 1 ? '→' : `↳${fam[f.parent].label.replace('Apple ', '')}`; box.appendChild(ar); }
+      const d = document.createElement('div'); d.className = 'kid' + (i === curIdx ? ' cur' : '');
+      d.innerHTML = `<img src="${f.img}" alt="${f.label}"><small>${f.label}</small>`;
+      d.onclick = () => { cur = { ...f.a }; curIdx = i; pathTip = i; pop = 1.1; dirty = true; refresh(); renderFamily();
+        say(`🌳 Back to <b>${f.label}</b>, ${f.depth} step${f.depth === 1 ? '' : 's'} from Apple I. Any apple can be a new seed: grow from here and a new branch starts.`); };
+      box.appendChild(d);
+    });
+    box.scrollLeft = box.scrollWidth;
+    if (typeof syncScrub === 'function') syncScrub();
+  }
+
+  let gen = 1;
+  // φ-mutation: each of the 15 genes mutates with probability 1/φ; wave gene k steps with σ ∝ φ^−(k−1).
+  function mutate(a) {
+    const kid = { ...a }, changed = [];
+    keys.forEach((k, i) => { if (Math.random() < 1 / PHI) { kid[k] = clamp(a[k] + (Math.random() * 2 - 1) * 0.08); changed.push(Q[i].n); } });
+    WK.forEach((k, i) => { if (Math.random() < 1 / PHI) { kid[k] = (a[k] || 0) + gaussR() * 0.045 * Math.pow(PHI, -i); changed.push('wave ' + (i + 1)); } });
+    if (trans) {
+      EX.forEach(k => { if (Math.random() < 1 / PHI) { kid[k] = k === 'hue' ? (((a.hue || 0) + (Math.random() * 2 - 1) * 0.08) % 1 + 1) % 1 : clamp((a[k] || 0) + (Math.random() * 2 - 1) * 0.1); changed.push(EXN[k]); } });
+      if (Math.random() < 0.12) { kid.pat = Math.floor(Math.random() * PATS.length); kid.tex = Math.max(kid.tex || 0, 0.5); changed.push('pattern → ' + PATS[kid.pat]); }
+      WK.forEach(k => kid[k] = Math.max(-0.35, Math.min(0.35, kid[k] || 0)));
+    }
+    if (!changed.length) { const i = Math.floor(Math.random() * NW); kid[WK[i]] = (a[WK[i]] || 0) + gaussR() * 0.045 * Math.pow(PHI, -i); changed.push('wave ' + (i + 1)); }
+    return { kid, changed };
+  }
+  // Projection onto V: slide the point toward the reference mean until d = THR (radial retraction in the Mahalanobis metric).
+  function projectV(a) {
+    let q = { ...a }, before = assess(q).d;
+    for (let it = 0; it < 4; it++) { const r = assess(q); if (r.ok) break;
+      const t = THR / r.d * 0.995;
+      keys.forEach((k, i) => q[k] = clamp(MU[i] + (q[k] - MU[i]) * t));
+      WK.forEach(k => q[k] = (q[k] || 0) * t);
+      EX.forEach(k => { if (k === 'hue') { const h = q.hue || 0; q.hue = h > 0.5 ? 1 - (1 - h) * t : h * t; } else q[k] = (q[k] || 0) * t; }); }
+    return { q, before, projected: before > THR };
+  }
+  function growOnce(quiet) {
+    const same = fam[curIdx] && [...keys, ...WK, ...EX, 'pat'].every(k => Math.abs((fam[curIdx].a[k] || 0) - (cur[k] || 0)) < 1e-9);
+    let pIdx = curIdx;
+    if (!same) { gen++; addToFamily(cur, 'Apple ' + gen, curIdx); pIdx = curIdx; }
+    const parent = { ...cur }, { kid, changed } = mutate(cur), pr = trans ? { q: kid, projected: false } : projectV(kid);
+    cur = pr.q; gen++; pop = 1.08; addToFamily(cur, 'Apple ' + gen, pIdx); dirty = true; refresh();
+    const fP = profile(parent), fC = profile(cur), f0 = profile(fam[0].a);
+    say(`🌱 <b>Apple ${gen}</b>: a φ-mutation changed ${changed.length} of ${trans ? 23 : 15} genes (${changed.slice(0, 4).join(', ')}${changed.length > 4 ? '…' : ''}). ` +
+      (pr.projected ? `It overshot V (d ${pr.before.toFixed(1)}), so it was <b>projected back</b> onto V's edge. ` : '') +
+      `As a wave it sits <b>${l2Angle(fC, fP).toFixed(2)}°</b> from its parent and <b>${l2Angle(fC, f0).toFixed(2)}°</b> from Apple I.` + (trans ? ` 🌌 Realism distance ${assess(cur).d.toFixed(1)} (real apples ≤ ${THR.toFixed(2)}).` : ''));
+  }
+  $('grow').onclick = () => { if (tour) stopAll(); retr = null; growOnce(false); };
+  let auto = null;
+  $('auto').onclick = () => {
+    if (auto) { clearInterval(auto); auto = null; $('auto').textContent = '♾️ Auto'; $('auto').classList.remove('on'); say('⏸️ Auto-growth paused. The lineage can resume from any apple.'); return; }
+    auto = setInterval(() => growOnce(true), 700); $('auto').textContent = '⏸️ Pause'; $('auto').classList.add('on');
+  };
+  $('jump').onclick = () => {
+    if (tour) stopAll(); retr = null;
+    const a = {}; keys.forEach(k => a[k] = Math.random()); WK.forEach((k, i) => a[k] = gaussR() * WSIG[i] * 2.5);
+    EX.forEach(k => a[k] = trans ? Math.random() * (k === 'hue' ? 1 : 0.9) : 0); a.pat = trans ? Math.floor(Math.random() * PATS.length) : 0; const from = { ...cur }; cur = a; pop = 1.12; dirty = true;
+    const w = why(cur);
+    if (!w) { gen++; addToFamily(cur, '🎲' + gen, null); }
+    refresh();
+    say(`🎲 Wild jump: ${trans ? 23 : 15} random genes. It landed <b>${fmtA(angleDeg(a, from))}</b> away. ${w ? `❌ Outside V (<b>${w}</b>). Only ${pctV()} of describable apples land near real ones. Press 🌱 and it will be projected back into V and keep growing.` : `✅ Lucky, it is realistic. It starts a new family with no parent.`}`);
+  };
+
+  // ================= loop: draws only when something changed or is moving =================
+  function frame(t) {
+    if (typeof stepRetrace === 'function') stepRetrace(t);
+    { const dts = Math.min(0.1, (t - (frame.last || t)) / 1000); frame.last = t; if (dts > 0 && typeof fpsE !== 'undefined') fpsE = fpsE * 0.95 + (1 / dts) * 0.05; if (typeof stepQuantum === 'function') stepQuantum(dts); if (typeof stepCascade === 'function') stepCascade(dts); }
+    const spin = !document.hidden;
+    if (spin) { ay += 0.006; sy += 0.002; dirty = true; }
+    if (Math.abs(pop - 1) > 0.002) { pop += (1 - pop) * 0.14; dirty = true; }
+    lastT = t;
+    if (dirty && cvA.width) {
+      const ghost = !!why(cur);
+      let tris;
+      if (GLR && obsOn) {
+        tris = GLR.draw(cur, ay, ax, pop, ghost, +$('sides').value, false, t / 1000, { dx: -0.54, sc: 0.6 });
+        tris += GLR.draw(invert(cur), ay, ax, pop, ghost, +$('sides').value, false, t / 1000, { dx: 0.54, sc: 0.6, noClear: true });
+      } else if (GLR && twin) {                              // live apple left; the slot is its frozen image on the right
+        tris = GLR.draw(cur, ay, ax, pop, ghost, +$('sides').value, false, t / 1000, { dx: -0.58, sc: 0.5 });
+      } else if (GLR) tris = GLR.draw(cur, ay, ax, pop, ghost, +$('sides').value, $('bounds').checked, t / 1000);
+      else { gA.clearRect(0, 0, cvA.width, cvA.height); tris = drawApple(gA, cvA.width, cur, ay, ax, pop, false, +$('sides').value, $('bounds').checked); }
+      $('tris').textContent = tris + ' tris';
+      gS.clearRect(0, 0, cvS.width, cvS.height);
+      drawSphere(gS, cvS.width, sy, sx);
+      dirty = false;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  projectSamples();
+  layout();
+  drawChips();
+  drawSlots();
+  addToFamily(CRAB, 'Apple I', null);
+  refresh(); resize();
+  say('🍏 This is <b>Apple I</b>, a tiny sour crab apple. One view shows the apple itself, the other shows the same apple as a <b>direction</b> on a sphere. Change anything and watch both move together.');
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

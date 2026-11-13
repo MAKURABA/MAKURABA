@@ -1,0 +1,15 @@
+{
+ "blocks": [
+  {
+   "type": "embed",
+   "url": "examples/recursive-object-reconstructability/apple-of-apples-explained.html",
+   "title": "Recursive object reconstructability"
+  },
+  {
+   "type": "link",
+   "target": "examples/recursive-object-reconstructability/apple-of-apples-explained.html",
+   "label": "Open full screen",
+   "note": "Opens the demo on its own, in a new tab."
+  }
+ ]
+}

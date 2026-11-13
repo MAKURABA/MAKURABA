@@ -1,0 +1,15 @@
+{
+ "blocks": [
+  {
+   "type": "embed",
+   "url": "examples/apple-of-apples-visual/apple-of-apples.html",
+   "title": "Apple of apples visual"
+  },
+  {
+   "type": "link",
+   "target": "examples/apple-of-apples-visual/apple-of-apples.html",
+   "label": "Open full screen",
+   "note": "Opens the demo on its own, in a new tab."
+  }
+ ]
+}
