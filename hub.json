@@ -304,6 +304,24 @@
      "title": "Apple of apples explained",
      "slug": "apple-of-apples-explained",
      "summary": "Interactive demo"
+    },
+    {
+     "id": "apple-of-apples",
+     "title": "Apple of apples",
+     "slug": "apple-of-apples",
+     "summary": "Interactive demo"
+    },
+    {
+     "id": "configuration-space-explorer",
+     "title": "Configuration space explorer",
+     "slug": "configuration-space-explorer",
+     "summary": "Interactive demo"
+    },
+    {
+     "id": "recursive-object-reconstructability",
+     "title": "Recursive object reconstructability",
+     "slug": "recursive-object-reconstructability",
+     "summary": "Interactive demo"
     }
    ]
   },
@@ -330,6 +348,19 @@
      "id": "lost-truth",
      "title": "EXTERNAL LINKS",
      "slug": "lost-truth"
+    }
+   ]
+  },
+  {
+   "id": "short-stories",
+   "label": "SHORT STORIES",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "null-state",
+     "title": "NULL STATE",
+     "slug": "null-state"
     }
    ]
   }

@@ -1,0 +1,15 @@
+{
+ "blocks": [
+  {
+   "type": "embed",
+   "url": "examples/configuration-space-explorer/configuration-space-explorer.html",
+   "title": "Configuration space explorer"
+  },
+  {
+   "type": "link",
+   "target": "examples/configuration-space-explorer/configuration-space-explorer.html",
+   "label": "Open full screen",
+   "note": "Opens the demo on its own, in a new tab."
+  }
+ ]
+}
