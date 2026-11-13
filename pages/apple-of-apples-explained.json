@@ -1,0 +1,15 @@
+{
+ "blocks": [
+  {
+   "type": "embed",
+   "url": "examples/apple-of-apples-explained/apple-of-apples-explained.html",
+   "title": "Apple of apples explained"
+  },
+  {
+   "type": "link",
+   "target": "examples/apple-of-apples-explained/apple-of-apples-explained.html",
+   "label": "Open full screen",
+   "note": "Opens the demo on its own, in a new tab."
+  }
+ ]
+}

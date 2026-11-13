@@ -298,6 +298,12 @@
      "title": "Infinite field explorer",
      "slug": "infinite-field-explorer",
      "summary": "Interactive demo"
+    },
+    {
+     "id": "apple-of-apples-explained",
+     "title": "Apple of apples explained",
+     "slug": "apple-of-apples-explained",
+     "summary": "Interactive demo"
     }
    ]
   },

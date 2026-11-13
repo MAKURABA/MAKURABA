@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="author" content="MAKURABA">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Space of Possible Apples — Configuration, Realizability, Reachability</title>
+<style>
+  :root {
+    --bg:#f6f4ee; --paper:#fffdf8; --ink:#1c1a15; --quiet:#5e5949; --rule:#d8d1bf;
+    --f:#efebe0; --v:#c9d8bf; --reach:#2f6fdb; --seed:#c0392b; --ghost:#b9b19c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#121110; --paper:#1a1916; --ink:#ebe6d9; --quiet:#a49e8e; --rule:#38352d;
+      --f:#24221d; --v:#3b4a35; --reach:#6b9cff; --seed:#ff6b5a; --ghost:#5a5546;
+    }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:16px/1.55 Georgia,"Iowan Old Style","Times New Roman",serif; }
+  main { max-width:980px; margin:0 auto; padding:28px 18px 60px; background:var(--paper); min-height:100vh; }
+  h1 { font-size:1.7rem; line-height:1.2; margin:0 0 4px; }
+  .sub { color:var(--quiet); margin:0 0 22px; }
+  .grid { display:grid; grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); gap:24px; align-items:start; }
+  @media (max-width:820px){ .grid { grid-template-columns:1fr; } }
+  canvas { width:100%; height:auto; display:block; border:1px solid var(--rule); border-radius:8px; touch-action:manipulation; cursor:crosshair; }
+  .controls { font-family:system-ui,-apple-system,sans-serif; font-size:0.9rem; margin-top:12px; display:grid; gap:10px; }
+  .row { display:grid; grid-template-columns: 150px 1fr 64px; align-items:center; gap:10px; }
+  .row output { text-align:right; font-variant-numeric:tabular-nums; }
+  input[type=range]{ width:100%; }
+  .legend { display:flex; flex-wrap:wrap; gap:14px; font-family:system-ui,sans-serif; font-size:0.8rem; color:var(--quiet); margin-top:10px; }
+  .sw { display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:-2px; margin-right:5px; border:1px solid var(--rule); }
+  .readout { font-family:system-ui,sans-serif; font-size:0.85rem; border:1px solid var(--rule); border-radius:8px; padding:10px 12px; margin-top:12px; display:flex; gap:14px; align-items:center; min-height:84px; }
+  .readout svg { flex:0 0 64px; }
+  .stats { font-family:system-ui,sans-serif; font-size:0.85rem; display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+  .stat { border:1px solid var(--rule); border-radius:8px; padding:8px 10px; }
+  .stat b { display:block; font-size:1.15rem; font-variant-numeric:tabular-nums; }
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; font-family:system-ui,sans-serif; }
+  .tabs button { border:1px solid var(--rule); background:transparent; color:var(--ink); border-radius:999px; padding:6px 12px; font-size:0.85rem; cursor:pointer; }
+  .tabs button[aria-selected=true] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .level h2 { font-size:1.2rem; margin:4px 0 8px; }
+  .level p, .level li { margin:0 0 8px; }
+  .math { font-family:"Cambria Math","STIX Two Math",Georgia,serif; background:var(--f); border-radius:6px; padding:8px 12px; margin:8px 0; overflow-x:auto; white-space:nowrap; }
+  .tryit { border-left:3px solid var(--reach); padding:6px 12px; margin:12px 0; font-size:0.95rem; }
+  .honest { margin-top:28px; border-top:1px solid var(--rule); padding-top:14px; font-size:0.9rem; color:var(--quiet); }
+  .honest h3 { color:var(--ink); font-size:1rem; margin:0 0 6px; }
+  button.small { font-family:system-ui,sans-serif; border:1px solid var(--rule); background:transparent; color:var(--ink); border-radius:6px; padding:5px 10px; cursor:pointer; font-size:0.85rem; }
+</style>
+</head>
+<body>
+<main>
+<a href="index.html" style="display:inline-block;font:600 0.75rem system-ui,sans-serif;letter-spacing:0.12em;text-transform:uppercase;color:#f2cf6a;text-decoration:none;margin:0 0 10px">◆ MAKURABA · Apple of Apples</a>
+  <h1>The Space of Possible Apples</h1>
+  <p class="sub">Describable versus realizable, and how far small steps from one seed can reach.</p>
+
+  <div class="grid">
+    <section>
+      <canvas id="cv" width="520" height="520" aria-label="Configuration space map: apple diameter on the horizontal axis, acidity on the vertical axis"></canvas>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--f)"></i>F: describable, cannot exist</span>
+        <span><i class="sw" style="background:var(--v)"></i>V: realizable, not yet reached</span>
+        <span><i class="sw" style="background:var(--reach)"></i>Reached from the seed (darker = fewer steps)</span>
+        <span><i class="sw" style="background:var(--seed)"></i>Seed (Apple I)</span>
+      </div>
+      <div class="controls">
+        <div class="row"><label for="eps">Step size ε</label><input id="eps" type="range" min="0.01" max="0.30" step="0.01" value="0.05"><output id="epsOut"></output></div>
+        <div class="row"><label for="k">Number of steps k</label><input id="k" type="range" min="1" max="61" step="1" value="61"><output id="kOut"></output></div>
+        <div class="row"><label for="unb">Unbounded jumps</label><span><input id="unb" type="checkbox"> <span style="color:var(--quiet)">any step size allowed</span></span><span></span></div>
+        <div><button class="small" id="reset">Reset seed to the crab apple</button></div>
+      </div>
+      <div class="readout" id="readout">
+        <svg id="apple" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"></svg>
+        <div id="readText">Hover or tap the map to inspect a point. Tap inside the green region to move the seed.</div>
+      </div>
+      <div class="stats">
+        <div class="stat">Share of F that is realizable<b id="sV">–</b></div>
+        <div class="stat">Share of V reached from the seed<b id="sR">–</b></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="tabs" role="tablist">
+        <button role="tab" data-l="1" aria-selected="true">1 · Picture</button>
+        <button role="tab" data-l="2" aria-selected="false">2 · Student</button>
+        <button role="tab" data-l="3" aria-selected="false">3 · Scientist</button>
+        <button role="tab" data-l="4" aria-selected="false">4 · Formal</button>
+      </div>
+
+      <div class="level" data-l="1">
+        <h2>One apple, many possible apples</h2>
+        <p>Start with one small green apple. That is the red dot.</p>
+        <p>Every spot on the map is a different apple you could <em>describe</em>: bigger, smaller, sweeter, more sour.</p>
+        <p>Only the green part holds apples that can <em>actually grow</em>. Most of what you can imagine cannot exist.</p>
+        <p>Nature changes an apple only a little at a time. The blue part is everywhere you can get to in small steps.</p>
+        <p>The small green island on the right is real, but small steps cannot get there. Some possible things cannot be reached from where you start.</p>
+        <div class="tryit">Try it: slide <b>Step size</b> up slowly. Watch for the moment the blue jumps across to the island.</div>
+      </div>
+
+      <div class="level" data-l="2" hidden>
+        <h2>Three ideas: describe, realize, reach</h2>
+        <ol>
+          <li><b>Describe.</b> Measure an apple's qualities and each one becomes a number. Here there are two: diameter and acidity. Two numbers make a point on a map, and the whole map is <b>F</b>, the space of descriptions.</li>
+          <li><b>Realize.</b> Biology, chemistry and physics rule most points out. The points that some real apple could match form the region <b>V</b>. V is much smaller than F.</li>
+          <li><b>Reach.</b> From a starting apple (the seed), take steps no longer than ε. Each new apple becomes the next starting point. After k steps you have reached the set shown in blue.</li>
+        </ol>
+        <p>Two facts follow. First, the seed matters only when steps are limited: tick <b>Unbounded jumps</b> and everything in V lights up. Second, parts of V separated by a gap wider than ε stay unreached however many steps you take.</p>
+        <p>Describing an apple also loses information. Many different apples share the same two numbers, so you can't rebuild the exact apple from its description. That is why "pulling an apple out of an apple" is an estimate, not a perfect copy.</p>
+        <div class="tryit">Try it: set k to 5, then 10, then ∞. The blue spreads like a ripple and stops at V's edges.</div>
+      </div>
+
+      <div class="level" data-l="3" hidden>
+        <h2>Morphospace, constraints and models</h2>
+        <p><b>Precedent.</b> In 1966 David Raup described coiled shells with three parameters and found that real species fill only a small part of the parameter space. This field is called theoretical morphospace, and this map is a toy version of it.</p>
+        <p><b>Why V has a shape.</b> Traits are coupled. Mass grows roughly with the cube of diameter. One gene (<i>MdMYB10</i>) moves red colour in both skin and flesh, and acidity is largely controlled by one locus (<i>Ma</i>). Couplings make V a thin, curved region rather than a filled box. That is why the green band runs diagonally.</p>
+        <p><b>Why steps are bounded.</b> Mutation and breeding change a lineage a little per generation, so evolution is a step-bounded walk through V. Disconnected regions of V need a large jump to reach: hybridization, a major mutation, or engineering.</p>
+        <p><b>Neural networks.</b> A trained model is a point θ in a space of N weights. A pretrained model is the seed and fine-tuning is a bounded step. Research on intrinsic dimension, LoRA, mode connectivity and task vectors finds that useful models occupy low-dimensional, largely connected regions. That is the same picture in millions of dimensions.</p>
+        <p><b>Caveat.</b> Weight space has symmetries: reorder a layer's neurons and the weights change while behavior stays identical. Distances that mean something are measured in behavior, or after aligning neurons.</p>
+      </div>
+
+      <div class="level" data-l="4" hidden>
+        <h2>Definitions</h2>
+        <p>Object space <i>O</i>; descriptor space <i>F</i> = ℝ<sup>n</sup>; encoder <i>E</i>: <i>O</i> → <i>F</i> (many-to-one); decoder <i>R</i>: <i>F</i> → <i>O</i> ∪ {∅}.</p>
+        <div class="math"><i>V</i> = { <i>x</i> ∈ <i>F</i> : <i>R</i>(<i>x</i>) ≠ ∅ }</div>
+        <div class="math">Δ(<i>A</i>) = <i>d</i><sub>O</sub>( <i>A</i>, <i>R</i>(<i>E</i>(<i>A</i>)) ) ≥ 0</div>
+        <div class="math">Reach<sub>k</sub>(<i>x</i><sub>0</sub>, ε) = { <i>x</i><sub>k</sub> : <i>x</i><sub>i+1</sub> ∈ <i>V</i>, ‖<i>x</i><sub>i+1</sub> − <i>x</i><sub>i</sub>‖ ≤ ε }</div>
+        <p><b>Conjecture.</b> (i) dim <i>V</i> ≪ dim <i>F</i>. (ii) The branching of <i>V</i> is set by measurable couplings between descriptors. (iii) Reach<sub>∞</sub>(<i>x</i><sub>0</sub>, ε) equals the ε-connected component of <i>V</i> containing <i>x</i><sub>0</sub>.</p>
+        <p><b>Implementation here.</b> <i>F</i> = [0, 1]² is sampled on a 110 × 110 grid, with axes rescaled to diameter 20–100 mm and acidity 0–2.5 % malic acid. Reach<sub>k</sub> is computed by breadth-first search over grid cells in <i>V</i>, where neighbours are all cells within Euclidean radius ε. "Darker" means smaller BFS depth. Unbounded jumps set Reach = <i>V</i>.</p>
+        <p><b>Falsifiable for real systems:</b> estimate intrinsic dimension of measured trait data (P1); measure trait co-movement under intervention (P2); search for targets unreachable under a fixed step budget (P3).</p>
+      </div>
+    </section>
+  </div>
+
+  <div class="honest">
+    <h3>What this map is, and what it is not</h3>
+    <p>The <b>green region is an illustrative toy</b>, shaped to show the principles. It is not measured apple data. The island in particular is a teaching device, not a claim about any real cultivar. A real V needs real measurements, many more than two axes, and an estimate of the measurement noise.</p>
+    <p>What does carry over to real systems is the structure: describable is bigger than realizable, couplings shape the realizable region, and bounded steps restrict what can be reached from a starting point. Each of these can be tested.</p>
+  </div>
+</main>
+
+<script>
+(() => {
+  const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+  const N = 110, PX = 60, PY = 20, S = 440, C = S / N;           // plot area 440x440, cell 4px
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const els = id => document.getElementById(id);
+  const epsIn = els('eps'), kIn = els('k'), unb = els('unb');
+
+  // Toy realizable region V on u,v in [0,1]: diagonal coupled band + isolated island.
+  const inVfn = (u, v) => {
+    const vc = 0.86 - 0.66 * Math.pow(u, 0.9);
+    const w = 0.075 + 0.035 * Math.sin(u * 5.2) + 0.03 * u;
+    const band = Math.abs(v - vc) < w && u > 0.03 && u < 0.97;
+    const island = ((u - 0.80) / 0.09) ** 2 + ((v - 0.76) / 0.065) ** 2 < 1;
+    return band || island;
+  };
+  const inV = new Uint8Array(N * N);
+  let vCount = 0;
+  for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+    const u = (i + 0.5) / N, v = (j + 0.5) / N;              // j = 0 is bottom (v small)
+    if (inVfn(u, v)) { inV[j * N + i] = 1; vCount++; }
+  }
+  const crab = (() => {                                        // small, sour: low u, high v inside band
+    const u = 0.1, vc = 0.86 - 0.66 * Math.pow(u, 0.9);
+    return [Math.floor(u * N), Math.floor(vc * N)];
+  })();
+  let seed = crab.slice();
+  let depth = new Int32Array(N * N);
+
+  const compute = () => {
+    const eps = +epsIn.value, kRaw = +kIn.value, kMax = kRaw >= 61 ? Infinity : kRaw;
+    depth.fill(-1);
+    if (unb.checked) { for (let c = 0; c < N * N; c++) if (inV[c]) depth[c] = 0; return; }
+    const R = Math.max(1, Math.round(eps * N)), offs = [];
+    for (let dy = -R; dy <= R; dy++) for (let dx = -R; dx <= R; dx++)
+      if ((dx || dy) && dx * dx + dy * dy <= R * R) offs.push(dx, dy);
+    const q = new Int32Array(N * N); let h = 0, t = 0;
+    const s = seed[1] * N + seed[0]; depth[s] = 0; q[t++] = s;
+    while (h < t) {
+      const c = q[h++], d = depth[c]; if (d >= kMax) continue;
+      const x = c % N, y = (c / N) | 0;
+      for (let o = 0; o < offs.length; o += 2) {
+        const nx = x + offs[o], ny = y + offs[o + 1];
+        if (nx < 0 || ny < 0 || nx >= N || ny >= N) continue;
+        const n = ny * N + nx;
+        if (inV[n] && depth[n] < 0) { depth[n] = d + 1; q[t++] = n; }
+      }
+    }
+  };
+
+  const draw = () => {
+    const cF = css('--f'), cV = css('--v'), cR = css('--reach'), cSeed = css('--seed'),
+          ink = css('--ink'), quiet = css('--quiet'), rule = css('--rule'), paper = css('--paper');
+    ctx.fillStyle = paper; ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.fillStyle = cF; ctx.fillRect(PX, PY, S, S);
+    let maxD = 1, reached = 0;
+    for (let c = 0; c < N * N; c++) if (depth[c] > maxD) maxD = depth[c];
+    for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+      const c = j * N + i; if (!inV[c]) continue;
+      const x = PX + i * C, y = PY + S - (j + 1) * C;
+      ctx.fillStyle = cV; ctx.fillRect(x, y, C + 0.5, C + 0.5);
+      if (depth[c] >= 0) {
+        reached++;
+        ctx.globalAlpha = unb.checked ? 0.55 : 0.30 + 0.65 * (1 - depth[c] / maxD);
+        ctx.fillStyle = cR; ctx.fillRect(x, y, C + 0.5, C + 0.5); ctx.globalAlpha = 1;
+      }
+    }
+    // frame + ticks
+    ctx.strokeStyle = rule; ctx.lineWidth = 1; ctx.strokeRect(PX + 0.5, PY + 0.5, S, S);
+    ctx.fillStyle = quiet; ctx.font = '12px system-ui, sans-serif'; ctx.textAlign = 'center';
+    for (let d = 20; d <= 100; d += 20) { const x = PX + (d - 20) / 80 * S; ctx.fillText(d, x, PY + S + 16); }
+    ctx.fillStyle = ink; ctx.font = '600 13px system-ui, sans-serif';
+    ctx.fillText('Diameter (mm)', PX + S / 2, PY + S + 36);
+    ctx.textAlign = 'right'; ctx.fillStyle = quiet; ctx.font = '12px system-ui, sans-serif';
+    for (let a = 0; a <= 2.5; a += 0.5) { const y = PY + S - a / 2.5 * S; ctx.fillText(a.toFixed(1), PX - 8, y + 4); }
+    ctx.save(); ctx.translate(18, PY + S / 2); ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = 'center'; ctx.fillStyle = ink; ctx.font = '600 13px system-ui, sans-serif';
+    ctx.fillText('Acidity (% malic acid)', 0, 0); ctx.restore();
+    // labels in plot
+    ctx.textAlign = 'left'; ctx.font = 'italic 12px Georgia, serif'; ctx.fillStyle = quiet;
+    ctx.fillText('describable but not realizable', PX + 10, PY + S - 12);
+    ctx.fillText('isolated region', PX + 0.80 * S - 40, PY + S - 0.76 * S - 34);
+    // seed
+    const sx = PX + (seed[0] + 0.5) * C, sy = PY + S - (seed[1] + 0.5) * C;
+    ctx.beginPath(); ctx.arc(sx, sy, 6, 0, 7); ctx.fillStyle = cSeed; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = paper; ctx.stroke();
+    ctx.fillStyle = ink; ctx.font = '600 12px system-ui, sans-serif'; ctx.fillText('Apple I', sx + 10, sy - 8);
+    // eps ring
+    if (!unb.checked) {
+      ctx.beginPath(); ctx.arc(sx, sy, +epsIn.value * S, 0, 7);
+      ctx.setLineDash([4, 4]); ctx.strokeStyle = cSeed; ctx.lineWidth = 1; ctx.stroke(); ctx.setLineDash([]);
+    }
+    els('sV').textContent = (100 * vCount / (N * N)).toFixed(1) + ' %';
+    els('sR').textContent = (100 * reached / vCount).toFixed(1) + ' %';
+  };
+
+  const labels = () => {
+    els('epsOut').textContent = (+epsIn.value).toFixed(2);
+    els('kOut').textContent = +kIn.value >= 61 ? '∞' : kIn.value;
+    epsIn.disabled = kIn.disabled = unb.checked;
+  };
+  const update = () => { labels(); compute(); draw(); };
+
+  const toCell = ev => {
+    const r = cv.getBoundingClientRect(), sc = cv.width / r.width;
+    const x = (ev.clientX - r.left) * sc - PX, y = (ev.clientY - r.top) * sc - PY;
+    if (x < 0 || y < 0 || x >= S || y >= S) return null;
+    return [Math.floor(x / C), N - 1 - Math.floor(y / C)];
+  };
+
+  const apple = (u, v, real) => {
+    const r = 9 + 17 * u;                                   // size from diameter
+    const hue = 15 + 85 * v;                                // sour = green, sweet = red (illustrative)
+    const fill = real ? `hsl(${hue} 65% 45%)` : 'none';
+    const stroke = real ? `hsl(${hue} 60% 30%)` : css('--ghost');
+    const dash = real ? '' : "stroke-dasharray='3 3'";
+    els('apple').innerHTML =
+      `<path d='M32 ${34 - r} q2 -7 6 -9' stroke='${css('--quiet')}' stroke-width='2' fill='none'/>` +
+      `<path d='M32 ${36 - r} C ${32 + r * 1.25} ${34 - r * 1.2}, ${32 + r * 1.15} ${36 + r * 1.05}, 32 ${36 + r * 0.92} C ${32 - r * 1.15} ${36 + r * 1.05}, ${32 - r * 1.25} ${34 - r * 1.2}, 32 ${36 - r} Z' fill='${fill}' stroke='${stroke}' stroke-width='1.5' ${dash}/>`;
+  };
+
+  const inspect = ev => {
+    const cell = toCell(ev); if (!cell) return;
+    const [i, j] = cell, u = (i + 0.5) / N, v = (j + 0.5) / N, c = j * N + i;
+    const d = (20 + 80 * u).toFixed(0), a = (2.5 * v).toFixed(2), real = !!inV[c];
+    apple(u, v, real);
+    els('readText').innerHTML =
+      `<b>${d} mm, ${a} % malic acid</b><br>` +
+      (real ? (depth[c] >= 0
+          ? (unb.checked ? 'Realizable and reachable (unbounded jumps).' : `Realizable. Reached in <b>${depth[c]}</b> step${depth[c] === 1 ? '' : 's'}.`)
+          : 'Realizable, but <b>not reached</b> from this seed with these settings.')
+        : 'Describable, but <b>not realizable</b>. This point lies outside V.');
+  };
+
+  cv.addEventListener('mousemove', inspect);
+  cv.addEventListener('click', ev => {
+    inspect(ev); const cell = toCell(ev); if (!cell) return;
+    if (inV[cell[1] * N + cell[0]]) { seed = cell; update(); inspect(ev); }
+  });
+  [epsIn, kIn, unb].forEach(e => e.addEventListener('input', update));
+  els('reset').addEventListener('click', () => { seed = crab.slice(); update(); });
+  document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
+    document.querySelectorAll('.level').forEach(s => s.hidden = s.dataset.l !== b.dataset.l);
+  }));
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
+  apple(0.1, 0.8, true);
+  update();
+})();
+</script>
+</body>
+</html>

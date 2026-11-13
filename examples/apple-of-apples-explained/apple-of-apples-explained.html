@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="author" content="MAKURABA">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apple of Apples — The Project Explained</title>
+<style>
+  :root { --bg:#0f0b26; --paper:#17123a; --card:rgba(255,255,255,0.05); --line:rgba(255,255,255,0.12); --ink:#fff8e7; --quiet:#c3bae6;
+          --gold:#ffd166; --good:#06d6a0; --bad:#ef476f; --blue:#7fb2ff; --cyan:#7fe7ff; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f4f1e8; --paper:#fffdf7; --card:rgba(0,0,0,0.03); --line:rgba(0,0,0,0.12); --ink:#1d1a2e; --quiet:#5b5675;
+            --gold:#b07d00; --good:#0a8f6a; --bad:#c22f55; --blue:#2f5fc0; --cyan:#147a8c; }
+  }
+  * { box-sizing:border-box; }
+  html { overflow-x:hidden; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.62 Georgia,"Iowan Old Style","Times New Roman",serif; }
+  main { max-width:820px; margin:0 auto; padding:28px 18px 70px; background:var(--paper); min-height:100vh; }
+  header.hero { text-align:center; padding:10px 0 18px; border-bottom:1px solid var(--line); margin-bottom:20px; }
+  .kicker { font:600 0.78rem system-ui,sans-serif; letter-spacing:0.14em; text-transform:uppercase; color:var(--quiet); }
+  h1 { font-size:2.1rem; line-height:1.15; margin:8px 0 6px;
+       background:linear-gradient(90deg,#9cff57,#ffd166,#ff5d73); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .lede { font-size:1.08rem; color:var(--quiet); margin:0 auto; max-width:60ch; }
+  .byline { font:0.82rem system-ui,sans-serif; color:var(--quiet); margin-top:10px; }
+  h2 { font-size:1.4rem; margin:46px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line); }
+  h2 .n { font:600 0.8rem system-ui,sans-serif; color:var(--gold); display:block; letter-spacing:0.1em; }
+  h3 { font-size:1.08rem; margin:22px 0 6px; }
+  p, li { max-width:72ch; }
+  a { color:var(--blue); }
+  nav.toc { border:1px solid var(--line); border-radius:12px; padding:12px 16px; font:0.92rem system-ui,sans-serif; background:var(--card); }
+  nav.toc ol { margin:6px 0 0; padding-left:22px; columns:2; column-gap:24px; } @media (max-width:560px) { nav.toc ol { columns:1; } }
+  nav.toc a { color:var(--ink); text-decoration:none; } nav.toc a:hover { color:var(--gold); }
+  .math { font-family:"Cambria Math","STIX Two Math",Georgia,serif; background:var(--card); border:1px solid var(--line); border-radius:10px;
+          padding:12px 16px; margin:12px 0; overflow-x:auto; white-space:nowrap; font-size:1.04rem; }
+  .callout { border-left:3px solid var(--gold); background:var(--card); border-radius:0 10px 10px 0; padding:12px 16px; margin:16px 0; }
+  .callout.honest { border-color:var(--bad); } .callout.good { border-color:var(--good); }
+  .callout b:first-child { font-family:system-ui,sans-serif; font-size:0.82rem; letter-spacing:0.06em; text-transform:uppercase; display:block; margin-bottom:2px; }
+  .table-wrap { overflow-x:auto; margin:14px 0; }
+  table { border-collapse:collapse; width:100%; font-size:0.9rem; }
+  th, td { border-bottom:1px solid var(--line); padding:8px 9px; text-align:left; vertical-align:top; }
+  th { font:600 0.76rem system-ui,sans-serif; text-transform:uppercase; letter-spacing:0.04em; color:var(--quiet); }
+  .yes { color:var(--good); font-weight:700; } .no { color:var(--bad); font-weight:700; } .mid { color:var(--gold); font-weight:700; }
+  figure { margin:20px 0; } figure svg { width:100%; height:auto; display:block; }
+  figcaption { font:0.84rem system-ui,sans-serif; color:var(--quiet); margin-top:6px; }
+  svg text { font-family:system-ui,-apple-system,sans-serif; }
+  svg .ink { fill:var(--ink); } svg .q { fill:var(--quiet); } svg .box { fill:var(--card); stroke:var(--line); stroke-width:1.4; }
+  svg .acc { fill:none; stroke:var(--gold); stroke-width:2; } svg .edge { stroke:var(--quiet); stroke-width:1.4; fill:none; }
+  svg .gold { fill:var(--gold); } svg .cyan { fill:var(--cyan); } svg .good { fill:var(--good); } svg .bad { fill:var(--bad); }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0; } @media (max-width:620px) { .grid3 { grid-template-columns:1fr; } }
+  .card { border:1px solid var(--line); border-radius:12px; padding:12px 14px; background:var(--card); font-size:0.94rem; }
+  .card h4 { margin:0 0 4px; font:700 0.86rem system-ui,sans-serif; letter-spacing:0.04em; text-transform:uppercase; }
+  code { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:0.84em; background:var(--card); border:1px solid var(--line); padding:1px 5px; border-radius:5px; word-break:break-all; }
+  .chain { font:0.84rem/1.55 ui-monospace,Menlo,monospace; color:var(--cyan); background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px; word-break:break-all; }
+  ol.refs li { font-size:0.88rem; margin-bottom:5px; }
+  footer { margin-top:50px; padding-top:14px; border-top:1px solid var(--line); font:0.84rem system-ui,sans-serif; color:var(--quiet); text-align:center; }
+</style>
+</head>
+<body>
+<main>
+<a href="index.html" style="display:inline-block;font:600 0.75rem system-ui,sans-serif;letter-spacing:0.12em;text-transform:uppercase;color:#f2cf6a;text-decoration:none;margin:0 0 10px">◆ MAKURABA · Apple of Apples</a>
+
+<header class="hero">
+  <div class="kicker">Recursive Object Reconstructability</div>
+  <h1>Apple of Apples</h1>
+  <p class="lede">One apple becomes a list of qualities. The list becomes a point in a space. The space holds every apple that could be described, a much smaller region of apples that could exist, and the paths that connect them.</p>
+  <div class="byline">Project explainer · November 2026 · MAKURABA</div>
+</header>
+
+<nav class="toc">
+  <strong>Contents</strong>
+  <ol>
+    <li><a href="#s1">The idea in one page</a></li>
+    <li><a href="#s2">Where it started</a></li>
+    <li><a href="#s3">The formal model</a></li>
+    <li><a href="#s4">Four levels, kept distinct</a></li>
+    <li><a href="#s5">What can exist: V from data</a></li>
+    <li><a href="#s6">The hypersphere</a></li>
+    <li><a href="#s7">Every apple is a wave</a></li>
+    <li><a href="#s8">Growth that never stops</a></li>
+    <li><a href="#s9">Identity: state, Super ID, instance</a></li>
+    <li><a href="#s10">Exploration and reversibility</a></li>
+    <li><a href="#s11">Cascades in a vector medium</a></li>
+    <li><a href="#s12">The quantum analogy</a></li>
+    <li><a href="#s13">Observers and qualia</a></li>
+    <li><a href="#s14">Capstone: apples as tokens</a></li>
+    <li><a href="#s15">Represents, demonstrates, unknown</a></li>
+    <li><a href="#s16">Assumptions, stated openly</a></li>
+    <li><a href="#s17">A guide to the app</a></li>
+    <li><a href="#s18">Part II · Conjunctive closure</a></li>
+    <li><a href="#s19">Validity of the closure framework</a></li>
+    <li><a href="#s20">The Conjunctive Closure Conjecture</a></li>
+    <li><a href="#s21">Method of integration</a></li>
+    <li><a href="#s22">References</a></li>
+  </ol>
+</nav>
+
+<!-- 1 -->
+<h2 id="s1"><span class="n">01</span>The idea in one page</h2>
+<p>An object is not only what it is. It is also a source of what it could become. Take a small green crab apple, Apple I. Measure its qualities: size, colour, shape, sweetness, markings. Each quality becomes a number, and the list of numbers becomes a point in a many-dimensional space. Change the numbers and you describe a different apple. Do it again from the new apple and you get a branching family of possibilities.</p>
+<p>Three findings give the idea its scientific shape:</p>
+<ol>
+  <li><b>Describable is far larger than realizable.</b> Almost any list of numbers can be written down, but only a thin region of the space holds apples that could actually grow. In the app, only about 0.4 % of random lists land near real apples.</li>
+  <li><b>Qualities are coupled.</b> Changing one drags others with it, so the realizable region has a shape, and pushes can ripple or run away.</li>
+  <li><b>Small steps limit what is reachable.</b> Starting from one seed and taking bounded steps, you can only walk to the connected region around it.</li>
+</ol>
+<p>The project is two things: a corrected statement of the conjecture, and <b>Apple of Apples</b>, an interactive HTML visualization that lets anyone, from a child to a researcher, see and play with each idea.</p>
+
+<!-- 2 -->
+<h2 id="s2"><span class="n">02</span>Where it started</h2>
+<p>The project began with an illustrated manifesto, <i>Mono-Maximum</i>: "From One, Many · From Many, One." It showed Apple I as a seed, a branching tree of reconfigured apples (melon-striped, blue, gemstone, yarn, stone, plasma, tentacled), a Hilbert sphere of extractable qualities (the infographic's "Gilbert" is a transcription typo), and a process: observe, extract, configure, reconstruct, iterate. Its sharpest line was <i>"Combinatorial (what we can describe) ≠ Realizable (what can exist)"</i>.</p>
+<p>The work since then kept that spirit and fixed what wouldn't survive scrutiny:</p>
+<div class="table-wrap"><table>
+  <tr><th>Original idea</th><th>Correction</th></tr>
+  <tr><td>"Bijection of nature"</td><td>Describing an object loses information: many apples share one description. The model uses an encoder and decoder, and measures the gap.</td></tr>
+  <tr><td>"Hilbert sphere of apples"</td><td>Made precise. A Hilbert space applies rigorously in two places: the apple's outline as a function (L²), and shape with size removed (a hypersphere).</td></tr>
+  <tr><td>Hand-picked "can't grow" rules</td><td>The boundary is derived from data with a standard statistical distance.</td></tr>
+  <tr><td>"Triadic systems are inevitable", "Make correctness inevitable"</td><td>Kept as framing, not claims. The second became a method: always separate what the model represents, demonstrates, and leaves unknown.</td></tr>
+</table></div>
+
+<!-- 3 -->
+<h2 id="s3"><span class="n">03</span>The formal model</h2>
+<figure>
+<svg viewBox="0 0 760 250" role="img" aria-label="Encoder maps objects to descriptions; the realizable set V sits inside F; the decoder reconstructs">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="q"/></marker></defs>
+  <rect class="box" x="20" y="70" width="150" height="110" rx="12"/>
+  <text class="ink" x="95" y="112" text-anchor="middle" font-size="15" font-weight="700">O</text>
+  <text class="q" x="95" y="134" text-anchor="middle" font-size="12">real objects</text>
+  <text class="q" x="95" y="152" text-anchor="middle" font-size="12">(every apple)</text>
+  <rect class="box" x="300" y="24" width="300" height="200" rx="14"/>
+  <text class="ink" x="320" y="50" font-size="15" font-weight="700">F = ℝⁿ</text>
+  <text class="q" x="320" y="68" font-size="12">every describable list of qualities</text>
+  <path class="acc" d="M360 170 C 390 110, 470 90, 520 120 S 560 190, 500 196 S 380 200, 360 170 Z"/>
+  <text class="gold" x="430" y="160" text-anchor="middle" font-size="14" font-weight="700">V</text>
+  <text class="q" x="430" y="178" text-anchor="middle" font-size="11">what can exist</text>
+  <circle class="gold" cx="398" cy="150" r="5"/><text class="ink" x="398" y="138" text-anchor="middle" font-size="11">x₀</text>
+  <path class="edge" d="M170 100 C 220 80, 260 80, 300 90" marker-end="url(#ar)"/><text class="q" x="234" y="74" text-anchor="middle" font-size="12">E (extract)</text>
+  <path class="edge" d="M300 190 C 260 200, 220 200, 170 160" marker-end="url(#ar)"/><text class="q" x="234" y="214" text-anchor="middle" font-size="12">R (reconstruct)</text>
+  <text class="q" x="640" y="110" font-size="12">Δ(A) = how much</text><text class="q" x="640" y="128" font-size="12">R(E(A)) differs</text><text class="q" x="640" y="146" font-size="12">from A</text>
+</svg>
+<figcaption>Extraction is lossy; reconstruction returns nothing where no real object fits. The realizable set V is a small region of F.</figcaption>
+</figure>
+<div class="table-wrap"><table>
+  <tr><th>Symbol</th><th>Meaning</th></tr>
+  <tr><td>O</td><td>Object space: the actual things.</td></tr>
+  <tr><td>F = ℝⁿ</td><td>Descriptor space: one axis per measurable quality.</td></tr>
+  <tr><td>E: O → F</td><td>Encoder (extraction). Many-to-one, so not invertible.</td></tr>
+  <tr><td>R: F → O ∪ {∅}</td><td>Decoder (reconstruction: breeding, synthesis, generation). ∅ where nothing real fits.</td></tr>
+  <tr><td>V ⊂ F</td><td>Realizable set: descriptions some real object can satisfy.</td></tr>
+  <tr><td>d</td><td>Distance on F, with axes put on a common scale.</td></tr>
+</table></div>
+<div class="math">V = { x ∈ F : R(x) ≠ ∅ } ,&emsp; Δ(A) = d( A, R(E(A)) )</div>
+<div class="math">Reach<sub>k</sub>(x₀, ε) = { x<sub>k</sub> : x<sub>i+1</sub> ∈ V,&ensp; d(x<sub>i</sub>, x<sub>i+1</sub>) ≤ ε }</div>
+<p>As k grows, Reach fills the connected part of V around the seed. The seed matters only because steps are bounded, and regions cut off by gaps wider than ε can never be reached from it.</p>
+<div class="callout"><b>The conjecture</b>For a domain with descriptor space F and realizable set V: (i) V is low-dimensional inside F; (ii) its branching follows measurable couplings between qualities; (iii) bounded-step reconstruction from a seed reaches exactly the connected region of V around it.</div>
+
+<!-- 4 -->
+<h2 id="s4"><span class="n">04</span>Four levels, kept distinct</h2>
+<p>A central discussion of the project was what the vector actually captures. The resolution was a directive framework that keeps four levels separate without deciding in advance how they relate:</p>
+<div class="table-wrap"><table>
+  <tr><th>Level</th><th>What it is</th><th>In the model</th></tr>
+  <tr><td>1 · Qualitative dimensions</td><td>The distinguishable qualities: redness, roundness, sweetness, size, texture. Coordinates of a quality space (Gärdenfors's "conceptual spaces").</td><td class="yes">represented</td></tr>
+  <tr><td>2 · Configurational state</td><td>One object's particular combination of those qualities: a state vector.</td><td class="yes">represented</td></tr>
+  <tr><td>3 · Phenomenal experience</td><td>Qualia in the strict sense: what it is like for an observer to encounter that state.</td><td class="no">not represented · open</td></tr>
+  <tr><td>4 · Observer relationship</td><td>Whether two observers can meet structurally equivalent states yet experience them differently.</td><td class="mid">test case · open</td></tr>
+</table></div>
+<div class="callout"><b>Central principle</b>The model represents qualitative structure and configurational state. It does not, by itself, establish phenomenal experience. Representing a quality is not the same as experiencing it, but neither should experience be assumed to be understandable apart from the structures through which qualities become distinguishable.</div>
+
+<!-- 5 -->
+<h2 id="s5"><span class="n">05</span>What can exist: V from data</h2>
+<p>An early version of the app used made-up rules ("Boxy above 0.6 can't grow"). They were arbitrary, and they were replaced. Now the boundary of V comes from a table of 14 reference apples, wild and red crab apples plus cultivars from Granny Smith to Bramley, each described with the same qualities in real units (diameter in mm, sugar in °Brix, height-to-width ratio).</p>
+<p>The app fits the average μ and covariance Σ of those apples, then measures how far any apple sits from the group in units of the group's own spread, the <b>Mahalanobis distance</b>:</p>
+<div class="math">d(q) = √( (q − μ)ᵀ Σ⁻¹ (q − μ) ) ≤ 6.35 = √χ²<sub>22</sub>(0.99)</div>
+<p>The cutoff is the standard point containing 99 % of a bell-shaped cloud in 22 dimensions (9 qualities, 6 wave genes, 7 exotic genes). Because Σ records which traits move together, an unusual <i>combination</i> can be unrealistic even when every number alone is normal. Each verdict names the closest real apple and the quality that pushed the apple out: <i>"✅ like Red Delicious · d 3.1"</i> or <i>"❌ Boxy too high · d 16.7"</i>.</p>
+
+<!-- 6 -->
+<h2 id="s6"><span class="n">06</span>The hypersphere</h2>
+<p>Centre each quality so the "average apple" sits at the origin. Then every apple has a <b>length</b> (how extreme it is) and a <b>direction</b> (what kind of apple it is). Dividing by the length places every apple on the unit hypersphere: the "sphere of apples", made precise.</p>
+<div class="math">x<sub>i</sub> = 2(q<sub>i</sub> − ½) ,&ensp; û = x / ‖x‖ ,&ensp; θ(a, b) = arccos( û<sub>a</sub> · û<sub>b</sub> )</div>
+<p>Two further results connect to the sphere. In shape theory, outlines with position, rotation and size removed live on a hypersphere (Kendall). And in modern language models, normalisation layers (RMSNorm) put every token vector on a sphere of radius √d, which the capstone demonstrates exactly.</p>
+
+<!-- 7 -->
+<h2 id="s7"><span class="n">07</span>Every apple is a wave</h2>
+<p>Read the apple's outline as one curve: its radius f(v) at each angle v from the stem (0°) to the bottom (180°). That curve is a single function, a point in the Hilbert space L², which is a genuine Hilbert space, not an analogy. Functions can be measured against each other:</p>
+<div class="math">⟨f, g⟩ = ∫₀^π f(v) g(v) sin v dv ,&emsp; θ = arccos( ⟨f, g⟩ / ‖f‖‖g‖ )</div>
+<p>The curve also splits into Legendre waves P<sub>ℓ</sub>(cos v), the axially symmetric spherical harmonics. Their amounts a<sub>ℓ</sub> are the apple's coordinates in that space: ℓ = 0 is overall size, ℓ = 1 is top-to-bottom lopsidedness, ℓ = 2 is tall versus flat, and higher ℓ is finer ripple. The shape is built the same way: a base curve multiplied by a wave, 1 + Σ c<sub>k</sub> cos(k·v), with six wave genes.</p>
+
+<!-- 8 -->
+<h2 id="s8"><span class="n">08</span>Growth that never stops</h2>
+<figure>
+<svg viewBox="0 0 760 170" role="img" aria-label="Growth loop: parent curve, phi-mutation, projection onto V, child, repeat">
+  <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="q"/></marker></defs>
+  <rect class="box" x="16" y="40" width="160" height="64" rx="12"/><text class="ink" x="96" y="68" text-anchor="middle" font-size="14" font-weight="700">Parent curve</text><text class="q" x="96" y="88" text-anchor="middle" font-size="11">start from a state</text>
+  <rect class="box" x="208" y="40" width="160" height="64" rx="12"/><text class="ink" x="288" y="68" text-anchor="middle" font-size="14" font-weight="700">φ-mutation</text><text class="q" x="288" y="88" text-anchor="middle" font-size="11">random combination</text>
+  <rect class="box" x="400" y="40" width="160" height="64" rx="12"/><text class="ink" x="480" y="68" text-anchor="middle" font-size="14" font-weight="700">Project onto V</text><text class="q" x="480" y="88" text-anchor="middle" font-size="11">if it overshoots</text>
+  <rect class="box" x="592" y="40" width="150" height="64" rx="12" style="stroke:var(--gold)"/><text class="ink" x="667" y="68" text-anchor="middle" font-size="14" font-weight="700">Child apple</text><text class="q" x="667" y="88" text-anchor="middle" font-size="11">always produced</text>
+  <path class="edge" d="M176 72H206" marker-end="url(#ar2)"/><path class="edge" d="M368 72H398" marker-end="url(#ar2)"/><path class="edge" d="M560 72H590" marker-end="url(#ar2)"/>
+  <path class="edge" d="M667 104 V140 H96 V106" marker-end="url(#ar2)"/><text class="q" x="380" y="158" text-anchor="middle" font-size="12">the child becomes the next parent · indefinitely</text>
+</svg>
+<figcaption>Nothing is ever refused, so a lineage can run forever.</figcaption>
+</figure>
+<ul>
+  <li><b>φ-mutation.</b> Each gene changes with probability 1/φ ≈ 0.618, and wave gene k changes by an amount that shrinks by a factor of φ for each step up in k, so coarse shape drifts more than fine ripple.</li>
+  <li><b>Projection.</b> If a child lands outside V, it slides back along the line toward the average real apple until it reaches V's edge.</li>
+  <li><b>Two modes.</b> 🍎 Real: growth is projected and stays realizable. 🌌 Trans-dimensional: all 23 genes mutate (including hue, metallic, glow, fatness, facets, spikes and texture patterns from the original infographic), nothing is projected, and the apple roams the whole describable space while its realism distance is still measured.</li>
+</ul>
+
+<!-- 9 -->
+<h2 id="s9"><span class="n">09</span>Identity: state, Super ID, instance</h2>
+<p>Every apple displays its full state as a vector chain, grouped as qualities, waves, exotic genes and pattern:</p>
+<div class="chain">S[0d.8c.66.08.20.00.33.80.4d | 87.7a.83.80.80.80 | d9.ff.1a.00.00.00.00 | 0]</div>
+<div class="grid3">
+  <div class="card"><h4>State chain S</h4>Every quality of the apple, written out.</div>
+  <div class="card"><h4>Super ID</h4>A UUID computed from S. Identical states always share it: it marks one point in the state space.</div>
+  <div class="card"><h4>Local ID</h4>The Super ID plus place and time, @(x, y, z | t): one particular instance.</div>
+</div>
+<p>Six <b>state slots</b> freeze a state together with an exact image of the view. Load a slot and compare it with the live apple, and the result is the project's identity demonstration: same state chain, same Super ID, state distance 0.000, yet different Local IDs in space and time. <b>Identical in kind, distinct as objects</b>: two tokens of one type.</p>
+<div class="callout honest"><b>Scope</b>This describes classical, everyday objects, where position tells copies apart. Quantum particles of one kind are treated by physics as truly indistinguishable and carry no individual labels.</div>
+
+<!-- 10 -->
+<h2 id="s10"><span class="n">10</span>Exploration and reversibility</h2>
+<p><b>Explore</b> starts from Apple I and applies 14 mutators in a fixed cycle (shape, size, colour, marks, taste, wave, hue, metal, glow, fatness, facets, spikes, pattern, and a full random combination), with random size and direction within each, until every mutator and all six patterns have been used.</p>
+<p><b>Retrace</b> runs back along the lineage's own curved path to its root, passing smoothly through every in-between state; <b>Replay</b> runs it forward; a scrubber does either by hand, and growing from any point starts a new branch.</p>
+<div class="callout honest"><b>Why it is reversible</b>The random mutations themselves cannot be undone by any formula. The walk is reversible because every child stores its parent: the path is a recorded history.</div>
+
+<!-- 11 -->
+<h2 id="s11"><span class="n">11</span>Cascades in a vector medium</h2>
+<p>Genes are coupled, so a push to one spreads to the genes linked to it, then to theirs. With the state as a vector x and the couplings as a matrix A:</p>
+<div class="math">x<sub>t+1</sub> = A x<sub>t</sub> ,&emsp; A = ρ · C / ρ(C)</div>
+<p>The gain ρ is the size of A's largest eigenvalue, and it alone decides the regime: below 1 a ripple dies out, at 1 it persists, above 1 it runs away until genes saturate at their limits. Whatever gene is kicked, a long cascade lines up with A's top eigenvector, the pattern the medium amplifies most. This is the general behaviour of cascades through any vector medium or vector matrix, and the main idea behind exploding and vanishing signals in deep networks.</p>
+
+<!-- 12 -->
+<h2 id="s12"><span class="n">12</span>The quantum analogy</h2>
+<p>Using the 14 reference apples as basis states, a quantum apple is a blend of all of them at once, each with a complex amplitude:</p>
+<div class="math">|ψ⟩ = Σ c<sub>i</sub> |i⟩ ,&ensp; Σ |c<sub>i</sub>|² = 1 ,&ensp; P(i) = |c<sub>i</sub>|² ,&ensp; U(t) = e<sup>−iHt</sup></div>
+<ul>
+  <li><b>Interference:</b> a Hadamard on pairs of apples, applied twice, restores the original probabilities exactly.</li>
+  <li><b>Unitary evolution:</b> probability flows between similar apples (a quantum walk) with the total fixed at 1, and running time backwards returns exactly to the start.</li>
+  <li><b>Measurement:</b> one apple is chosen with probability |c<sub>i</sub>|² and the state collapses. That step cannot be undone, the quantum counterpart to Retrace.</li>
+</ul>
+<div class="callout honest"><b>Honest scope</b>This is an analogy, not a claim that apples are quantum. Real apples lose quantum coherence almost instantly. What carries over exactly is the mathematics: amplitudes, the Born rule, interference, reversible evolution and irreversible measurement.</div>
+
+<!-- 13 -->
+<h2 id="s13"><span class="n">13</span>Observers and qualia</h2>
+<p>The <b>inverted-spectrum</b> thought experiment asks: could two observers share an identical structure of colour similarities while red looks to one the way cyan looks to the other? The app tests the structural half of that question. Observer B's colour coordinates are A's after an isometry (red ↦ 1 − red, hue ↦ hue + ½). Isometries preserve every distance, so A and B rank all 14 reference apples in exactly the same order, and the largest distance difference is 0. <b>Structure alone cannot tell the two apart.</b></p>
+<p>This is the qualia counterpart of the identity demonstration. The Super ID shows that two things can match exactly at levels 1 and 2 and still be two objects. The inverted spectrum asks whether two experiences could match exactly at levels 1 and 2 and still differ at level 3. Whether that is coherent is left open, deliberately: it should not be settled by terminology.</p>
+<p>The question connects to live positions in philosophy and science: quality-space theories (Clark, Rosenthal), representationalism (Tye, Dretske), Integrated Information Theory's "qualia space" (Balduzzi and Tononi), and Chalmers's "hard problem".</p>
+
+<!-- 14 -->
+<h2 id="s14"><span class="n">14</span>Capstone: apples as tokens</h2>
+<p>A language model turns each token into a vector and updates it layer by layer. The apples run through the same operations: the reference apples are the <i>vocabulary</i>, the lineage is the <i>context window</i>, and each apple's genes are its <i>embedding</i>.</p>
+<div class="math">a = softmax(x·Xᵀ/√d) X ,&ensp; h = x + a ,&ensp; n = h / rms(h) ,&ensp; P(j) = softmax(n·e<sub>j</sub> / (√d·τ))</div>
+<ol>
+  <li><b>Attention:</b> the newest apple weighs every apple in its context.</li>
+  <li><b>Residual add:</b> it adds what it gathered to its own vector.</li>
+  <li><b>Normalisation:</b> it is rescaled onto a sphere of radius √22 (measured at exactly 4.690).</li>
+  <li><b>Prediction:</b> it is scored against the vocabulary, and the next apple is sampled and appended, the way a model writes one token and then reads its own output.</li>
+</ol>
+<p>Positional encoding closes the circle with identity: identical apples in the context share a token ID (like the Super ID), and adding position gives each a distinct vector (like the Local ID). At low temperature, generation falls into a repetition loop, the same failure real models show when sampling too greedily.</p>
+<div class="table-wrap"><table>
+  <tr><th>Apple model</th><th>Language model</th><th>Fit</th></tr>
+  <tr><td>State vector</td><td>Token vector in the residual stream</td><td class="yes">close</td></tr>
+  <tr><td>Reference apples · lineage</td><td>Vocabulary · context window</td><td class="yes">close</td></tr>
+  <tr><td>Super ID · Local ID</td><td>Token ID · position</td><td class="yes">close</td></tr>
+  <tr><td>Unit sphere</td><td>RMSNorm / LayerNorm</td><td class="yes">exact</td></tr>
+  <tr><td>Cascade gain ρ</td><td>Exploding / vanishing signals</td><td class="yes">close</td></tr>
+  <tr><td>Exotic presets</td><td>Steering vectors</td><td class="yes">close</td></tr>
+  <tr><td>Quality axes</td><td>Embedding dimensions</td><td class="mid">partial: real dimensions are learned and rarely mean one thing each</td></tr>
+  <tr><td>Quantum superposition</td><td>Softmax over vocabulary</td><td class="no">loose: no amplitudes, no interference</td></tr>
+  <tr><td>Retrace</td><td>Generation</td><td class="no">no: sampling discards alternatives</td></tr>
+</table></div>
+<p>In this light, any apple can stand for a concept, a word, or a step in a chain of operations: a pathway that moves a vector from "what this is" toward "what comes next".</p>
+
+<!-- 15 -->
+<h2 id="s15"><span class="n">15</span>Represents, demonstrates, unknown</h2>
+<div class="grid3">
+  <div class="card" style="border-color:var(--good)"><h4 class="yes">Represents</h4>Qualitative dimensions, configurational states, realizability from data, function-space shape, identity versus instance, coupling and cascades, transformer operations.</div>
+  <div class="card" style="border-color:var(--gold)"><h4 class="mid">Demonstrates</h4>Describable ≫ realizable. Bounded steps limit reach. States can match exactly yet be two instances. Structurally equivalent codings are indistinguishable from relational data. Gain decides ripple versus runaway.</div>
+  <div class="card" style="border-color:var(--bad)"><h4 class="no">Remains unknown</h4>Whether subjective experience arises from a system's configuration, from its relationship with an observer, or from something neither accounts for.</div>
+</div>
+
+<!-- 16 -->
+<h2 id="s16"><span class="n">16</span>Assumptions, stated openly</h2>
+<ul>
+  <li><b>Reference apples:</b> approximate typical values for 14 cultivars, assembled from general knowledge, not a measured dataset. Real measurements can replace them and the boundary updates automatically.</li>
+  <li><b>Estimation settings:</b> shrinkage 0.3 on off-diagonal covariance and a noise floor of 0.05 per quality, because 14 apples are few for many dimensions.</li>
+  <li><b>Priors for wave and exotic genes:</b> no real-apple data exists for them, so their spreads are stated assumptions (waves 0.08·φ<sup>−(k−1)</sup>; exotic genes centred at zero).</li>
+  <li><b>The golden ratio:</b> a design choice for mutation rates, not a claim that apple variation follows φ.</li>
+  <li><b>Cascade couplings:</b> measured correlations among the 9 qualities; stated toy values elsewhere.</li>
+  <li><b>Closure budgets:</b> the 256-bit capacity, memory budget and erasure budget are adjustable illustrative values; the Landauer figures are true lower bounds at 300 K, far below what real hardware spends.</li>
+  <li><b>Quantum and transformer layers:</b> faithful operations on simplified, untrained systems. They show what the mathematics does, not what nature or a trained model has learned.</li>
+</ul>
+
+<!-- 17 -->
+<h2 id="s17"><span class="n">17</span>A guide to the app</h2>
+<p>The app is one self-contained HTML file that runs offline on a phone. The apple view (3D, under 700 triangles, smooth WebGL shading) and the sphere view sit together; tap the small view to swap them. A narrator explains every action in words, with numbers.</p>
+<div class="table-wrap"><table>
+  <tr><th>Part</th><th>What it does</th></tr>
+  <tr><td>🌱 Grow · ♾️ Auto · 🎲 Jump</td><td>One φ-mutation step; endless growth; a random point in the describable space.</td></tr>
+  <tr><td>🧭 Journey</td><td>Explore every mutator from Apple I; Retrace, Replay and scrub the path.</td></tr>
+  <tr><td>🆔 Identity</td><td>State chain, Super ID, Local ID; six frozen slots; load and compare.</td></tr>
+  <tr><td>🧱 Shape · 🎨 Skin</td><td>The nine core qualities, presets (apple, ball, cube, cone, pear), level of detail, lens.</td></tr>
+  <tr><td>🌊 Wave</td><td>The outline as a function: overlay curves, L² angles, Legendre coefficients, wave genes.</td></tr>
+  <tr><td>🌐 Sphere</td><td>The vector, length and direction, angles, the axes shown, and where V comes from.</td></tr>
+  <tr><td>🌌 Exotic</td><td>Hue, metallic, glow, fatness, facets, spikes, six patterns, nine presets, Real or Trans-dimensional mode.</td></tr>
+  <tr><td>⚛️ Quantum</td><td>Superposition, Hadamard, evolve, un-evolve, measure.</td></tr>
+  <tr><td>💥 Cascade</td><td>Kick a gene, set the gain, watch the heat map and the dominant mode.</td></tr>
+  <tr><td>👁️ Observer</td><td>The four levels, the inverted-spectrum test, and the represents / demonstrates / unknown ledger.</td></tr>
+  <tr><td>🧠 Token</td><td>One transformer step over apples: attention, residual, normalisation, next-token prediction.</td></tr>
+  <tr><td>🔒 Closure</td><td>The three closure conditions live, memory and erasure budgets, self-anchoring, re-anchoring, the boundary observer's log, and the substrate (𝒢).</td></tr>
+  <tr><td>🤖 Robot</td><td>Everything above as plain numbers and formulas.</td></tr>
+</table></div>
+
+<!-- 18 -->
+<h2 id="s18"><span class="n">18 · Part II</span>Conjunctive closure</h2>
+<p>Part I asks what an object can become. Part II asks a deeper question: <b>can a system stay coherent while depending on something outside itself?</b> The Conjunctive Closure Engine (CCE) answers with three conditions that must hold <i>at the same time</i>, and the apple system turns out to be a working instance of all three.</p>
+<div class="table-wrap"><table>
+  <tr><th>Closure</th><th>Question</th><th>In the apple system</th></tr>
+  <tr><td>ℐ · Informational</td><td>Can the system represent and process its states within finite resources?</td><td>One state is 22 genes × 8 bits + log₂6 = 178.6 bits, exactly the S chain. History must fit a memory budget.</td></tr>
+  <tr><td>𝒯 · Thermodynamic</td><td>Can it sustain its organisation through energy and entropy exchange?</td><td>Every irreversible erasure (an evicted record, an overwritten slot, a quantum measurement) costs ≥ k<sub>B</sub>T ln 2 per bit. Reversible steps cost nothing.</td></tr>
+  <tr><td>𝒪 · Ontological</td><td>Can it keep its foundational rules without deriving them from its own emergent behaviour?</td><td>V's parameters (μ, Σ, cutoff) are A₀, fitted from external reference apples. Growth must not rewrite them.</td></tr>
+</table></div>
+<p>The system and its host are kept apart: 𝒮 = (X, T, R, E, A) is the apple system, and 𝒢 = (Ω, Φ, ℬ) is the <b>Genesis matrix</b>, the substrate it runs on (the browser and device, their power, and boundary conditions such as screen, memory and WebGL support). 𝒮 depends on 𝒢 but cannot control it. The app already has a defined degradation state for one boundary condition: without WebGL it falls back to flat 2D drawing.</p>
+<figure>
+<svg viewBox="0 0 760 300" role="img" aria-label="Genesis matrix contains the system; three closure layers; a boundary observer watches all three">
+  <rect class="box" x="16" y="14" width="728" height="272" rx="16"/>
+  <text class="ink" x="36" y="40" font-size="14" font-weight="700">𝒢 · Genesis matrix</text><text class="q" x="36" y="58" font-size="11">substrate Ω · physical processes Φ · boundary conditions ℬ</text>
+  <rect class="box" x="40" y="76" width="680" height="40" rx="10" style="stroke:var(--gold)"/>
+  <text class="ink" x="380" y="101" text-anchor="middle" font-size="13" font-weight="700">👁️ Boundary observation: detect, identify, reconcile, record</text>
+  <rect class="box" x="40" y="130" width="212" height="70" rx="10"/><text class="ink" x="146" y="160" text-anchor="middle" font-size="13" font-weight="700">ℐ · Information</text><text class="q" x="146" y="180" text-anchor="middle" font-size="11">capacity</text>
+  <rect class="box" x="274" y="130" width="212" height="70" rx="10"/><text class="ink" x="380" y="160" text-anchor="middle" font-size="13" font-weight="700">𝒯 · Thermodynamics</text><text class="q" x="380" y="180" text-anchor="middle" font-size="11">energy and erasure</text>
+  <rect class="box" x="508" y="130" width="212" height="70" rx="10"/><text class="ink" x="614" y="160" text-anchor="middle" font-size="13" font-weight="700">𝒪 · Ontology</text><text class="q" x="614" y="180" text-anchor="middle" font-size="11">anchored axioms A₀</text>
+  <rect class="box" x="40" y="214" width="680" height="56" rx="10"/><text class="ink" x="380" y="238" text-anchor="middle" font-size="13" font-weight="700">𝒮 · the apple system</text><text class="q" x="380" y="256" text-anchor="middle" font-size="11">states, lineages, growth, emergent patterns</text>
+</svg>
+<figcaption>The observer watches all three layers without becoming a foundational authority; it is neither the substrate, the system, nor the rules.</figcaption>
+</figure>
+
+<h2 id="s19"><span class="n">19</span>Validity of the closure framework</h2>
+<p>Each element of the CCE was checked against established science. Most of it stands; two statements needed sharper formulation.</p>
+<div class="table-wrap"><table>
+  <tr><th>Element</th><th>Verdict</th><th>Note</th></tr>
+  <tr><td>Three closures as joint conditions</td><td class="yes">valid</td><td>A definition, so it cannot be wrong, only more or less useful. Pairs can hold while the third fails; the app shows each failing alone.</td></tr>
+  <tr><td>I<sub>min</sub> = log₂ N</td><td class="yes">valid</td><td>Minimum fixed-length code for N distinguishable states. The actual average can be lower (Shannon entropy ≤ log₂ N).</td></tr>
+  <tr><td>Landauer bound k<sub>B</sub>T ln 2</td><td class="yes">valid</td><td>Applies to logically irreversible erasure only, as the document says; confirmed experimentally (Bérut et al., 2012). At 300 K it is about 2.87 × 10⁻²¹ J per bit. Real computers dissipate roughly a billion times more.</td></tr>
+  <tr><td>ΔS<sub>total</sub> ≥ 0, local order by exporting entropy</td><td class="yes">valid</td><td>The second law; the basis of self-organising "dissipative structures" (Prigogine).</td></tr>
+  <tr><td>Gödelian firewall → self-reference boundary controller</td><td class="yes">valid correction</td><td>Gödel's theorems limit what formal systems can prove; they are not a mechanism. Recursion limits and budgets are the right engineering tools.</td></tr>
+  <tr><td>E<sub>t</sub> ⇏ A₀</td><td class="mid">reformulate</td><td>Read literally, "⇏" means "does not logically imply", which is not the intended rule. The intended rule is that emergent dynamics have no write access to A₀: <i>A₀ is invariant under every transition</i>, written T<sub>t</sub>(A₀) = A₀ for all t.</td></tr>
+  <tr><td>𝒞(t) as a yes/no conjunction</td><td class="mid">extend</td><td>Valid, but a margin per condition (how far from its limit) lets the observer see failure coming. The app shows margins alongside the verdict.</td></tr>
+  <tr><td>Boundary observer</td><td class="yes">valid</td><td>A standard supervisory monitor in control theory. To avoid the regress of "who watches the watcher", it is kept read-only unless explicitly permitted to act, and every action is logged.</td></tr>
+  <tr><td>Genesis matrix as a hosting substrate</td><td class="mid">scoped</td><td>As the document itself notes, this is not a claim that physical reality is a simulation. Here 𝒢 is concrete: the device and browser.</td></tr>
+</table></div>
+
+<h2 id="s20"><span class="n">20</span>The Conjunctive Closure Conjecture</h2>
+<div class="callout"><b>Conjecture (Conjunctive Closure for reconstructive systems)</b>A recursive reconstruction process (Part I) can sustain indefinite, coherent exploration over an interval [0, τ] only if 𝒞(t) = ℐ(t) ∧ 𝒯(t) ∧ 𝒪(t) = 1 for all t in that interval. Moreover, the three conditions are coupled: (i) reversibility consumes information capacity, because retracing requires stored history; (ii) bounded capacity forces erasure, which consumes thermodynamic budget; and (iii) anchoring the realizable set to the system's own output contracts it, so ontological closure cannot be supplied from inside.</div>
+<div class="math">ℐ(t): I(𝒮) ≤ C<sub>𝒮</sub> &ensp;·&ensp; 𝒯(t): Σ bits erased × k<sub>B</sub>T ln 2 ≤ E<sub>𝒢</sub> &ensp;·&ensp; 𝒪(t): T<sub>t</sub>(A₀) = A₀</div>
+<h3>Predictions, and what the app shows</h3>
+<div class="table-wrap"><table>
+  <tr><th>#</th><th>Prediction</th><th>Result in the app</th></tr>
+  <tr><td>P9</td><td>Reversibility costs memory: Retrace reaches back only to the oldest retained record.</td><td class="yes">With a 20-record budget, older records were evicted and the retrace path shortened to the retained steps.</td></tr>
+  <tr><td>P10</td><td>Bounded memory forces erasure, and erasure has a thermodynamic floor.</td><td class="yes">Each eviction logged 178.6 bits and ≥ 5.1 × 10⁻¹⁹ J; the erasure budget was exceeded, 𝒯 failed and the observer suspended growth.</td></tr>
+  <tr><td>P11</td><td>Self-anchoring contracts V (model collapse).</td><td class="yes">After 40 self-anchored generations, total variance trace Σ fell from 0.270 to 0.057, about 79 % narrower.</td></tr>
+  <tr><td>P12</td><td>The conditions are conjunctive: any one can fail while the others hold.</td><td class="yes">𝒪 alone failed under self-anchoring; 𝒯 alone failed under erasure pressure; ℐ alone failed with the observer not permitted to compress.</td></tr>
+</table></div>
+<p>P11 has a real-world counterpart: generative AI models trained repeatedly on their own outputs lose diversity and degrade, a documented effect called <i>model collapse</i> (Shumailov et al., 2024). The apple system reproduces it in miniature, which is the strongest evidence that ontological anchoring is a real constraint and not only a philosophical one.</p>
+<h3>The philosophical heart</h3>
+<p><i>Can a system establish the conditions of its own existence, or must those conditions remain external to it?</i> Two partial answers come from established results, each within its own domain. In formal systems, Gödel's second incompleteness theorem shows that a consistent, sufficiently expressive system cannot prove its own consistency. And in the app, a realizable set fitted to the system's own output contracts. Both point toward external grounding. Neither settles the general question, which stays open.</p>
+
+<h2 id="s21"><span class="n">21</span>Method of integration</h2>
+<ol>
+  <li><b>Identify 𝒮 and 𝒢.</b> Name the system's states, transitions, resources, exchanges and axioms, and separately the substrate it depends on.</li>
+  <li><b>Quantify ℐ.</b> Count the bits per state (log₂ of the number of distinguishable states) and the bits of history retained.</li>
+  <li><b>Account for 𝒯.</b> Classify every operation as reversible or irreversible; charge irreversible ones at ≥ k<sub>B</sub>T ln 2 per erased bit against an energy budget drawn from 𝒢.</li>
+  <li><b>Fix A₀ and test 𝒪.</b> List the foundational parameters, keep a fingerprint of them, and verify that no transition rewrites them. Distinguish a real change to an axiom from a change in how it is interpreted.</li>
+  <li><b>Evaluate 𝒞(t) with margins.</b> Report the joint verdict and each condition's distance from its limit.</li>
+  <li><b>Add the observer.</b> Edge-triggered detection, a named violated condition, an evidence record, and a defined response (compression, recovery, suspension or termination) taken only when permitted.</li>
+  <li><b>Stress each condition alone</b> to confirm they are conjunctive, then test the couplings (P9–P11).</li>
+</ol>
+
+<h2 id="s22"><span class="n">22</span>References</h2>
+<p style="font-size:0.88rem;color:var(--quiet)">Listed from memory. Check each one before citing it formally.</p>
+<ol class="refs">
+  <li>Raup, D. M. (1966). Geometric analysis of shell coiling: general problems. <i>Journal of Paleontology</i> 40(5). (Theoretical morphospace.)</li>
+  <li>Kendall, D. G. (1984). Shape manifolds, Procrustean metrics, and complex projective spaces. <i>Bulletin of the London Mathematical Society</i>.</li>
+  <li>Mahalanobis, P. C. (1936). On the generalised distance in statistics. <i>Proceedings of the National Institute of Sciences of India</i>.</li>
+  <li>Gärdenfors, P. (2000). <i>Conceptual Spaces: The Geometry of Thought</i>. MIT Press.</li>
+  <li>Clark, A. (1993). <i>Sensory Qualities</i>. Oxford University Press.</li>
+  <li>Chalmers, D. J. (1995). Facing up to the problem of consciousness. <i>Journal of Consciousness Studies</i> 2(3).</li>
+  <li>Tye, M. (1995). <i>Ten Problems of Consciousness</i>. MIT Press.</li>
+  <li>Balduzzi, D., Tononi, G. (2009). Qualia: the geometry of integrated information. <i>PLoS Computational Biology</i> 5(8).</li>
+  <li>Vaswani, A. et al. (2017). Attention is all you need. <i>NeurIPS</i>. arXiv:1706.03762.</li>
+  <li>Zhang, B., Sennrich, R. (2019). Root mean square layer normalization. <i>NeurIPS</i>. arXiv:1910.07467.</li>
+  <li>Ilharco, G. et al. (2023). Editing models with task arithmetic. <i>ICLR</i>. arXiv:2212.04089.</li>
+  <li>Nielsen, M. A., Chuang, I. L. (2010). <i>Quantum Computation and Quantum Information</i>. Cambridge University Press.</li>
+  <li>Landauer, R. (1961). Irreversibility and heat generation in the computing process. <i>IBM Journal of Research and Development</i> 5(3).</li>
+  <li>Bennett, C. H. (1973). Logical reversibility of computation. <i>IBM Journal of Research and Development</i> 17(6).</li>
+  <li>Bérut, A. et al. (2012). Experimental verification of Landauer's principle linking information and thermodynamics. <i>Nature</i> 483.</li>
+  <li>Shannon, C. E. (1948). A mathematical theory of communication. <i>Bell System Technical Journal</i> 27.</li>
+  <li>Prigogine, I., Nicolis, G. (1977). <i>Self-Organization in Nonequilibrium Systems</i>. Wiley.</li>
+  <li>Gödel, K. (1931). Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I. <i>Monatshefte für Mathematik und Physik</i> 38.</li>
+  <li>Shumailov, I. et al. (2024). AI models collapse when trained on recursively generated data. <i>Nature</i> 631.</li>
+</ol>
+
+<footer>
+  Apple of Apples · Recursive Object Reconstructability<br>
+  “An object is a gateway, not a dead end.” Distinguish what the model represents, what it demonstrates, and what remains unknown.
+</footer>
+</main>
+</body>
+</html>
