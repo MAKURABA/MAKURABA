@@ -261,6 +261,19 @@
    ]
   },
   {
+   "id": "axiom-games",
+   "label": "AXIOM GAMES",
+   "type": "index",
+   "icon": "triangle",
+   "items": [
+    {
+     "id": "the-apple-game",
+     "title": "The Observer and the Apple",
+     "slug": "the-apple-game"
+    }
+   ]
+  },
+  {
    "id": "a-history-of-video-games",
    "label": "A HISTORY OF VIDEO GAMES",
    "type": "index",
