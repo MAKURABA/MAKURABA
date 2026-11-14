@@ -251,14 +251,14 @@
      "slug": "manifold"
     },
     {
-     "id": "greek-mythology",
-     "title": "Greek Mythology",
-     "slug": "greek-mythology"
-    },
-    {
      "id": "norse-mythology",
      "title": "Norse Mythology",
      "slug": "norse-mythology"
+    },
+    {
+     "id": "greek-mythology",
+     "title": "Greek Mythology",
+     "slug": "greek-mythology"
     },
     {
      "id": "chinese-mythology",
@@ -293,6 +293,11 @@
      "id": "the-apple-game",
      "title": "The Observer and the Apple",
      "slug": "the-apple-game"
+    },
+    {
+     "id": "a-nature-of-hot-dogs-bologna-hand-grenades-and-bananas",
+     "title": "A Nature of Hot Dogs, Bologna, Hand Grenades, and Bananas",
+     "slug": "a-nature-of-hot-dogs-bologna-hand-grenades-and-bananas"
     }
    ]
   },
