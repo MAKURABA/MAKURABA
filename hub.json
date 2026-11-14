@@ -149,6 +149,11 @@
      "slug": "the-psycho-genesis-conjecture"
     },
     {
+     "id": "the-sovereignty-conjecture",
+     "title": "THE SOVEREIGNTY CONJECTURE",
+     "slug": "the-sovereignty-conjecture"
+    },
+    {
      "id": "the-constrained-possibility-conjecture",
      "title": "THE CONSTRAINED POSSIBILITY CONJECTURE",
      "slug": "the-constrained-possibility-conjecture"
@@ -162,11 +167,6 @@
      "id": "the-sovereignty-intent-paradox-conjecture",
      "title": "THE SOVEREIGNTY-INTENT PARADOX CONJECTURE",
      "slug": "the-sovereignty-intent-paradox-conjecture"
-    },
-    {
-     "id": "the-sovereignty-conjecture",
-     "title": "THE SOVEREIGNTY CONJECTURE",
-     "slug": "the-sovereignty-conjecture"
     }
    ]
   },
