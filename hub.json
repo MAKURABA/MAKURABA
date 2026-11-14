@@ -68,6 +68,11 @@
      "summary": "This page is a work in progress*"
     },
     {
+     "id": "the-unknown-game",
+     "title": "THE UNKNOWN GAME",
+     "slug": "the-unknown-game"
+    },
+    {
      "id": "the-supreme-hypervisor",
      "title": "THE SUPREME HYPERVISOR",
      "slug": "the-supreme-hypervisor"
@@ -172,11 +177,6 @@
      "id": "the-sovereign-possibility-conjecture",
      "title": "THE SOVEREIGN POSSIBILITY CONJECTURE",
      "slug": "the-sovereign-possibility-conjecture"
-    },
-    {
-     "id": "the-unknown-game",
-     "title": "THE UNKNOWN GAME",
-     "slug": "the-unknown-game"
     }
    ]
   },
