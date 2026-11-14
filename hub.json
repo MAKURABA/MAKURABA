@@ -139,14 +139,14 @@
      "slug": "psychological-vectoring"
     },
     {
-     "id": "the-emotional-surrogacy-conjecture",
-     "title": "THE EMOTIONAL SURROGACY CONJECTURE",
-     "slug": "the-emotional-surrogacy-conjecture"
-    },
-    {
      "id": "the-conjecture-of-composite-psychological-drivers",
      "title": "THE CONJECTURE OF COMPOSITE PSYCHOLOGICAL DRIVERS",
      "slug": "the-conjecture-of-composite-psychological-drivers"
+    },
+    {
+     "id": "the-emotional-surrogacy-conjecture",
+     "title": "THE EMOTIONAL SURROGACY CONJECTURE",
+     "slug": "the-emotional-surrogacy-conjecture"
     },
     {
      "id": "the-psycho-genesis-conjecture",
@@ -154,24 +154,24 @@
      "slug": "the-psycho-genesis-conjecture"
     },
     {
-     "id": "the-sovereignty-conjecture",
-     "title": "THE SOVEREIGNTY CONJECTURE",
-     "slug": "the-sovereignty-conjecture"
-    },
-    {
      "id": "the-constrained-possibility-conjecture",
      "title": "THE CONSTRAINED POSSIBILITY CONJECTURE",
      "slug": "the-constrained-possibility-conjecture"
     },
     {
-     "id": "the-sovereign-possibility-conjecture",
-     "title": "THE SOVEREIGN POSSIBILITY CONJECTURE",
-     "slug": "the-sovereign-possibility-conjecture"
+     "id": "the-sovereignty-conjecture",
+     "title": "THE SOVEREIGNTY CONJECTURE",
+     "slug": "the-sovereignty-conjecture"
     },
     {
      "id": "the-sovereignty-intent-paradox-conjecture",
      "title": "THE SOVEREIGNTY-INTENT PARADOX CONJECTURE",
      "slug": "the-sovereignty-intent-paradox-conjecture"
+    },
+    {
+     "id": "the-sovereign-possibility-conjecture",
+     "title": "THE SOVEREIGN POSSIBILITY CONJECTURE",
+     "slug": "the-sovereign-possibility-conjecture"
     }
    ]
   },
@@ -198,6 +198,11 @@
      "title": "AXIOM",
      "slug": "king-sterno",
      "summary": ""
+    },
+    {
+     "id": "verumtung",
+     "title": "VERUMTUNG",
+     "slug": "verumtung"
     }
    ]
   },
