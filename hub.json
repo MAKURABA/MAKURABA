@@ -27,15 +27,15 @@
    "icon": "triangle",
    "items": [
     {
-     "id": "untitled",
-     "title": "TUMULTUOUS",
-     "slug": "untitled"
-    },
-    {
      "id": "the-doctrine-of-the-eternal-dog",
      "title": "The Doctrine of the Eternal Dog",
      "slug": "the-doctrine-of-the-eternal-dog",
      "summary": ""
+    },
+    {
+     "id": "untitled",
+     "title": "TUMULTUOUS",
+     "slug": "untitled"
     }
    ]
   },
@@ -227,6 +227,11 @@
      "id": "thrrgh",
      "title": "THE CONJECTURE OF INSTRUMENTALIZED COMPLIANCE AND PURPOSE DEFEAT",
      "slug": "thrrgh"
+    },
+    {
+     "id": "the-resonant-temporal-signal",
+     "title": "A Conjecture on Observer-Dependent Information Encoding, Temporal Communication, and Inferential Reconstruction",
+     "slug": "the-resonant-temporal-signal"
     }
    ]
   },
