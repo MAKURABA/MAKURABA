@@ -283,6 +283,11 @@
    "icon": "triangle",
    "items": [
     {
+     "id": "makuraba-agent-testing",
+     "title": "MAKURABA agent testing",
+     "slug": "makuraba-agent-testing"
+    },
+    {
      "id": "the-psychological-donut",
      "title": "The Man In The Bottle Effect",
      "slug": "the-psychological-donut"
@@ -291,11 +296,6 @@
      "id": "recurring-entities",
      "title": "RECURRING ENTITIES",
      "slug": "recurring-entities"
-    },
-    {
-     "id": "makuraba-agent-testing",
-     "title": "MAKURABA agent testing",
-     "slug": "makuraba-agent-testing"
     },
     {
      "id": "the-conjecture-of-reflexive-sovereignty",
