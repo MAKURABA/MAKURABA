@@ -123,20 +123,10 @@
      "slug": "the-golden-lattice"
     },
     {
-     "id": "cosmology",
-     "title": "COSMOLOGY",
-     "slug": "cosmology"
-    },
-    {
      "id": "book-0",
      "title": "BOOK NEGATIVE ZERO : part I",
      "slug": "book-0",
      "summary": ""
-    },
-    {
-     "id": "time-court",
-     "title": "TIME COURT",
-     "slug": "time-court"
     },
     {
      "id": "psychological-vectoring",
@@ -250,7 +240,18 @@
    "label": "MAKURABA GAME SYSTEMS",
    "type": "index",
    "icon": "triangle",
-   "items": []
+   "items": [
+    {
+     "id": "time-court",
+     "title": "TIME COURT",
+     "slug": "time-court"
+    },
+    {
+     "id": "cosmology",
+     "title": "COSMOLOGY",
+     "slug": "cosmology"
+    }
+   ]
   },
   {
    "id": "prophetic-agents",
