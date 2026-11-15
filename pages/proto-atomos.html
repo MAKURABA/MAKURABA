@@ -750,6 +750,268 @@
 <p>Part II: Architectural design and operational mechanics.</p>
 <p>Part III: Geometric identity, magnitude-scalar, polarity, triangulation, and recursive manifold construction.</p>
 <hr>
+<p># PROTO-ATOMOS</p>
+<h2>The Primitive Unit of Distinction and the Geometric Assembly of Quality</h2>
+<p><em>MAKURABA</em></p>
+<hr>
+<h2>Abstract</h2>
+<p>This work defines a single discrete representational primitive, the <em>proto-atomos</em>, and constructs from it a general system for describing and relating any distinguishable subject. A proto-atomos is the bounded line of distinction between the infinitesimal and the maximal expression of one quality, together with a determinate position on that line. Part I sets out the unit: its limiting conditions, axioms, measurement standard, composition rules, layering, and worked examples. Part II joins the unit to the wider framework: Zero (the homogeneous reference condition), Delta (the relational distinction), Mono-Maximum (closure of attainable configurations), and the χ-Reentrant Closure Calculus. It then specifies comparison, temporal change, the observer, and a self-establishing descriptor network built on the primitive. The central claim is that one primitive, applied recursively, suffices to relate every describable thing in a single scale-independent geometry of quality.</p>
+<hr>
+<p># PART I — THE UNIT</p>
+<h2>1. Conventions and Notation</h2>
+<p>The following notation is used throughout.</p>
+<ul>
+<li><strong>q</strong> is a quality: a named, distinguishable attribute.</li>
+<li><strong>L_q</strong> is the line of distinction of q: the closed interval [0, 1] together with the definitions of its two endpoints.</li>
+<li><strong>p</strong> is position on L_q, with p ∈ [0, 1].</li>
+<li><strong>s = 2p − 1</strong> is the signed position, with s ∈ [−1, +1].</li>
+<li><strong>k</strong> is resolution: the number of distinguishable steps on a line at a given observation.</li>
+<li><strong>ρ</strong> is the reference: the observer, the conditions, and the provenance of a value.</li>
+<li><strong>n</strong> is the layer index, with n = 0, 1, 2, …</li>
+<li><strong>⊥</strong> means unknown. It is never equal to 0.</li>
+</ul>
+<p>Three conventions apply everywhere:</p>
+<ol>
+<li>Every value is meaningless without its endpoint definitions.</li>
+<li>An unknown is recorded as ⊥, never as 0. Zero asserts <em>isn't</em>; ⊥ asserts nothing.</li>
+<li>Numerical equality across different qualities implies no equivalence of meaning.</li>
+</ol>
+<hr>
+<h2>2. The Limiting Conditions</h2>
+<p><strong>Definition 2.1 (Zero).</strong> Zero, M₀, is the homogeneous reference condition: a domain in which no point, region, or orientation is privileged under its symmetry group. That is, the group acts transitively. Zero is not absence. It is undifferentiated potential, the condition prior to any distinction.</p>
+<p><strong>Definition 2.2 (Mono-Maximum).</strong> Let C₀ be an initial configuration space and T the permitted transformations (distinction, polarity exchange, re-entry). Mono-Maximum is</p>
+<blockquote>M = Closure(C₀, T),</blockquote>
+<p>the smallest space containing C₀ and closed under T. It is maximal relative to its rules.</p>
+<p><strong>Principle 2.3 (Local reproduction of the limits).</strong> Every line of distinction reproduces the global limits locally. Position 0 on L_q is the Zero of quality q. Position 1 on L_q is the Mono-Maximum of quality q. The same structure therefore recurs at every scale, which is the basis of scale independence (§7).</p>
+<hr>
+<h2>3. The Proto-Atomos</h2>
+<p><strong>Definition 3.1 (Line of distinction).</strong> For a quality q, the line of distinction L_q is the interval [0, 1] with:</p>
+<ul>
+<li><strong>0 :=</strong> the infinitesimal expression of q (<em>isn't</em>), and</li>
+<li><strong>1 :=</strong> the maximal expression of q (<em>is</em>).</li>
+</ul>
+<p>Both endpoints must be stated in words before any position is assigned.</p>
+<p><strong>Definition 3.2 (Proto-atomos).</strong> A proto-atomos is the ordered quadruple</p>
+<blockquote>π = ⟨q, L_q, p, ρ⟩</blockquote>
+<p>That is: a quality, its line of distinction, a position on that line, and the reference under which the position was established.</p>
+<p><strong>Definition 3.3 (Self-reference).</strong> The proto-atomos is self-referential. Re-applying the distinction that defines it returns the same distinction:</p>
+<blockquote>Δ = Δ.</blockquote>
+<p>This is what makes it a unit rather than an event. It holds because returning to it yields it again.</p>
+<h3>Axioms of the unit</h3>
+<ul>
+<li><strong>PA1 (Identity).</strong> Every proto-atomos satisfies Δ = Δ under its own reference ρ.</li>
+<li><strong>PA2 (Bipolarity).</strong> Every line of distinction has exactly two limits, <em>isn't</em> and <em>is</em>. A quality needing more reference conditions is represented by several proto-atomos, not by one line with extra poles.</li>
+<li><strong>PA3 (Boundedness).</strong> Every position satisfies 0 ≤ p ≤ 1. Unbounded intensities are brought into the interval by the standard of §4.</li>
+<li><strong>PA4 (Discreteness).</strong> Every observation has finite resolution k. Observed positions lie on the lattice {0, 1/k, 2/k, …, 1}. A proto-atomos is a discrete unit even when the quality it describes is continuous.</li>
+<li><strong>PA5 (Relationality).</strong> No proto-atomos exists without a reference ρ. Every distinction is made from somewhere.</li>
+<li><strong>PA6 (Scale independence).</strong> The definition and axioms of the unit are identical at every layer n.</li>
+</ul>
+<hr>
+<h2>4. Measurement Standard</h2>
+<p><strong>S1 (Endpoint specification).</strong> State in words what p = 0 and p = 1 mean for the quality, and the procedure by which a position is obtained.</p>
+<p><strong>S2 (Compactification of unbounded quantities).</strong> For an intensity x ∈ [0, ∞), use</p>
+<blockquote>p = φ(x) = x / (x + x₀),</blockquote>
+<p>where x₀ &gt; 0 is the declared reference scale at which p = 0.5. This map has four properties:</p>
+<ul>
+<li>φ(0) = 0;</li>
+<li>p → 1 as x → ∞;</li>
+<li>it is strictly increasing;</li>
+<li>it is invertible: x = x₀ · p / (1 − p).</li>
+</ul>
+<p>So the maximal limit 1 is the ideal image of infinite magnitude, approached but not reached by any finite value.</p>
+<p><strong>S3 (Resolution).</strong> State k. Positions are reported as multiples of 1/k. Two positions closer than 1/k cannot be distinguished at that observation.</p>
+<p><strong>S4 (Provenance).</strong> Record in ρ who or what observed, when, under what conditions, and by what method.</p>
+<p><strong>S5 (Status).</strong> Mark each value as one of: <em>observed</em>, <em>measured</em>, <em>inferred</em>, <em>proposed</em>, or <em>unknown (⊥)</em>.</p>
+<p><strong>S6 (Polarity is not probability).</strong> p = 0.8 is a position between two limits. It is not an 80% likelihood.</p>
+<hr>
+<h2>5. Composition: Compound Qualities and Layers</h2>
+<h3>5.1 Juxtaposition (the descriptor vector)</h3>
+<p><strong>Definition 5.1.</strong> A subject is described at layer n by the set of its proto-atomos:</p>
+<blockquote>D(subject) = { π₁, π₂, …, π_m }.</blockquote>
+<p>When written as a vector of positions, P = (p₁, …, p_m), each component keeps its own line definition. Juxtaposition places qualities side by side and does not combine them.</p>
+<h3>5.2 The compound proto-atomos</h3>
+<p><strong>Definition 5.2.</strong> A compound proto-atomos is a proto-atomos whose quality is defined from other proto-atomos:</p>
+<blockquote>π_c = ⟨c, L_c, f(p₁, …, p_m), ρ⟩.</blockquote>
+<p>Here f : [0,1]^m → [0,1] is a declared aggregation rule satisfying:</p>
+<ul>
+<li><strong>(F1) Boundary agreement:</strong> f(0, …, 0) = 0 and f(1, …, 1) = 1.</li>
+<li><strong>(F2) Monotonicity:</strong> raising any input never lowers the output.</li>
+</ul>
+<p><strong>Standard aggregation rules.</strong> One of these must be named whenever a compound is formed:</p>
+<ul>
+<li><strong>Weighted mean:</strong> f = Σ wᵢ pᵢ, with Σ wᵢ = 1. Use when the qualities can substitute for each other.</li>
+<li><strong>Geometric mean:</strong> f = Π pᵢ^wᵢ. Use when every component is required, so that any input at 0 forces the compound to 0.</li>
+<li><strong>Minimum:</strong> f = min(pᵢ). Use for strict conjunction.</li>
+</ul>
+<p><strong>Proposition 5.3 (Closure of compounds).</strong> A compound proto-atomos satisfies PA1–PA6.</p>
+<p><em>Proof.</em> By F1, the output lies in [0, 1] and its limits coincide with those of its inputs, so PA2 and PA3 hold. Its reference is the union of its inputs' references, so PA5 holds. Under any of the standard rules, its resolution is bounded by its inputs' resolutions, so PA4 holds. The definition does not depend on n, so PA6 holds. ∎</p>
+<p>So a compound is again a proto-atomos. This is what permits layering.</p>
+<h3>5.3 Layers</h3>
+<p><strong>Definition 5.4.</strong> Layer 0 consists of proto-atomos measured directly. Layer n + 1 consists of proto-atomos composed from layer n, by aggregation (§5.2) or by lifting (§7). A complete description is the stack of all layers down to directly measured units.</p>
+<hr>
+<h2>6. Deviation and the Triangle</h2>
+<p><strong>Proposition 6.1 (Minimality of three).</strong> A single line of distinction admits motion only toward one of its two limits. A third point not on the line, a deviation, gives the smallest closed figure with an interior: the triangle. Three is therefore the minimum number of points for a geometric structure. The triangle is also the only polygon that cannot change shape without changing its side lengths.</p>
+<p><strong>Definition 6.2 (Deviation decomposition).</strong> Let an existing quality axis be the unit vector u, and let a new quality have unit direction v at angle θ to u. Then:</p>
+<blockquote><strong>polarity component</strong> = cos θ = ⟨u, v⟩,</blockquote>
+<blockquote><strong>deviation component</strong> = sin θ = ‖v − ⟨u, v⟩u‖.</blockquote>
+<p><strong>Definition 6.3 (Residual deviation).</strong> For an existing set of orthonormal axes {u₁, …, u_r}, the residual of a new direction v is</p>
+<blockquote>r(v) = v − Σ ⟨uᵢ, v⟩uᵢ.</blockquote>
+<p>This is the Gram–Schmidt step.</p>
+<ul>
+<li>If ‖r(v)‖ ≥ ε, the quality opens a new axis u_{r+1} = r(v)/‖r(v)‖ and a new triangular cell.</li>
+<li>If ‖r(v)‖ &lt; ε, the quality is redundant at tolerance ε and adds no new axis.</li>
+</ul>
+<p><strong>Definition 6.4 (Descriptive completeness).</strong> A subject is completely described at tolerance ε when no further candidate quality has residual deviation ≥ ε. This is the stopping rule for description.</p>
+<p><strong>Principle 6.5 (Qualities are relational).</strong> A quality is located in the triangle, not at a vertex. Example 8.2 shows this explicitly.</p>
+<hr>
+<h2>7. Lifting and Scale Independence</h2>
+<p><strong>Definition 7.1 (Closed configuration).</strong> A set of proto-atomos with their relations is closed when it is complete at tolerance ε (Definition 6.4) and stable under re-observation (PA1).</p>
+<p><strong>Definition 7.2 (Lifting).</strong> The lifting map Λ sends a closed configuration K at layer n to a single proto-atomos at layer n + 1:</p>
+<blockquote>Λ(K) = ⟨q_K, L_K, p_K, ρ_K⟩,</blockquote>
+<p>where q_K names the configuration as one quality, L_K defines its limits, and p_K is given by a declared aggregation rule over K.</p>
+<p><strong>Proposition 7.3 (Scale independence).</strong> For every n, the units at layer n satisfy the same axioms as units at layer 0.</p>
+<p><em>Proof.</em> Lifting produces a proto-atomos by Definition 3.2, and Proposition 5.3 applies to its aggregation. ∎</p>
+<p>Consequently one primitive serves for a quality, an object, a concept, a system, or a world. Only the layer index changes.</p>
+<hr>
+<h2>8. Worked Examples</h2>
+<h3>8.1 A descriptor vector (layer 0)</h3>
+<p>Subject: a dog. Reference ρ: one observer, daylight, visual inspection. Resolution k = 100.</p>
+<ul>
+<li><strong>Fur</strong> — 0 := hairless; 1 := maximally dense coat. p = 0.90.</li>
+<li><strong>Brown</strong> — 0 := no brown hue; 1 := fully brown. p = 0.67.</li>
+<li><strong>Red</strong> — 0 := no red hue; 1 := fully red. p = 0.54.</li>
+</ul>
+<p>Signed form: s = (0.80, 0.34, 0.08). Brown and red are separate lines. Their values are independent and are not complementary, since both can be high at once.</p>
+<h3>8.2 A relational quality: wetness</h3>
+<p>Wetness is fixed by three interfacial tensions, solid–vapor, solid–liquid and liquid–vapor (Young's relation: γ_SV = γ_SL + γ_LV cos θ). It is therefore a triangle by construction.</p>
+<p>Define L_wet with 0 := complete non-wetting (θ = 180°) and 1 := complete spreading (θ = 0°), so that p = (1 + cos θ) / 2.</p>
+<ul>
+<li>Mercury on glass, θ ≈ 140°: p ≈ (1 − 0.766)/2 ≈ 0.12.</li>
+<li>Mercury on clean gold, which it wets and amalgamates with, θ → 0°: p → 1.</li>
+<li>Water on clean glass, θ ≈ 0–20°: p ≈ 0.97–1.00.</li>
+</ul>
+<p>The liquid is the same and the wetness is opposite. The quality belongs to the configuration (liquid, surface, medium), not to the liquid alone. On gold, mercury is "wet" in exactly the sense that water is "wet" on glass: both occupy the same region of L_wet.</p>
+<h3>8.3 Deviation</h3>
+<p>Let the existing axis be u = (1, 0) and a new quality v at θ = 60°.</p>
+<ul>
+<li>Polarity component: cos 60° = 0.500.</li>
+<li>Deviation component: sin 60° ≈ 0.866.</li>
+</ul>
+<p>With ε = 0.1, ‖r(v)‖ ≈ 0.866 ≥ ε, so v opens a new axis and a triangular cell. At θ = 3°, the deviation is sin 3° ≈ 0.052 &lt; ε, so the quality is redundant at this tolerance.</p>
+<h3>8.4 A compound and a lift</h3>
+<p>At layer 0, take three proto-atomos of the dog: fur p = 0.90, self-motion p = 0.95, body warmth p = 0.85.</p>
+<p>Define the compound <em>animate-mammalian</em> by the geometric mean with equal weights:</p>
+<blockquote>p = (0.90 × 0.95 × 0.85)^(1/3) ≈ 0.90.</blockquote>
+<p>If the configuration is closed at tolerance ε, Λ lifts it to a single layer-1 proto-atomos, <em>mammal</em>, p ≈ 0.90, which can now be juxtaposed with other layer-1 units such as <em>domesticated</em> or <em>quadruped</em>. A stuffed toy dog yields self-motion p ≈ 0. Under the geometric mean the compound collapses to 0, which correctly separates it from the animal.</p>
+<hr>
+<p># PART II — THE UNIFIED SYSTEM</p>
+<h2>9. Genesis: From Zero to Distinction</h2>
+<p>The framework forms a single generative sequence:</p>
+<blockquote>M₀ → Δ → π → R → D → O → … → M</blockquote>
+<p>That is: homogeneous Zero; the first distinction; the proto-atomos; relational organization; differentiated structure; observable organization; and, in the limit of closure, Mono-Maximum.</p>
+<p>The step M₀ → Δ is a collapse between the two limits. The undifferentiated condition and the condition of total attainment meet in a single distinction, <em>this and not that</em>. Every proto-atomos is a local instance of that collapse: a line from its own Zero to its own Mono-Maximum, with a position on it.</p>
+<p>The sequence is recursive. Any differentiated region may serve as a new homogeneous reference for further distinction:</p>
+<blockquote>M₀ → Δ₁ → M₁ → Δ₂ → M₂ → …</blockquote>
+<hr>
+<h2>10. Correspondence with χ-RCC</h2>
+<p>The χ-Reentrant Closure Calculus is one formal lens on the system. Its operators correspond to proto-atomos operations as follows.</p>
+<ul>
+<li><strong>Recurrence axiom A2</strong> (∃s, s ∈ reach(s)) corresponds to PA1, Δ = Δ.</li>
+<li><strong>Identity class [s]≡</strong> (strongly connected component) corresponds to a stable proto-atomos.</li>
+<li><strong>D (Differentiate, 1 → 2)</strong> corresponds to establishing the two limits of a line.</li>
+<li><strong>C (Couple, 2 → 1, symmetric)</strong> corresponds to the relation that closes a triangle.</li>
+<li><strong>A (Absorb, 2 → 1, irreversible)</strong> corresponds to lifting Λ.</li>
+<li><strong>S (Suspend)</strong> corresponds to a unit retained in the record but inactive. Unknown units remain ⊥.</li>
+<li><strong>Constraint field χ and forbidden compositions</strong> correspond to the admissibility of operations on each unit.</li>
+<li><strong>Theorem 3 (observation as fixed-point selection)</strong> corresponds to the interior observer (§12).</li>
+<li><strong>Theorem 4 (structural self-similarity)</strong> corresponds to scale independence (Proposition 7.3).</li>
+<li><strong>Two fibers over one base</strong> correspond to the two limits of one quality.</li>
+</ul>
+<p>The reference implementation verifies the corrected Theorems T1, T1b and T3 on randomly generated digraphs without counterexample, and enforces balance, admissibility and transactional rollback. This establishes that the operations are consistent and executable. It does not establish the philosophical claims, which stand or fall on their own terms.</p>
+<hr>
+<h2>11. Change: Pendulation and Ripple</h2>
+<p><strong>Definition 11.1 (Pendulation).</strong> The time-indexed position p(t) of a proto-atomos is its pendulation. It need not be periodic. In the extended form Q = (M, P), magnitude and polarity may change independently, which gives four basic cases: both stable, magnitude changing, polarity changing, or both changing.</p>
+<p><strong>Definition 11.2 (Trajectory).</strong> A sequence of descriptor states D(t₀) → D(t₁) → … → D(t_n) is a trajectory through the space of configurations.</p>
+<p><strong>Hypothesis 11.3 (Ripple).</strong> A pendulating proto-atomos is the peak or trough of a ripple, the expression in observable reality of patterns of higher dimension. Any subject is then a superposition of such ripples, a wave packet of qualities. This hypothesis is stated separately from the representational system (see §15).</p>
+<hr>
+<h2>12. The Observer</h2>
+<p><strong>Postulate 12.1 (Interior observer).</strong> The observer lies within every configuration it describes and is one vertex of every triangle it constructs. In χ-RCC this follows from Axiom A1 (closure): no observation escapes the domain.</p>
+<p><strong>Definition 12.2 (Delta relation).</strong> Following the Delta framework, every distinction is a relation among observer, reference point, conditions, and trajectory. These four components must be kept distinguishable.</p>
+<p><strong>Definition 12.3 (Observational displacement).</strong> For two observers a and b describing the same subject, the displacement on quality q is</p>
+<blockquote>δ_q = p_q(a) − p_q(b).</blockquote>
+<p>A non-zero displacement is data. It must be attributed to one of: a change in the subject, a difference in reference, a difference in resolution, or a difference in timing. It must not be averaged away.</p>
+<p><strong>Principle 12.4.</strong> Observation establishes distinguishability. It does not create physical reality.</p>
+<hr>
+<h2>13. Comparison and Cross-Domain Mapping</h2>
+<p><strong>Definition 13.1 (Distance between descriptions).</strong> Let A and B be described on aligned qualities, meaning qualities with identical line definitions, and with weights w. Then</p>
+<blockquote>d(A, B) = √( Σ wᵢ (p_A,ᵢ − p_B,ᵢ)² ) + λ · |R_A Δ R_B|,</blockquote>
+<p>where the second term counts the relations present in one description and absent in the other. Qualities present on only one side are reported separately as <em>vocabulary difference</em>.</p>
+<p><strong>Definition 13.2 (Cross-domain map).</strong> A map φ from the lines of domain A to the lines of domain B is <em>structure-preserving</em> when:</p>
+<ol>
+<li>it sends limits to limits (0 → 0 and 1 → 1, or consistently reversed);</li>
+<li>it carries relations to relations; and</li>
+<li>it carries pendulation to pendulation.</li>
+</ol>
+<p><strong>Standard 13.3.</strong> Every comparison reports three things: what matches, what mismatches, and what cannot be compared. It must also outperform a random mapping on the same data before any correspondence is asserted.</p>
+<p>Example 8.2 is a structure-preserving map. The line L_wet carries water–glass and mercury–gold to the same region with limits preserved.</p>
+<hr>
+<h2>14. Application: A Self-Establishing Descriptor Network</h2>
+<p><strong>Definition 14.1 (Node).</strong> A node N is a set of proto-atomos D(N) whose first member is its own self-reference, π_self with Δ = Δ.</p>
+<p><strong>Network operations.</strong></p>
+<ol>
+<li><strong>Grounding.</strong> Every node begins with π_self.</li>
+<li><strong>Self-description.</strong> The node assigns positions to its own qualities under its own reference.</li>
+<li><strong>Relation.</strong> When nodes N₁ and N₂ register each other, their relation becomes a proto-atomos held in a triangle with the observing node as vertex.</li>
+<li><strong>Learning by deviation.</strong> An observation adds structure only if its residual deviation exceeds ε (Definition 6.3).</li>
+<li><strong>Abstraction by lifting.</strong> Closed configurations are lifted to layer n + 1 (Definition 7.2).</li>
+<li><strong>Distributed reference.</strong> No node holds a description of the whole. The network is established through the referenced partial descriptions of all its nodes.</li>
+</ol>
+<p><strong>Property 14.2 (Legibility).</strong> Every internal state of the network is a set of named qualities with defined limits and positions. The network's reasoning is therefore readable as description rather than as opaque parameters.</p>
+<p><strong>Property 14.3 (Replay).</strong> If every operation is recorded, every state can be reconstructed by replaying the record from π_self. In the χ-RCC implementation the record is hash-chained.</p>
+<hr>
+<h2>15. Standards of Validity and Scope</h2>
+<p>Five forms of evaluation are kept distinct:</p>
+<ol>
+<li><strong>Formal validity</strong> — the construction satisfies its definitions and axioms.</li>
+<li><strong>Representational validity</strong> — the construction faithfully describes its subject.</li>
+<li><strong>Observational support</strong> — the positions agree with observation within resolution.</li>
+<li><strong>Inferential support</strong> — conclusions follow from definitions and premises.</li>
+<li><strong>Empirical confirmation</strong> — independent evidence supports a physical interpretation.</li>
+</ol>
+<p>The representational system (Part I and §§12–14) does not depend on Hypothesis 11.3. The claim that polarity is a ripple of higher-dimensional pattern in spacetime is a separate physical hypothesis and requires independent evidence.</p>
+<hr>
+<h2>16. Refutation Criteria and Open Problems</h2>
+<p>The conjecture is weakened or refuted by any of the following:</p>
+<ol>
+<li>A class of distinguishable subjects that cannot be described to any tolerance ε by finite stacks of proto-atomos, or that is described no better than by a simpler baseline.</li>
+<li>Structure-preserving cross-domain maps whose preservation fails to predict which transferred inferences are correct.</li>
+<li>A descriptor network with lifting that describes new subjects no more efficiently over time than one without it.</li>
+<li>A structure requiring a primitive that cannot be decomposed into lines of distinction and deviation.</li>
+</ol>
+<p>Open problems include:</p>
+<ul>
+<li>a minimal local update rule for a triangulated lattice of proto-atomos;</li>
+<li>a canonical choice of aggregation rule per class of quality;</li>
+<li>whether iterated lifting reaches a fixed point (χ-ergodic) or continues indefinitely (χ-creative).</li>
+</ul>
+<hr>
+<h2>17. Condensed Identity</h2>
+<ul>
+<li><strong>Limits:</strong> M₀ (Zero), and M = Closure(C₀, T) (Mono-Maximum).</li>
+<li><strong>Primitive:</strong> π = ⟨q, L_q, p, ρ⟩, with Δ = Δ and p ∈ [0, 1].</li>
+<li><strong>Signed position:</strong> s = 2p − 1.</li>
+<li><strong>Compactification:</strong> p = x / (x + x₀).</li>
+<li><strong>Resolution:</strong> p ∈ {0, 1/k, …, 1}.</li>
+<li><strong>Compound:</strong> p_c = f(p₁, …, p_m), with f monotone and boundary-preserving.</li>
+<li><strong>Deviation:</strong> cos θ = ⟨u, v⟩; residual r(v) = v − Σ ⟨uᵢ, v⟩uᵢ.</li>
+<li><strong>Completeness:</strong> ‖r(v)‖ &lt; ε for every remaining candidate quality.</li>
+<li><strong>Lift:</strong> Λ(K) = π at layer n + 1.</li>
+<li><strong>Scale independence:</strong> the axioms PA1–PA6 hold at every n.</li>
+</ul>
+<hr>
+<h2>18. Conclusion</h2>
+<p>Between Zero and Mono-Maximum lies the line of distinction, and on it the proto-atomos: one quality, two limits, one position, one reference. It is discrete in observation, bounded in value, and identical in form at every scale. Through compounding it forms layers. Through deviation it forms triangles. Through lifting it forms units of higher order, and the observer is always one of its vertices. The conjecture is that this single primitive is sufficient to relate all describable things in one geometry of quality, and that an intelligence can establish itself from its descriptors.</p>
+<p><em>Status: proposed conjecture. Open to formalization, implementation, and refutation.</em></p>
 <!-- page:content:end -->
 </article>
 </div></div>
