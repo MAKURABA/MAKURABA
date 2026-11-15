@@ -252,6 +252,11 @@
      "id": "book-zero",
      "title": "BOOK ZERO",
      "slug": "book-zero"
+    },
+    {
+     "id": "the",
+     "title": "THE KAMAKAZI CONJECTURE",
+     "slug": "the"
     }
    ]
   },
