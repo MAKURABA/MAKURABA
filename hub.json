@@ -78,6 +78,11 @@
      "slug": "g-of-n"
     },
     {
+     "id": "g-substrate",
+     "title": "G-SUBSTRATE",
+     "slug": "g-substrate"
+    },
+    {
      "id": "the-supreme-hypervisor",
      "title": "THE SUPREME HYPERVISOR",
      "slug": "the-supreme-hypervisor"
@@ -263,6 +268,16 @@
      "title": "THE ZOO–PRISON–CIRCUS CONJECTURE",
      "slug": "the-zoo-prison-circus-conjecture",
      "summary": "An Exhaustive Philosophical and Systems-Theoretical Examination of Containment, Autonomy, Behavioral Conditioning, Spectacle, Recursive Observation, and the Architecture of Managed Existence"
+    },
+    {
+     "id": "the-universal-temporal-pointer-conjecture",
+     "title": "THE UNIVERSAL TEMPORAL POINTER CONJECTURE",
+     "slug": "the-universal-temporal-pointer-conjecture"
+    },
+    {
+     "id": "the-sanctification-conjecture",
+     "title": "THE SANCTIFICATION CONJECTURE",
+     "slug": "the-sanctification-conjecture"
     }
    ]
   },
