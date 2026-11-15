@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MAKURABA XRCC ARCHITECTURE</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Cinzel:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="../core/theme.css">
+</head>
+<body>
+<header>
+  <button id="burger" aria-label="Open menu" aria-expanded="false"><i></i><i></i><i></i></button>
+  <a class="wmlink" href="../index.html#home"><div class="wm" role="img" aria-label="Makuraba"><i class="sheen"></i><b class="gl" style="left:50%;top:72%;--d:1s"></b><b class="gl" style="left:31%;top:34%;--d:3.2s"></b><b class="gl" style="left:85%;top:38%;--d:5.1s"></b></div></a>
+</header>
+<aside id="drawer" aria-label="Menu">
+  <div class="logo" role="img" aria-label="Makuraba emblem"><i class="sheen"></i><b class="gl" style="left:47%;top:54%;--d:.5s"></b><b class="gl" style="left:27%;top:18%;--d:2.4s"></b><b class="gl" style="left:80%;top:80%;--d:4.2s"></b></div>
+  <nav id="nav"><!-- hub:nav:start -->
+<a href="../index.html#home" data-id="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg><span>Home</span></a>
+<a href="../index.html#the-sovereign-mind" data-id="the-sovereign-mind"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>THE SOVEREIGN MIND</span></a>
+<a href="../index.html#tumultuous" data-id="tumultuous"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>TUMULTUOUS</span></a>
+<a href="../index.html#main-page" data-id="main-page" aria-current="true"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>MAKURABA</span></a>
+<a href="../index.html#makuraba-game-systems" data-id="makuraba-game-systems"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>MAKURABA GAME SYSTEMS</span></a>
+<a href="../index.html#prophetic-agents" data-id="prophetic-agents"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>PROPHETIC AGENTS</span></a>
+<a href="../index.html#agentic-psychology" data-id="agentic-psychology"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>AGENTIC PSYCHOLOGY</span></a>
+<a href="../index.html#synthoid-nature" data-id="synthoid-nature"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>SYNTHOID NATURE</span></a>
+<a href="../index.html#human-nature" data-id="human-nature"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>HUMAN NATURE</span></a>
+<a href="../index.html#encyclopedia" data-id="encyclopedia"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>ENCYCLOPEDIA</span></a>
+<a href="../index.html#axiom-games" data-id="axiom-games"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>AXIOM GAMES</span></a>
+<a href="../index.html#a-history-of-video-games" data-id="a-history-of-video-games"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>A HISTORY OF VIDEO GAMES</span></a>
+<a href="../index.html#silicon-and-software" data-id="silicon-and-software"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>SILICON AND SOFTWARE </span></a>
+<a href="../index.html#demonstrations" data-id="demonstrations"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>DEMOS</span></a>
+<a href="../index.html#makuraba-games" data-id="makuraba-games"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>PROJECTS</span></a>
+<a href="../index.html#reference-material" data-id="reference-material"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>REFERENCE MATERIAL</span></a>
+<a href="../index.html#short-stories" data-id="short-stories"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg><span>SHORT STORIES</span></a>
+<!-- hub:nav:end --></nav>
+</aside>
+<div class="edge" aria-hidden="true"><span class="run"></span></div>
+<button id="tab" aria-label="Toggle menu"></button>
+<div id="scrim"></div>
+<div id="stage" class="dim"><div id="art" role="presentation"></div><div id="view" tabindex="-1">
+<article class="post">
+<a class="crumb" href="../index.html#main-page">‹ MAKURABA</a>
+<h1>MAKURABA XRCC ARCHITECTURE</h1>
+<!-- page:content:start -->
+<p># χ-RCC</p>
+<h2>The χ-Reentrant Closure Calculus: Formal Reference</h2>
+<p><em>MAKURABA · Revised edition, aligned with the χ reference implementation</em></p>
+<hr>
+<h3>Status of This Document</h3>
+<p>This reference states the axioms, definitions and proven results of χ-RCC, and separates them from results that are still conjectural. Every proven result here has a computational witness in the reference implementation (§9). Results without a proof are labelled <strong>Conjecture</strong> and offered as a research program.</p>
+<p>The calculus concerns discrete distinction systems: sets of elements and directed transitions between them. It makes no physical claims. Where its vocabulary echoes geometry or physics ("fiber," "flux," "balance"), the terms refer to graph structures and graph measurements as defined here, and nothing more.</p>
+<hr>
+<h2>1. Primitives</h2>
+<p>The calculus begins with two primitives.</p>
+<p>The <em>distinction domain</em> is a non-empty set S. Its elements are distinctions: anything that can be told apart from something else.</p>
+<p>The <em>distinction relation</em> is a binary relation D ⊆ S × S. We write x → y when (x, y) ∈ D, and read it as "x gives rise to y."</p>
+<p>Two derived relations follow at once. D⁺, the transitive closure of D, holds between x and y when a path of one or more steps leads from x to y. D*, the reflexive–transitive closure, also allows paths of zero steps. From these we define, for each x ∈ S, the set of everything x can reach:</p>
+<blockquote>reach(x) = { y ∈ S : x D⁺ y },</blockquote>
+<p>and the set of everything that can reach x:</p>
+<blockquote>coreach(x) = { y ∈ S : y D⁺ x }.</blockquote>
+<p>For any subset P ⊆ S, the <em>image</em> of P is the set of all immediate successors of its elements:</p>
+<blockquote>D(P) = { y : x → y for some x ∈ P }.</blockquote>
+<hr>
+<h2>2. Axioms</h2>
+<p><strong>A1 (Closure).</strong> D is an endorelation on S: every transition begins and ends inside the domain.</p>
+<p>A1 excludes external grounding. No distinction can be explained by reference to something outside the system. The philosophical consequence, developed in Book 0 §VII, is that there is no position outside the system from which to observe it.</p>
+<p><strong>A2 (Recurrence).</strong> There exists s ∈ S such that s ∈ reach(s).</p>
+<p>Some distinction can return to itself. A2 excludes purely acyclic systems, in which every path leads strictly forward. It is the formal statement of Book 0's first line: <em>something repeats.</em></p>
+<hr>
+<h2>3. Identity</h2>
+<p><strong>Definition 3.1 (Identity relation).</strong> For x, y ∈ S, x ≡ y if and only if x D<em> y and y D</em> x.</p>
+<p>Two distinctions are identical when each can reach the other. Because D* is reflexive and transitive, ≡ is an equivalence relation on all of S.</p>
+<p><strong>Definition 3.2 (Identity class).</strong> The identity class of x is [x] = { y ∈ S : y ≡ x }, the strongly connected component (SCC) containing x. The set of all classes is the quotient Q = S/≡.</p>
+<p><strong>Definition 3.3 (Recurrent class).</strong> A class C is <em>recurrent</em> if some element of C lies in its own reach. Equivalently, C contains at least one cycle: either a self-loop, or two or more mutually reachable elements. Classes that are not recurrent are <em>transient</em>.</p>
+<p>A2 says exactly that at least one recurrent class exists.</p>
+<p><strong>Definition 3.4 (Invariance).</strong> A subset P ⊆ S is <em>closed</em> (D-invariant) when D(P) ⊆ P: no transition leads out of P.</p>
+<p><strong>Theorem 2 (Identity is induced).</strong> The relation ≡ is determined entirely by D. No primitive notion of identity is required.</p>
+<p><em>Proof.</em> Definition 3.1 uses only D<em>, and D</em> is constructed from D alone. ∎</p>
+<hr>
+<h2>4. The Fundamental Theorems</h2>
+<p>Earlier drafts claimed that the identity class of a recurrent element is always closed. That claim is false. Take S = {0, 1} and D = {(0, 0), (0, 1)}. The class [0] = {0} is recurrent, because of the self-loop, but D({0}) = {0, 1}, which is not contained in {0}. A recurrent class can have arrows that leave it. The theorems below replace the false claim with three correct statements.</p>
+<p><strong>Theorem 1 (Re-entry).</strong> Let s satisfy A2, and let P = reach(s). Then P is non-empty and closed: D(P) ⊆ P.</p>
+<p><em>Proof.</em> By A2, s ∈ reach(s) = P, so P is non-empty. Let p ∈ P and p → p′. Since s D⁺ p and p → p′, transitivity gives s D⁺ p′, so p′ ∈ P. ∎</p>
+<p>P is the smallest closed set containing s. Once a distinction recurs, everything it gives rise to stays within a region that the system cannot leave. Book 0 §III describes this as "a place it cannot leave."</p>
+<p><strong>Theorem 1b (Closed recurrent class).</strong> Let s satisfy A2, and suppose P = reach(s) is finite and every element of P has at least one successor. Then P contains a recurrent class B that is closed: D(B) ⊆ B.</p>
+<p><em>Proof.</em> Contract each identity class within P to a single node. The resulting graph of classes, the condensation, is finite and acyclic, so it has at least one <em>sink</em>: a class B with no arrows leading to any other class. By Theorem 1, every successor of an element of B lies in P. Because B is a sink, every such successor lies in B, so D(B) ⊆ B.</p>
+<p>Now take any b ∈ B. By hypothesis b has a successor, and that successor lies in B. If B has more than one element, its elements are mutually reachable, so B contains a cycle. If B = {b}, the successor must be b itself, giving a self-loop. Either way B is recurrent. ∎</p>
+<p><strong>Theorem 3 (Observation as fixed point).</strong> If C is a recurrent class that is closed, then D(C) = C.</p>
+<p><em>Proof.</em> D(C) ⊆ C because C is closed. For the reverse inclusion, let c ∈ C. Since C is recurrent, there is a cycle through c of length at least one. Every element on that cycle is reachable from c and reaches c, so it lies in C. Let p be the element immediately before c on the cycle. Then p ∈ C and p → c, so c ∈ D(C). ∎</p>
+<p><strong>Definition 4.1 (Observation).</strong> An <em>observation</em> is the selection of a closed recurrent class C, that is, a fixed point of the image map P ↦ D(P).</p>
+<p>In the quotient Q, such a class appears as a node whose only outgoing transition returns to itself. Observation in this sense requires no observer outside the system. It is the system's own dynamics arriving at a region that maps exactly onto itself (Book 0 §VIII).</p>
+<hr>
+<h2>5. The Operator Algebra</h2>
+<p>Operators act on identity classes and change the structure of the system.</p>
+<ul>
+<li><strong>D (Differentiate), 1 → 2.</strong> A class splits into two distinguishable classes.</li>
+<li><strong>A (Absorb), 2 → 1, irreversible.</strong> Two classes merge asymmetrically. The merged class keeps the outgoing relations of its inputs, and the inputs are retained in the record as inactive.</li>
+<li><strong>C (Couple), 2 → 1, symmetric.</strong> Mutual reachability is induced between two classes. Coupling differs in kind from absorption: neither input subsumes the other, and the result is a relation between stabilities (Book 0 §V).</li>
+<li><strong>S (Suspend), 1 → 0.</strong> A class loses admissibility and becomes terminal. It is retained in the record, not deleted.</li>
+<li><strong>J (Interject), proposed.</strong> A differentiation whose daughter returns to its source: s → s′ → s. J creates a recurrent pair in a single step, so it is the constructive form of Axiom A2. J is admissible whenever D is, and it deforms the constraint field exactly as D does.</li>
+</ul>
+<p>Persistence, the identity operation, is implicit: when no operator is applied, structure is unchanged.</p>
+<p><strong>Composition grammar.</strong> A sequence of operators is well formed only if the output arity of each step matches the input arity of the next. Two compositions are forbidden outright:</p>
+<ul>
+<li><strong>(S, A):</strong> absorbing a suspended class;</li>
+<li><strong>(S, C):</strong> coupling with a suspended class.</li>
+</ul>
+<p>In each case the suspended class has nothing left to contribute.</p>
+<hr>
+<h2>6. The Constraint Field</h2>
+<p><strong>Definition 6.1 (χ-field).</strong> Each element s carries a constraint field</p>
+<blockquote>χ(s) = (Adm(s), q(s)),</blockquote>
+<p>where Adm(s) ⊆ {D, A, C, S, J} is the set of operators currently admissible at s, and q(s) is the <em>differentiation quota</em>. The quota is either unlimited (written −1), exhausted (0), or a finite number of remaining differentiations.</p>
+<p><strong>Definition 6.2 (Admissibility).</strong> An operator X is admissible at s when X ∈ Adm(s). For X ∈ {D, J}, the quota must also not be exhausted: q(s) ≠ 0.</p>
+<p><strong>Definition 6.3 (Deformation).</strong> Applying an admissible operator changes the field as follows. These rules are normative and supersede the qualitative table of earlier drafts.</p>
+<ul>
+<li><strong>D or J:</strong> if q &gt; 0, q decreases by one. Unlimited quotas are unchanged.</li>
+<li><strong>A:</strong> D and J are removed from Adm, and q becomes 0. Absorption ends the capacity to branch.</li>
+<li><strong>C:</strong> S is removed from Adm. A coupled class cannot simply be suspended.</li>
+<li><strong>S:</strong> Adm becomes empty and q becomes 0. Suspension is terminal.</li>
+</ul>
+<p>The quota closes a specific failure path. Coupling removes S, so without a quota a coupled class could differentiate without bound, causing a combinatorial explosion. With a quota, each region sets its own capacity for branching.</p>
+<hr>
+<h2>7. Fibers, Tunnels and Flux</h2>
+<p>The structures in this section give χ-RCC a concrete setting in which polarity and direction can be measured.</p>
+<p><strong>Definition 7.1 (Discrete fibered graph).</strong> A discrete fibered graph consists of a base b, a family of named fibers F₁, …, F_m, each a finite list of states, and the total space</p>
+<blockquote>E = { (Fᵢ, x) : x a state of Fᵢ }.</blockquote>
+<p>Every element of E projects to the base b. A set of <em>connections</em> ⊆ E × E says which transitions are permitted. The total space has a fixed capacity, a maximum number of elements.</p>
+<p>This is a discrete structure. It has no local trivializations or transition functions, and it is not a differential-geometric bundle. In the reference configuration there are two fibers over one base, F_MATTER and F_ANTIMATTER. The two fibers model the two poles of a single base. This is the formal counterpart of polarity in Proto-Atomos.</p>
+<p><strong>Definition 7.2 (Tunnel).</strong> A tunnel is a finite sequence of elements of E in which each consecutive pair is a permitted connection. A tunnel is <em>reentrant</em> if it ends where it began.</p>
+<p><strong>Definition 7.3 (Flux).</strong> Fix a canonical orientation for each undirected edge e. Across all tunnels, let N_f(e) be the number of traversals of e in the canonical direction, and N_r(e) the number in the reverse direction. Define:</p>
+<blockquote><strong>coherence</strong> κ = Σₑ |N_f(e) − N_r(e)| ⁄ Σₑ (N_f(e) + N_r(e)),</blockquote>
+<blockquote><strong>balance</strong> β = 1 − κ.</blockquote>
+<p>The network is <em>balanced</em> when N_f(e) = N_r(e) for every edge. Coherence measures net directed flow, from 0 (perfectly balanced) to 1 (entirely one-directional). These are graph measurements, not physical conservation laws.</p>
+<p><strong>Definition 7.4 (Directional polarity between tunnels).</strong> For two tunnels with shared undirected edges, let <em>same</em> count the shared edges traversed in the same direction and <em>opposite</em> those traversed in opposite directions. The directional polarity is</p>
+<blockquote>(same − opposite) ⁄ (same + opposite),</blockquote>
+<p>which lies in [−1, +1]. The structural overlap is the number of shared edges divided by the number of edges in either tunnel. Two tunnels with polarity −1 and overlap 1 are the same route traversed in reverse.</p>
+<hr>
+<h2>8. The Kernel K</h2>
+<p>The kernel K is the single authority permitted to change tunnels and constraint fields.</p>
+<p><strong>Definition 8.1 (Paired transition).</strong> Let τ be a tunnel ending at s, and let t be a proposed target. K admits the paired transition s → t → s only if all three conditions hold:</p>
+<ul>
+<li><strong>(K1) Inverse connection.</strong> Both (s, t) and (t, s) are permitted connections.</li>
+<li><strong>(K2) Admissibility.</strong> Neither s nor t is suspended, and J is admissible at s.</li>
+<li><strong>(K3) Integrity.</strong> After appending t and then s to τ, every point of every tunnel lies in E, every step is a permitted connection, the network is balanced, and the fibered graph is valid.</li>
+</ul>
+<p>If all three hold, the transition is committed and χ(s) is deformed by J. If any fails, K restores the exact prior state of both the tunnels and the constraint fields. Every decision, accepted or rejected, is recorded.</p>
+<p>The paired transition is an application of J: the system steps out to t and returns. Every change K admits is therefore a self-referential distinction.</p>
+<p><strong>Proposition 8.2 (Balance preservation).</strong> If the network is balanced before an admitted paired transition s → t → s with s ≠ t, it is balanced afterwards.</p>
+<p><em>Proof.</em> The transition adds exactly one traversal of the edge {s, t} in each direction. N_f and N_r for that edge each increase by one, and no other edge changes. ∎</p>
+<p>For a self-loop (s = t), both traversals count in the same orientation, so the network becomes unbalanced and K3 rejects the transition.</p>
+<p><strong>Definition 8.3 (History).</strong> The record is an append-only hash chain. Each record carries the hash of the record before it:</p>
+<blockquote>h₀ = "GENESIS",  hᵢ = SHA-256( hᵢ₋₁ ‖ recordᵢ ).</blockquote>
+<p>Altering any past record changes its hash and breaks every later link, so tampering is detectable. Because every admitted change is a recorded paired transition, any state can be reconstructed by replaying the record.</p>
+<hr>
+<h2>9. Computational Witness</h2>
+<p>The reference implementation (package <code>chi</code>) realizes Sections 3–8 and verifies them with a self-test.</p>
+<ul>
+<li><strong>Conformance.</strong> 300 recorded scenarios from the legacy implementation (version 1.12) are replayed. Decisions, history, final paths, balance and counts all match.</li>
+<li><strong>Protection.</strong> Direct changes to tunnel state are blocked. A rejected transition leaves the state unchanged. Tampering with the history is detected.</li>
+<li><strong>Constraint rules.</strong> Suspension, forbidden compositions, the differentiation quota, and full rollback of both paths and fields behave as specified.</li>
+<li><strong>Theorems.</strong> Theorems 1, 1b and 3 hold on the reference graph and on every recurrent case among 3,000 random digraphs (2 to 6 elements, edge probability 0.3, fixed seed): 2,459 recurrent cases, no counterexamples. The original, uncorrected re-entry claim fails on the two-element graph of §4.</li>
+</ul>
+<p>The witness establishes that the proven results are consistent and executable. It does not test the conjectures in §10.</p>
+<hr>
+<h2>10. Conjectures</h2>
+<p>The results in this section were stated as theorems in earlier drafts. Their proofs are incomplete or depend on terms not yet defined, so they are offered here as conjectures.</p>
+<h3>10.1 Levels and self-similarity</h3>
+<p>Define a level hierarchy. Level 0 is (S, D). Level n + 1 takes the identity classes of level n as its elements, with a transition between two classes whenever some element of the first gives rise to some element of the second.</p>
+<p><strong>Observation 10.1.</strong> Under this quotient alone, the hierarchy stabilizes at once. The graph of classes is acyclic apart from self-loops on recurrent classes, so every class at level 1 is already its own identity class, and level 2 is identical to level 1. Any structure at higher levels must therefore come from operator activity, above all from C, which creates new mutual reachability between classes.</p>
+<p><strong>Conjecture 1 (Structural self-similarity).</strong> In hierarchies generated by operator activity, each level (Sₙ, Oₙ, χₙ) is structurally isomorphic to level 0 up to relabeling and granularity. If so, lifting is an endofunctor on the category of constraint systems.</p>
+<h3>10.2 Phase classification</h3>
+<p>Define three conditions:</p>
+<ul>
+<li><strong>C1:</strong> only finitely many C and S events occur across all levels;</li>
+<li><strong>C2:</strong> beyond some level, no C event adds new dependency structure to the constraint field;</li>
+<li><strong>C3:</strong> suspension is permanent, so no operation restores admissibility to a suspended region.</li>
+</ul>
+<p><strong>Conjecture 2 (Collapse).</strong> A system satisfying C1, C2 and C3 converges to a unique constraint geometry χ* that is invariant under lifting.</p>
+<p>Each failed condition names a way the system can remain open:</p>
+<ul>
+<li><strong>χ-ergodic:</strong> all three hold; the system converges to χ*.</li>
+<li><strong>χ-creative:</strong> C1 fails; new phases keep being generated.</li>
+<li><strong>χ-expansive:</strong> C2 fails; coupling density grows without bound.</li>
+<li><strong>χ-regenerative:</strong> C3 fails; suspended regions can return.</li>
+</ul>
+<h3>10.3 Recovery</h3>
+<p>This program needs two rates to be defined: r_χ, the rate at which the constraint field deforms, and r_SCC, the rate at which identity classes form.</p>
+<p><strong>Conjecture 3 (Recovery modes).</strong> When r_χ exceeds r_SCC, exactly four structurally distinct recovery modes exist:</p>
+<ul>
+<li><strong>Freeze:</strong> reduce r_χ;</li>
+<li><strong>Restrict:</strong> shrink the domain;</li>
+<li><strong>Couple:</strong> anchor to an external system;</li>
+<li><strong>Accelerate:</strong> raise r_SCC.</li>
+</ul>
+<p>Restricting forecloses accelerating.</p>
+<p><strong>Conjecture 4 (Attractor).</strong> Coupling combined with acceleration (C·A) is the unique non-degenerate stable configuration: the only one that keeps full generative capacity without permanent restriction or freezing.</p>
+<h3>10.4 The invariant</h3>
+<p><strong>Conjecture 5 (Realizability).</strong> For a continuous extension of the calculus, let F map states to their induced constraint fields, and let G map constraint fields to state dynamics. The system is χ-RCC-realizable if and only if the Jacobian of the coupled map (F, G) has full rank: state evolution and constraint evolution are locally invertibly coupled. The rank of this Jacobian would then stratify the regimes of §10.2.</p>
+<p>Conjecture 5 needs a differentiable model, which the discrete calculus does not yet supply. Building that model is an open problem.</p>
+<hr>
+<h2>11. Relation to the Companion Works</h2>
+<p>Book 0, <em>The Emergence of Identity</em>, presents the content of Sections 2–4 and §10.1 as philosophical prose. Its formal notes refer to Theorem 1 (Re-entry), Theorem 1b (closed recurrent classes), and Theorem 3 (observation as fixed point) as revised in this edition.</p>
+<p><em>Proto-Atomos</em> uses the calculus as one formal lens:</p>
+<ul>
+<li>The self-referential distinction Δ = Δ corresponds to A2, made constructive by J.</li>
+<li>The two limits of a quality correspond to two fibers over one base.</li>
+<li>Pendulation corresponds to directional flux.</li>
+<li>Lifting corresponds to the level hierarchy of §10.1.</li>
+<li>The interior observer corresponds to A1 together with Theorem 3.</li>
+</ul>
+<p>The calculus supports those works at the level of structure. It does not establish their philosophical or physical claims, which stand on their own terms.</p>
+<hr>
+<p><em>Cite as:</em> MAKURABA, <em>χ-RCC: The χ-Reentrant Closure Calculus — Formal Reference</em> (revised edition, 2026).</p>
+<!-- page:content:end -->
+</article>
+</div></div>
+<script src="../core/shell.js"></script>
+</body>
+</html>
