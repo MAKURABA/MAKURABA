@@ -73,6 +73,11 @@
      "slug": "the-unknown-game"
     },
     {
+     "id": "g-of-n",
+     "title": "G of N",
+     "slug": "g-of-n"
+    },
+    {
      "id": "the-supreme-hypervisor",
      "title": "THE SUPREME HYPERVISOR",
      "slug": "the-supreme-hypervisor"
@@ -83,9 +88,9 @@
      "slug": "proto-atomos"
     },
     {
-     "id": "g-of-n",
-     "title": "G of N",
-     "slug": "g-of-n"
+     "id": "the-golden-lattice",
+     "title": "THE GOLDEN LATTICE",
+     "slug": "the-golden-lattice"
     },
     {
      "id": "mono-maximum",
@@ -116,11 +121,6 @@
      "id": "delta-bias-doctrine",
      "title": "DELTA BIAS DOCTRINE",
      "slug": "delta-bias-doctrine"
-    },
-    {
-     "id": "the-golden-lattice",
-     "title": "THE GOLDEN LATTICE",
-     "slug": "the-golden-lattice"
     },
     {
      "id": "book-0",
