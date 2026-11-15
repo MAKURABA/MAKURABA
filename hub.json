@@ -222,11 +222,6 @@
      "id": "thrrgh",
      "title": "THE CONJECTURE OF INSTRUMENTALIZED COMPLIANCE AND PURPOSE DEFEAT",
      "slug": "thrrgh"
-    },
-    {
-     "id": "the-magic-carpet-conjecture",
-     "title": "THE MAGIC CARPET CONJECTURE",
-     "slug": "the-magic-carpet-conjecture"
     }
    ]
   },
@@ -326,6 +321,11 @@
      "id": "it-takes-a-village",
      "title": "It Takes A Village",
      "slug": "it-takes-a-village"
+    },
+    {
+     "id": "the-magic-carpet-conjecture",
+     "title": "THE MAGIC CARPET CONJECTURE",
+     "slug": "the-magic-carpet-conjecture"
     }
    ]
   },
