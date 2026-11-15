@@ -124,7 +124,7 @@
     },
     {
      "id": "book-0",
-     "title": "BOOK NEGATIVE ZERO : part I",
+     "title": "BOOK NEGATIVE ZERO : PARI",
      "slug": "book-0",
      "summary": ""
     },
@@ -232,6 +232,11 @@
      "id": "the-dual-singular-creator",
      "title": "THE DUAL SINGULAR CREATOR",
      "slug": "the-dual-singular-creator"
+    },
+    {
+     "id": "book-negative-zero-part-ii",
+     "title": "BOOK NEGATIVE ZERO: PART II",
+     "slug": "book-negative-zero-part-ii"
     }
    ]
   },
