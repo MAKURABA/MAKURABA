@@ -1,0 +1,15 @@
+{
+ "blocks": [
+  {
+   "type": "embed",
+   "url": "examples/electronics-101-terms-symbols-encyclopedia-1/Electronics-101---Terms---Symbols-Encyclopedia--1-.html",
+   "title": "Electronics 101 — Terms & Symbols Encyclopedia (1)"
+  },
+  {
+   "type": "link",
+   "target": "examples/electronics-101-terms-symbols-encyclopedia-1/Electronics-101---Terms---Symbols-Encyclopedia--1-.html",
+   "label": "Open full screen",
+   "note": "Opens the demo on its own, in a new tab."
+  }
+ ]
+}
