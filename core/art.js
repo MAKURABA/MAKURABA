@@ -3,7 +3,10 @@ const PK=[[0.1678, 0.2901, "217,68,255"], [0.4959, 0.372, "255,225,165"], [0.503
 function sparks(){const s=$("spk"),w=s.clientWidth,h=s.clientHeight;s.innerHTML="";
   const land=matchMedia("(min-aspect-ratio:1/1)").matches,k=land?h/AH:Math.max(w/AW,h/AH),ox=(w-AW*k)/2,oy=(h-AH*k)/2;
   PK.forEach((p,i)=>{const e=el("b","sp");e.style.left=(ox+p[0]*AW*k)+"px";e.style.top=(oy+p[1]*AH*k)+"px";
-    e.style.setProperty("--c","rgba("+p[2]+",.55)");e.style.setProperty("--d",((i*1.37)%6).toFixed(2)+"s");s.append(e)})}
+    e.style.setProperty("--c","rgba("+p[2]+",.55)");e.style.setProperty("--d",((i*1.37)%6).toFixed(2)+"s");s.append(e)});
+  if(H.home&&H.home.eye){const W=EYE_W*AW*k,sc=W/200;  /* Eye of Horus: its pupil sits on the centre of the spiral */
+    s.insertAdjacentHTML("beforeend",EYE);const e=s.lastElementChild;e.style.width=W+"px";e.style.left=(ox+EYE_C[0]*AW*k-95*sc)+"px";e.style.top=(oy+EYE_C[1]*AH*k-62*sc)+"px"}}
+const EYE_W=.25,EYE_C=[.5033,.5078],EYE='<svg class="eye" viewBox="0 0 200 140" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 36Q98 -4 188 32" stroke-width="5"/><path d="M14 66Q92 18 170 56Q184 62 197 58" stroke-width="4.5"/><path d="M14 66Q92 106 170 56" stroke-width="3.5"/><circle cx="95" cy="62" r="19" stroke-width="3.5"/><path d="M86 93L81 128Q80 135 73 132" stroke-width="4"/><path d="M103 91Q124 131 160 124Q184 119 181 103Q178 91 166 96Q159 100 163 107" stroke-width="4"/></g></svg>';
 addEventListener("resize",sparks);sparks();
 
 

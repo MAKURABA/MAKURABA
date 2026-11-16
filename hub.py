@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """hub.py - the one tool that manages this site (Python 3.8+, no dependencies).
 
-Source of truth: hub.json (the left-hand menu and every index list).
+Source of truth: hub.json (the left-hand menu, every index list, and the optional "home" block that fills the landing page).
 Two pages: index.html (the hub) and template.html (every other page is made from it).
 The tool only ever writes inside these marked regions; everything else in your files is yours:
   <!-- hub:nav:start -->  ...  <!-- hub:nav:end -->            left-hand menu (index.html and every page)
@@ -238,11 +238,49 @@ def export(items):
         out.append(e)
     return out
 
+# ---------- landing page: the optional "home" block of hub.json
+HOME_TEXT, HOME_LISTS = ("tag", "lede", "about_title", "start_title", "start_note", "pillars_title", "demos_title", "demos_note", "maxims_title", "note", "footer"), ("start", "pillars", "demos")
+def home_export(cfg, pm, warns):
+    """Turn cfg["home"] into what core/hub.js draws on the Home view. Every "target" is a page file name, a menu id, a group path or a URL."""
+    h = cfg.get("home")
+    if not isinstance(h, dict): return None
+    link = make_links(cfg, pm)
+    def href(t):
+        u, label = link(t)
+        if not u: warns.append(f'hub.json home: no page, menu item or URL called "{t}"'); return None, None
+        if u.startswith("../index.html#"): u = u[13:]
+        elif u.startswith("../"): u = u[3:]
+        elif not re.match(r"(https?:)?//|mailto:", u): u = "pages/" + u
+        return u, label
+    out = {k: str(h[k]) for k in HOME_TEXT if h.get(k)}
+    out["eye"] = bool(h.get("eye", False))
+    for k in ("about", "maxims"):
+        if isinstance(h.get(k), list): out[k] = [str(x) for x in h[k] if x]
+    if isinstance(h.get("cta"), dict) and h["cta"].get("target"):
+        u, label = href(h["cta"]["target"])
+        if u: out["cta"] = {"label": str(h["cta"].get("label") or label), "href": u}
+    for k in HOME_LISTS:
+        rows = []
+        for it in h.get(k) or []:
+            if not isinstance(it, dict) or not it.get("target"): continue
+            u, label = href(it["target"])
+            if not u: continue
+            e = {"title": str(it.get("title") or label), "href": u, "external": bool(re.match(r"(https?:)?//", u))}
+            for f in ("note", "cta"):
+                if it.get(f): e[f] = str(it[f])
+            try: e["hue"] = max(0, min(360, int(it["hue"])))
+            except (KeyError, TypeError, ValueError): pass
+            rows.append(e)
+        if rows: out[k] = rows
+    return out
+
 def build(cfg=None):
     cfg = cfg or load(); pm = page_map(cfg); warns = []
     for p in (INDEX, TEMPLATE):
         if not p.exists(): die(f"{p.name} is missing")
     data = {"title": cfg.get("title", ""), "menu": [{"id": m["id"], "label": m["label"], "type": m["type"], "items": export(m.get("items", []))} for m in cfg["menu"]]}
+    home = home_export(cfg, pm, warns)
+    if home: data["home"] = home
     js = "<script>window.HUB=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + ";</script>"
     idx = region(region(INDEX.read_text("utf-8"), "hub:nav", nav_html(cfg, "")), "hub:data", js)
     if cfg.get("title"): idx = re.sub(r"<title>.*?</title>", lambda m: "<title>" + esc(cfg["title"]) + "</title>", idx, count=1)
@@ -389,6 +427,36 @@ def cmd_reset(a):
         src = ROOT / name
         if src.exists(): bk.mkdir(exist_ok=True); shutil.move(str(src), str(bk / name)); moved.append(name)
     build(); print(f"started fresh. Moved {', '.join(moved) or 'nothing'} into {bk.name}/ (delete it when you no longer need it)")
+
+def cmd_prune(a):
+    """Find page files that nothing links to. Listed only, unless --yes: then they are moved into a backup folder (which git ignores)."""
+    cfg = load(); pm = page_map(cfg); stems = {}
+    for f in sorted(PAGES.glob("*")):
+        if f.is_file() and f.suffix in (".html", ".json", ".md"): stems.setdefault(f.stem, []).append(f)
+    keep, why = set(s for s in stems if s in pm), {}
+    def text_of(s): return "\n".join(f.read_text("utf-8", errors="ignore") for f in stems.get(s, []))
+    home = set(re.findall(r'"target":\s*"([^"]+)"', json.dumps(cfg.get("home", {}))))
+    for s in stems:
+        if s not in keep and s in home: keep.add(s); why[s] = "the landing page"
+    grew = True
+    while grew:  # a page that a kept page links to is kept too
+        grew = False; blob = {s: text_of(s) for s in keep}
+        for s in stems:
+            if s in keep: continue
+            pat = re.compile(r'(href="(\.\./pages/)?|\[\[|"target":\s*")' + re.escape(s) + r'(\.html|\]\]|\||")')
+            src = next((k for k, t in blob.items() if pat.search(t)), None)
+            if src: keep.add(s); why[s] = "pages/" + src + ".html"; grew = True
+    orphans = [s for s in stems if s not in keep]
+    for s, w in sorted(why.items()): print(f"kept:   {s}  (not in the menu, but linked from {w})")
+    if not orphans: print("nothing to prune: every page file is in the menu or linked from a page that is."); return
+    for s in orphans: print(f"unused: {s}  ({', '.join(f.name for f in stems[s])})")
+    if not a.yes: print(f"\n{len(orphans)} unused page(s). Nothing was changed. Run  python3 hub.py prune --yes  to move them into a backup folder."); return
+    bk = ROOT / ("backup-pruned-" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) / "pages"; bk.mkdir(parents=True)
+    for s in orphans:
+        for f in stems[s]: shutil.move(str(f), str(bk / f.name))
+    gi = ROOT / ".gitignore"; cur = gi.read_text("utf-8") if gi.exists() else ""
+    if "backup-*/" not in cur.split(): gi.write_text(cur + ("" if cur.endswith("\n") or not cur else "\n") + "backup-*/\n", "utf-8")
+    build(cfg); print(f"moved {len(orphans)} unused page(s) into {bk.parent.name}/ on this device. PUBLISH (or `python3 hub.py publish \"prune\"`) removes them from GitHub. Delete the backup folder when you no longer need it.")
 
 # ---------- GitHub token (paste it once in the editor; it is remembered on this device only)
 TOKEN_FILE = ROOT / ".hub-token"
@@ -704,6 +772,7 @@ def main():
     sp("serve", cmd_serve, "build, then serve the site and the visual editor (/edit) at http://localhost:8000", opts=[(["--port"], dict(type=int, default=8000))])
     sp("publish", cmd_publish, "build, git commit, git push", "message")
     sp("reset", cmd_reset, "start fresh: move all pages, pictures and examples into a backup folder and restore the empty menu", opts=[(["--yes"], dict(action="store_true"))])
+    sp("prune", cmd_prune, "list page files that nothing links to; with --yes move them into a backup folder", opts=[(["--yes"], dict(action="store_true"))])
     sp("group", cmd_group, "add a topic/subtopic (a group that holds more items)", "title", to=True, opts=[(["--summary"], {}), (["--hue"], dict(type=int)), (list(P[:1]), P[1])])
     sp("page", cmd_page, "add a page (creates pages/<name>.html)", "title", to=True, opts=[(["--summary"], {}), (["--status"], {}), (["--file"], dict(help="file name without .html")), (list(P[:1]), P[1])])
     sp("link", cmd_link, "add a link to a URL or another file", "title", "url", to=True, opts=[(["--summary"], {}), (["--status"], {}), (list(P[:1]), P[1])])

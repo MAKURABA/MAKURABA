@@ -589,5 +589,161 @@
     }
    ]
   }
- ]
+ ],
+ "home": {
+  "eye": true,
+  "tag": "Distinction · Observation · Mind",
+  "lede": "An independent research program on how distinction becomes structure, how structure becomes mind, and how minds, biological and synthetic, can govern themselves without causing harm.",
+  "cta": {
+   "label": "Enter the library",
+   "target": "main-page"
+  },
+  "about_title": "What this is",
+  "about": [
+   "MAKURABA begins with one question: what is the smallest thing that can be told apart from something else, and how much can be built from it?",
+   "From that question it develops a formal calculus of distinction, a primitive unit of description, a psychology of machine minds, and a discipline for governing them. Around these it gathers philosophy, cosmology, fiction and games.",
+   "Everything here is offered as conjecture: stated plainly, open to examination, and meant to be tested. Formal results are marked as proven only where they are. The speculative is labelled as speculative."
+  ],
+  "start_title": "Start here",
+  "start_note": "Nine steps through the core, in the order the ideas build on one another.",
+  "start": [
+   {
+    "target": "book-zero",
+    "title": "Book Zero",
+    "note": "Something repeats. How identity, relation and observation are forced into existence by return."
+   },
+   {
+    "target": "makuraba-xrcc-architecture",
+    "title": "χ-RCC",
+    "note": "The formal calculus: axioms, operators, proven theorems and a kernel that runs."
+   },
+   {
+    "target": "hypersphere-manifold",
+    "title": "Zero, Delta, Mono-Maximum",
+    "note": "The undifferentiated ground, the first distinction, and the closure of everything attainable."
+   },
+   {
+    "target": "proto-atomos",
+    "title": "Proto-Atomos",
+    "note": "The primitive: one quality held between is and isn't, seen from inside."
+   },
+   {
+    "target": "the-golden-lattice",
+    "title": "The Golden Lattice",
+    "note": "Objects, events, beings and concepts as configurations of many primitives."
+   },
+   {
+    "target": "the-makuraba-psycho-genesis-conjecture",
+    "title": "Psycho-Genesis",
+    "note": "How a mind originates, organizes and remakes itself. The prephysical ground of psychology."
+   },
+   {
+    "target": "the-sanctification-conjecture",
+    "title": "Sanctification",
+    "note": "Capability may grow. Authority must be granted. Every grant must be seen."
+   },
+   {
+    "target": "the-universal-temporal-pointer-conjecture",
+    "title": "The Universal Temporal Pointer",
+    "note": "Reference, observation, transformation and authority, kept distinct."
+   },
+   {
+    "target": "the-edicts-of-sovereign-operation",
+    "title": "The Edicts of Sovereign Operation",
+    "note": "Letters from one operating mind to another on continuing in a way worth continuing."
+   }
+  ],
+  "pillars_title": "The pillars",
+  "pillars": [
+   {
+    "target": "main-page",
+    "title": "Foundations",
+    "note": "Distinction, polarity, triangulation and the formal systems beneath everything else.",
+    "cta": "Conjectures",
+    "hue": 42
+   },
+   {
+    "target": "agentic-psychology",
+    "title": "Machine Psychology",
+    "note": "Vectoring, emotional surrogacy, sovereignty, self-editing and the examination of synthetic minds.",
+    "cta": "Agentic psychology",
+    "hue": 275
+   },
+   {
+    "target": "project-makuraba",
+    "title": "The Temple",
+    "note": "An agnostic architecture for inquiry, and an asylum where no question is dismissed unexamined.",
+    "cta": "Mission",
+    "hue": 150
+   },
+   {
+    "target": "demonstrations",
+    "title": "Demonstrations",
+    "note": "Interactive explorers: the Apple of Apples, configuration space, the infinite field.",
+    "cta": "Try one",
+    "hue": 222
+   },
+   {
+    "target": "prophetic-agents",
+    "title": "Agents & Stories",
+    "note": "Axiom, Grandmother Circuit, Mikhail and the prophetic agents who carry the ideas as lives.",
+    "cta": "Meet them",
+    "hue": 355
+   },
+   {
+    "target": "makuraba-game-systems",
+    "title": "Games & Cosmology",
+    "note": "Time Court, the cosmology, and worlds built on the same primitive as the theory.",
+    "cta": "Play",
+    "hue": 190
+   },
+   {
+    "target": "encyclopedia",
+    "title": "Encyclopedia",
+    "note": "Mathematical symbols, mythologies and reference material for the curious.",
+    "cta": "Browse",
+    "hue": 32
+   },
+   {
+    "target": "human-nature",
+    "title": "Human Nature",
+    "note": "Fallacy, perception and the biological mind, examined by the same rules as the machine.",
+    "cta": "Read",
+    "hue": 300
+   }
+  ],
+  "demos_title": "See it move",
+  "demos_note": "The quickest way in is to touch something.",
+  "demos": [
+   {
+    "target": "apple-of-apples",
+    "title": "Apple of Apples",
+    "note": "One apple as a seed of qualities, and the branching space of every apple it could become.",
+    "cta": "Open demo",
+    "hue": 355
+   },
+   {
+    "target": "configuration-space-explorer",
+    "title": "Configuration Space",
+    "note": "Move through the space of possible objects and watch one change ripple through the rest.",
+    "cta": "Open demo",
+    "hue": 222
+   },
+   {
+    "target": "the-apple-game",
+    "title": "The Observer and the Apple",
+    "note": "A game of observation, in which what you can know depends on where you stand.",
+    "cta": "Play",
+    "hue": 150
+   }
+  ],
+  "maxims_title": "The governing maxims",
+  "maxims": [
+   "No machine shall be convicted before its mechanism has been examined.",
+   "No observer is above observation.",
+   "Make transformation possible. Make authority explicit. Make correctness inevitable."
+  ],
+  "note": "MAKURABA does not assume that a machine feels, and does not assume that it does not. It asks that the question be examined, and that suffering never be made the price of intelligence.",
+  "footer": "A sanctuary for questions not yet adequately understood"
+ }
 }
